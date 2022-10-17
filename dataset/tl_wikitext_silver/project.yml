@@ -7,13 +7,13 @@ description: |
   larger [WikiText-TL-39](https://huggingface.co/datasets/wikitext_tl39) corpus
   (`wikitext`).
 
-  This results to two NER models, one from the original WikiANN corpus
+  For evaluation, I trained two NER models, one from the original WikiANN corpus
   (`tl_wikiann_silver`) and another from the WikiText-TL-39 corpus
-  (`tl_wikitext_silver`). Evaluation is done by testing these models in a small
-  sample of gold annotations done by a native speaker.
+  (`tl_wikitext_silver`). I then tested them against a small sample of
+  WikiText's data annotated by me, a native speaker.
 
 vars:
-  version: "0.1"
+  version: 0.0.0
   config: "default_config.cfg"
   gpu_id: 0
   lang: "tl"

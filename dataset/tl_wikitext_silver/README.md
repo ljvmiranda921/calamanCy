@@ -7,12 +7,12 @@ This project creates a silver-annotated dataset for named-entity recognition
 [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
 train an initial NER model, and then bootstrapped the annotations of a
 larger [WikiText-TL-39](https://huggingface.co/datasets/wikitext_tl39) corpus
-(`wikitext-tl-39`).
+(`wikitext`).
 
-This results to two NER models, one from the original WikiANN corpus
+For evaluation, I trained two NER models, one from the original WikiANN corpus
 (`tl_wikiann_silver`) and another from the WikiText-TL-39 corpus
-(`tl_wikitext_silver`). Evaluation is done by testing these models in a small
-sample of gold annotations done by a native speaker.
+(`tl_wikitext_silver`). I then tested them against a small sample of
+WikiText's data annotated by me, a native speaker.
 
 
 ## 📋 project.yml
@@ -29,13 +29,14 @@ Commands are only re-run if their inputs have changed.
 
 | Command | Description |
 | --- | --- |
-| `download` | Download the WikiANN and WikIText-TL-39 datasets from Huggingface |
+| `download` | Download the WikiANN and WikiText-TL-39 datasets from Huggingface |
 | `train-wikiann` | Train a Tagalog NER model from the WikiANN dataset |
 | `annotate-silver` | Annotate a larger WikiText-TL-39 dataset using the trained model from WikiANN |
 | `train-wikitext` | Train a Tagalog NER model from the WikiText dataset |
 | `evaluate-wikiann` | Evaluate the trained models to the silver-annotated WikiANN test set |
 | `evaluate-wikitext` | Evaluate the trained models to the silver-annotated WikiText test set |
-| `evaluate-gold` | Evaluate the trained models on an annotated subset of WikiText TL-39 |
+| `evaluate-gold` | Evaluate the trained models on an annotated subset of WikiText |
+| `package` | Package the trained models from the silver-annotated datasets |
 
 ### ⏭ Workflows
 
@@ -46,6 +47,6 @@ inputs have changed.
 
 | Workflow | Steps |
 | --- | --- |
-| `all` | `download` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-wikitext` &rarr; `evaluate-wikiann` &rarr; `evaluate-wikitext` &rarr; `evaluate-gold` |
+| `all` | `download` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-wikitext` &rarr; `evaluate-wikiann` &rarr; `evaluate-wikitext` &rarr; `evaluate-gold` &rarr; `package` |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
