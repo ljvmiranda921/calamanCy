@@ -53,10 +53,10 @@ commands:
         --output corpus/
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
-      - "corpus/raw/${vars.wikiann_silver}-dev.spacy"
+      - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
       - "corpus/raw/${vars.wikiann_silver}-test.spacy"
       - "corpus/raw/${vars.wikitext_silver}-train.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-dev.spacy"
+      - "corpus/raw/${vars.wikitext_silver}-validation.spacy"
       - "corpus/raw/${vars.wikitext_silver}-test.spacy"
 
   - name: "train-wikiann"
@@ -68,11 +68,11 @@ commands:
         --nlp.lang ${vars.lang}
         --output training/${vars.lang}_${vars.wikiann_silver}/
         --paths.train corpus/raw/${vars.wikiann_silver}-train.spacy
-        --paths.dev corpus/raw/${vars.wikiann_silver}-dev.spacy
+        --paths.dev corpus/raw/${vars.wikiann_silver}-validation.spacy
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/raw/${vars.wikiann_silver}-train.spacy
-      - corpus/raw/${vars.wikiann_silver}-dev.spacy
+      - corpus/raw/${vars.wikiann_silver}-validation.spacy
     outputs:
       - training/${vars.lang}_${vars.wikiann_silver}/
 
@@ -82,17 +82,17 @@ commands:
       - >-
         python -m scripts.annotate_silver 
         corpus/raw/${vars.wikitext_silver}-train.spacy
-        corpus/raw/${vars.wikitext_silver}-dev.spacy
+        corpus/raw/${vars.wikitext_silver}-validation.spacy
         corpus/raw/${vars.wikitext_silver}-test.spacy
         --model training/${vars.lang}_${vars.wikiann_silver}/
         --output corpus/silver/
     deps:
       - "corpus/raw/${vars.wikitext_silver}-train.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-dev.spacy"
+      - "corpus/raw/${vars.wikitext_silver}-validation.spacy"
       - "corpus/raw/${vars.wikitext_silver}-test.spacy"
     outputs:
       - "corpus/silver/${vars.wikitext_silver}-train.spacy"
-      - "corpus/silver/${vars.wikitext_silver}-dev.spacy"
+      - "corpus/silver/${vars.wikitext_silver}-validation.spacy"
       - "corpus/silver/${vars.wikitext_silver}-test.spacy"
 
   - name: "train-wikitext"
@@ -104,11 +104,11 @@ commands:
         --nlp.lang ${vars.lang}
         --output training/${vars.lang}_${vars.wikitext_silver}/
         --paths.train corpus/silver/${vars.wikitext_silver}-train.spacy
-        --paths.dev corpus/silver/${vars.wikitext_silver}-dev.spacy
+        --paths.dev corpus/silver/${vars.wikitext_silver}-validation.spacy
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/silver/${vars.wikitext_silver}-train.spacy
-      - corpus/silver/${vars.wikitext_silver}-dev.spacy
+      - corpus/silver/${vars.wikitext_silver}-validation.spacy
     outputs:
       - training/${vars.lang}_${vars.wikitext_silver}/
 
