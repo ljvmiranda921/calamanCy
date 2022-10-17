@@ -51,7 +51,6 @@ commands:
         --wikitext ${vars.wikitext_silver}
         --wikiann ${vars.wikiann_silver}
         --output corpus/
-      - "python -m scripts.download_datasets "
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
       - "corpus/raw/${vars.wikiann_silver}-dev.spacy"
