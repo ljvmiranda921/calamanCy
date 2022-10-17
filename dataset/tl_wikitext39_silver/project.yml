@@ -1,0 +1,104 @@
+title: "Creating a silver-annotated dataset from WikiText-TL-39"
+description: |
+  This project creates a silver-annotated dataset for named-entity recognition
+  (NER). It uses another silver-annotated
+  [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
+  train an initial NER model, and then bootstrapped the annotations of a
+  larger [WikiText-TL-39](https://huggingface.co/datasets/wikitext_tl39) corpus
+  (`wikitext-tl-39`).
+
+  This results to two NER models, one from the original WikiANN corpus
+  (`tl_wikiann_silver`) and another from the WikiText-TL-39 corpus
+  (`tl_wikitext_silver`). Evaluation is done by testing these models in a small
+  sample of gold annotations done by a native speaker.
+
+vars:
+  config: "default_config.cfg"
+  gpu_id: 0
+
+directories:
+  - "configs"
+  - "corpus/raw"
+  - "corpus/silver"
+  - "corpus/gold"
+  - "scripts"
+  - "training"
+  - "metrics"
+
+workflows:
+  all:
+    - "download"
+    - "train-wikiann"
+    - "annotate-silver"
+    - "train-wikitext"
+    - "evaluate"
+    - "package-silver"
+
+commands:
+  - name: "download"
+    help: "Download the WikiANN and WikIText-TL-39 datasets from Huggingface"
+    script:
+      - "python -m scripts.download_datasets"
+    outputs:
+      - "corpus/raw/wikiann_train.spacy"
+      - "corpus/raw/wikiann_dev.spacy"
+      - "corpus/raw/wikiann_test.spacy"
+      - "corpus/raw/wikitext-tl-39_train.spacy"
+      - "corpus/raw/wikitext-tl-39_dev.spacy"
+      - "corpus/raw/wikitext-tl-39_test.spacy"
+
+  - name: "train-wikiann"
+    help: "Train a Tagalog NER model from the WikiANN dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/${vars.config}.cfg
+        --nlp.lang tl
+        --output training/tl_wikiann_silver/
+        --paths.train corpus/raw/wikiann_train.spacy
+        --paths.dev corpus/raw/wikiann_dev.spacy
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/raw/wikiann_train.spacy
+      - corpus/raw/wikiann_dev.spacy
+    outputs:
+      - training/tl_wikiann_silver/
+
+  - name: "annotate-silver"
+    help: "Annotate a larger WikiText-TL-39 dataset using the trained model from WikiANN"
+    script:
+      - >-
+        python -m scripts.annotate_silver 
+        corpus/raw/wikitext-tl-39_train.spacy
+        corpus/raw/wikitext-tl-39_dev.spacy
+        corpus/raw/wikitext-tl-39_test.spacy
+        --model training/tl_wikiann_silver/
+        --output corpus/silver/
+    deps:
+      - "corpus/raw/wikitext-tl-39_train.spacy"
+      - "corpus/raw/wikitext-tl-39_dev.spacy"
+      - "corpus/raw/wikitext-tl-39_test.spacy"
+    outputs:
+      - "corpus/silver/wikitext-tl-39_train.spacy"
+      - "corpus/silver/wikitext-tl-39_dev.spacy"
+      - "corpus/silver/wikitext-tl-39_test.spacy"
+
+  - name: "train-wikitext"
+    help: "Train a Tagalog NER model from the WikiText dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/${vars.config}.cfg
+        --nlp.lang tl
+        --output training/tl_wikitext_silver/
+        --paths.train corpus/silver/wikitext-tl-39_train.spacy
+        --paths.dev corpus/silver/wikitext-tl-39_dev.spacy
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/silver/wikitext-tl-39_train.spacy
+      - corpus/silver/wikitext-tl-39_dev.spacy
+    outputs:
+      - training/tl_wikitext_silver/
+
+  - name: "evaluate"
+    help: "Evaluate the "
