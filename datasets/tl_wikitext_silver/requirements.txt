@@ -1,3 +1,2 @@
 spacy
-typer
-wasabi
+datasets
