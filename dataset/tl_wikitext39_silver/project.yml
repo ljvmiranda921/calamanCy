@@ -31,8 +31,10 @@ workflows:
     - "train-wikiann"
     - "annotate-silver"
     - "train-wikitext"
-    - "evaluate"
-    - "package-silver"
+    - "evaluate-wikiann"
+    - "evaluate-wikitext"
+    - "evaluate-gold"
+    #- "package-silver"
 
 commands:
   - name: "download"
@@ -100,5 +102,65 @@ commands:
     outputs:
       - training/tl_wikitext_silver/
 
-  - name: "evaluate"
-    help: "Evaluate the "
+  - name: "evaluate-wikiann"
+    help: "Evaluate the trained models to the silver-annotated WikiANN test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikiann_silver 
+        corpus/silver/wikiann_test.spacy
+        --output metrics/wikiann_silver/tl_wikiann_silver.json
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikitext_silver 
+        corpus/silver/wikiann_test.spacy
+        --output metrics/wikiann_silver/tl_wikitext_silver.json
+    deps:
+      - training/tl_wikiann_silver
+      - training/tl_wikitext_silver
+      - corpus/silver/wikiann_test.spacy
+    outputs:
+      - metrics/wikiann_silver/tl_wikiann_silver.json
+      - metrics/wikiann_silver/tl_wikitext_silver.json
+
+  - name: "evaluate-wikitext"
+    help: "Evaluate the trained models to the silver-annotated WikiText test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikiann_silver 
+        corpus/silver/wikitext-tl-39_test.spacy
+        --output metrics/wikitext_silver/tl_wikiann_silver.json
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikitext_silver 
+        corpus/silver/wikitext-tl-39_test.spacy
+        --output metrics/wikitext_silver/tl_wikitext_silver.json
+    deps:
+      - training/tl_wikiann_silver
+      - training/tl_wikitext_silver
+      - corpus/silver/wikitext-tl-39_test.spacy
+    outputs:
+      - metrics/wikitext_silver/tl_wikiann_silver.json
+      - metrics/wikitext_silver/tl_wikitext_silver.json
+
+  - name: "evaluate-gold"
+    help: "Evaluate the trained models on an annotated subset of WikiText TL-39"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikiann_silver 
+        corpus/gold/wikitext-tl-39-test.spacy
+        --output metrics/gold/tl_wikiann_silver.json
+      - >-
+        python -m spacy evaluate 
+        training/tl_wikitext_silver 
+        corpus/gold/wikitext-tl-39-test.spacy
+        --output metrics/gold/tl_wikitext_silver.json
+    deps:
+      - training/tl_wikiann_silver
+      - training/tl_wikitext_silver
+      - corpus/gold/wikitext-tl-39-test.spacy
+    outputs:
+      - metrics/gold/tl_wikiann_silver.json
+      - metrics/gold/tl_wikitext_silver.json
