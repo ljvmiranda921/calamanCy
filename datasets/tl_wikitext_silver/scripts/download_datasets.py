@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict
+from typing import Optional, Dict
 from pathlib import Path
 
 import typer
