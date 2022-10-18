@@ -20,7 +20,7 @@ def process_tlunified(
     filename: str = typer.Option("tlunified", "--filename", "-f", help="Filename to save the TLUnified corpus."),
     output_dir: Optional[Path] = typer.Option(None, "--output", "--output-dir", "-o", help="Directory to save the processed corpus."),
     segment: bool = typer.Option(False, "--segment", help="Segment documents into individual sentences."),
-    seed: int = typer.Option(0, "--seed", help="Set the random seed for splitting.", show_default=True),
+    seed: int = typer.Option(42, "--seed", help="Set the random seed for splitting.", show_default=True),
     splits: Tuple[float, float, float] = typer.Option((0.8, 0.1, 0.1), "--splits", help="Split ratio for train/validation/test partitions.", show_default=True),
     shuffle: bool = typer.Option(False, "--shuffle", help="Shuffle the texts before splitting."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
@@ -33,23 +33,30 @@ def process_tlunified(
     segments each document to individual sentences. Each document is delimited
     by the `=` symbol.
     """
+    msg.info("Processing the TLUnified dataset")
     texts = read_dataset(input_file)
     texts = clean_corpus(texts, segment=segment, verbose=verbose)
-    text_splits = split_dataset(texts, splits=splits, seed=seed, shuffle=shuffle)
+    text_splits = split_dataset(
+        texts, splits=splits, seed=seed, shuffle=shuffle, show=verbose
+    )
+    for split, txts in text_splits.items():
+        msg.text(f"Split {split} has {len(txts)} documents", show=verbose)
 
     # Convert to spaCy Docs
     nlp = spacy.blank("tl")
+    msg.text("Converting to spaCy Doc objects", show=verbose)
     text_docs = {split: nlp.pipe(txts) for split, txts in text_splits.items()}
 
     # Save to DocBin
+    msg.text("Saving to DocBin", show=verbose)
     text_docbin = {split: DocBin(docs=docs) for split, docs in text_docs.items()}
 
     # Save to disk
     if output_dir:
-        msg.info("Saving to disk")
+        msg.text("Saving to disk", show=verbose)
         for split, doc_bin in text_docbin.items():
             output_path = output_dir / f"{filename}-{split}.spacy"
-            output_path.mkdir(parents=True, exist_ok=True)
+            output_dir.mkdir(parents=True, exist_ok=True)
             doc_bin.to_disk(output_path)
             msg.good(f"Saved to {output_path} ({len(doc_bin)} documents)")
 
@@ -134,8 +141,10 @@ def split_dataset(
     splits: Tuple[float, float, float] = (0.8, 0.1, 0.1),
     seed: int = 0,
     shuffle: bool = True,
+    show: bool = True,
 ) -> Dict[str, List[str]]:
     """Split the dataset into train / validation / test partitions"""
+    msg.text(f"Splitting the dataset into partitions ({splits})", show=show)
     if shuffle:
         if not seed:
             msg.fail("Must provide seed when shuffle is True", exits=1)

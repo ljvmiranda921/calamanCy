@@ -56,6 +56,7 @@ commands:
         python -m scripts.download_wikiann
         --filename ${vars.wikiann_silver}
         --output-dir corpus/raw/
+        --verbose
       - >-
         python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}

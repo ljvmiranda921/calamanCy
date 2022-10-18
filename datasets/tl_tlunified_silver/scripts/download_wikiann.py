@@ -15,6 +15,7 @@ def download_wikiann(
     # fmt: off
     filename: str = typer.Option("wikiann", "--filename", "-f", help="Filename to save WikiANN data.", show_default=True),
     output_dir: Optional[Path] = typer.Option(None, "--output", "--output-dir", "-o", help="Output directory to save the spaCy datasets."),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
     # fmt: on
 ):
     """Download the WikiANN dataset from Huggingface and save it in spaCy format"""
@@ -34,15 +35,15 @@ def download_wikiann(
                 ents=[WIKIANN_IOB[tag] for tag in ner_tags],
             )
             docs.append(doc)
-        msg.text(f"Split `{split}` contains {len(docs)} documents.")
+        msg.text(f"Split {split} has {len(docs)} documents", show=verbose)
         wikiann_spacy[split] = DocBin(docs=docs, attrs=["ENT_IOB", "ENT_TYPE"])
 
     if output_dir:
         for split, doc_bin in wikiann_spacy.items():
             output_path = output_dir / f"{filename}-{split}.spacy"
-            output_path.mkdir(parents=True, exist_ok=True)
+            output_dir.mkdir(parents=True, exist_ok=True)
             doc_bin.to_disk(output_path)
-            msg.good(f"Saved to {output_path}")
+            msg.good(f"Saved to {output_path} ({len(doc_bin)} documents)")
 
 
 if __name__ == "__main__":
