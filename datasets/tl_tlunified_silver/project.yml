@@ -44,12 +44,11 @@ workflows:
 
 commands:
   - name: "download"
-    help: "Download the WikiANN and tlunified-TL-39 datasets from Huggingface"
+    help: "Download the WikiANN and TLUnified datasets and save to spaCy format"
     script:
       - >-
-        python -m scripts.download_datasets
-        --tlunified ${vars.tlunified_silver}
-        --wikiann ${vars.wikiann_silver}
+        python -m scripts.download_wikiann
+        --filename ${vars.wikiann_silver}
         --output corpus/raw/
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
