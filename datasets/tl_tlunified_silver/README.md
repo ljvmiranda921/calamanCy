@@ -1,13 +1,12 @@
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->
 
-# 🪐 spaCy Project: Creating a silver-annotated dataset from TLUnified corpus
+# 🪐 spaCy Project: Creating a silver-standard dataset from the TLUnified Tagalog corpus
 
-This project creates a silver-annotated dataset for named-entity recognition
+This project creates a silver-standard dataset for named-entity recognition
 (NER). It uses another silver-annotated
 [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
-train an initial NER model, and then bootstrapped the annotations of a
-larger [TLUnified](https://arxiv.org/abs/2111.06053) corpus
-(`tlunified`).
+train an initial NER model, and then bootstrapped the annotations of a larger
+[TLUnified](https://arxiv.org/abs/2111.06053) corpus (`tlunified`).
 
 For evaluation, I trained two NER models, one from the original WikiANN corpus
 (`tl_wikiann_silver`) and another from the TLUnified corpus
