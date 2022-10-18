@@ -22,6 +22,7 @@ vars:
   tlunified_gold: "tlunified_gold"
 
 directories:
+  - "assets"
   - "configs"
   - "corpus/raw"
   - "corpus/silver"
@@ -42,6 +43,11 @@ workflows:
     - "evaluate-gold"
     - "package"
 
+assets:
+  - dest: "assets/tlunified.zip"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+    description: "TLUnified dataset"
+
 commands:
   - name: "download"
     help: "Download the WikiANN and TLUnified datasets and save to spaCy format"
@@ -49,6 +55,10 @@ commands:
       - >-
         python -m scripts.download_wikiann
         --filename ${vars.wikiann_silver}
+        --output corpus/raw/
+      - >-
+        python -m scripts.process_tlunified
+        --filename ${vars.tlunified_silver}
         --output corpus/raw/
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
