@@ -28,13 +28,16 @@ Commands are only re-run if their inputs have changed.
 
 | Command | Description |
 | --- | --- |
-| `download` | Download the WikiANN and TLUnified datasets and save to spaCy format |
+| `download-wikiann` | Download the WikiANN dataset from HuggingFace and save to spaCy format |
+| `process-tlunified` | Convert the TLUnified dataset to the spaCy format |
 | `train-wikiann` | Train a Tagalog NER model from the WikiANN dataset |
 | `annotate-silver` | Annotate a larger TLUnified dataset using the trained model from WikiANN |
 | `train-tlunified` | Train a Tagalog NER model from the tlunified dataset |
-| `evaluate-wikiann` | Evaluate the trained models to the silver-annotated WikiANN test set |
-| `evaluate-tlunified` | Evaluate the trained models to the silver-annotated tlunified test set |
-| `evaluate-gold` | Evaluate the trained models on an annotated subset of tlunified |
+| `evaluate-wikiann` | Evaluate WikiANN to its test set |
+| `evaluate-tlunified` | Evaluate TLUnified to its test set |
+| `cross-evaluate-wikiann` | Evaluate the trained models to the silver-annotated WikiANN test set |
+| `cross-evaluate-tlunified` | Evaluate the trained models to the silver-annotated tlunified test set |
+| `cross-evaluate-gold` | Evaluate the trained models on an annotated subset of tlunified |
 | `package` | Package the trained models from the silver-annotated datasets |
 
 ### ⏭ Workflows
@@ -46,7 +49,8 @@ inputs have changed.
 
 | Workflow | Steps |
 | --- | --- |
-| `all` | `download` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-tlunified` &rarr; `evaluate-wikiann` &rarr; `evaluate-tlunified` &rarr; `evaluate-gold` &rarr; `package` |
+| `all` | `download-wikiann` &rarr; `process-tlunified` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-tlunified` &rarr; `cross-evaluate-wikiann` &rarr; `cross-evaluate-tlunified` &rarr; `cross-evaluate-gold` &rarr; `package` |
+| `wikiann` | `download-wikiann` &rarr; `train-wikiann` &rarr; `evaluate-wikiann` |
 
 ### 🗂 Assets
 

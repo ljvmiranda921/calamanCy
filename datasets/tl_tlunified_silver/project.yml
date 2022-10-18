@@ -33,14 +33,19 @@ directories:
 
 workflows:
   all:
-    - "download"
+    - "download-wikiann"
+    - "process-tlunified"
     - "train-wikiann"
     - "annotate-silver"
     - "train-tlunified"
-    - "evaluate-wikiann"
-    - "evaluate-tlunified"
-    - "evaluate-gold"
+    - "cross-evaluate-wikiann"
+    - "cross-evaluate-tlunified"
+    - "cross-evaluate-gold"
     - "package"
+  wikiann:
+    - "download-wikiann"
+    - "train-wikiann"
+    - "evaluate-wikiann"
 
 assets:
   - dest: "assets/tlunified.zip"
@@ -48,14 +53,23 @@ assets:
     description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)"
 
 commands:
-  - name: "download"
-    help: "Download the WikiANN and TLUnified datasets and save to spaCy format"
+  - name: "download-wikiann"
+    help: "Download the WikiANN dataset from HuggingFace and save to spaCy format"
     script:
       - >-
         python -m scripts.download_wikiann
         --filename ${vars.wikiann_silver}
-        --output-dir corpus/raw/
+        --output-dir corpus/silver/
         --verbose
+    outputs:
+      - "corpus/raw/${vars.wikiann_silver}-train.spacy"
+      - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
+      - "corpus/raw/${vars.wikiann_silver}-test.spacy"
+
+  - name: "process-tlunified"
+    help: "Convert the TLUnified dataset to the spaCy format"
+    script:
+      - unzip assets/tlunified.zip -d assets/
       - >-
         python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}
@@ -63,10 +77,9 @@ commands:
         --segment
         --shuffle
         --verbose
+    deps:
+      - "assets/tlunified.zip"
     outputs:
-      - "corpus/raw/${vars.wikiann_silver}-train.spacy"
-      - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
-      - "corpus/raw/${vars.wikiann_silver}-test.spacy"
       - "corpus/raw/${vars.tlunified_silver}-train.spacy"
       - "corpus/raw/${vars.tlunified_silver}-validation.spacy"
       - "corpus/raw/${vars.tlunified_silver}-test.spacy"
@@ -125,6 +138,34 @@ commands:
       - training/${vars.lang}_${vars.tlunified_silver}/
 
   - name: "evaluate-wikiann"
+    help: "Evaluate WikiANN to its test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/${vars.lang}_${vars.wikiann_silver}
+        corpus/silver/${vars.wikiann_silver}-test.spacy
+        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+    deps:
+      - training/${vars.lang}_${vars.wikiann_silver}
+      - corpus/silver/${vars.wikiann_silver}-test.spacy
+    outputs:
+      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+
+  - name: "evaluate-tlunified"
+    help: "Evaluate TLUnified to its test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/${vars.lang}_${vars.tlunified_silver} 
+        corpus/silver/${vars.tlunified_silver}-test.spacy
+        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+    deps:
+      - training/${vars.lang}_${vars.tlunified_silver}
+      - corpus/silver/${vars.tlunified_silver}-test.spacy
+    outputs:
+      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
+
+  - name: "cross-evaluate-wikiann"
     help: "Evaluate the trained models to the silver-annotated WikiANN test set"
     script:
       - >-
@@ -145,7 +186,7 @@ commands:
       - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
       - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}.json
 
-  - name: "evaluate-tlunified"
+  - name: "cross-evaluate-tlunified"
     help: "Evaluate the trained models to the silver-annotated tlunified test set"
     script:
       - >-
@@ -166,7 +207,7 @@ commands:
       - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
       - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
 
-  - name: "evaluate-gold"
+  - name: "cross-evaluate-gold"
     help: "Evaluate the trained models on an annotated subset of tlunified"
     script:
       - >-
