@@ -1,16 +1,16 @@
-title: "Creating a silver-annotated dataset from WikiText-TL-39"
+title: "Creating a silver-annotated dataset from TLUnified corpus"
 description: |
   This project creates a silver-annotated dataset for named-entity recognition
   (NER). It uses another silver-annotated
   [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
   train an initial NER model, and then bootstrapped the annotations of a
-  larger [WikiText-TL-39](https://huggingface.co/datasets/wikitext_tl39) corpus
-  (`wikitext`).
+  larger [TLUnified](https://arxiv.org/abs/2111.06053) corpus
+  (`tlunified`).
 
   For evaluation, I trained two NER models, one from the original WikiANN corpus
-  (`tl_wikiann_silver`) and another from the WikiText-TL-39 corpus
-  (`tl_wikitext_silver`). I then tested them against a small sample of
-  WikiText's data annotated by me, a native speaker.
+  (`tl_wikiann_silver`) and another from the TLUnified corpus
+  (`tl_tlunified_silver`). I then tested them against a small sample of
+  tlunified's data annotated by me, a native speaker.
 
 vars:
   version: 0.0.0
@@ -18,8 +18,8 @@ vars:
   gpu_id: 0
   lang: "tl"
   wikiann_silver: "wikiann_silver"
-  wikitext_silver: "wikitext_silver"
-  wikitext_gold: "wikitext_gold"
+  tlunified_silver: "tlunified_silver"
+  tlunified_gold: "tlunified_gold"
 
 directories:
   - "configs"
@@ -36,28 +36,28 @@ workflows:
     - "download"
     - "train-wikiann"
     - "annotate-silver"
-    - "train-wikitext"
+    - "train-tlunified"
     - "evaluate-wikiann"
-    - "evaluate-wikitext"
+    - "evaluate-tlunified"
     - "evaluate-gold"
     - "package"
 
 commands:
   - name: "download"
-    help: "Download the WikiANN and WikiText-TL-39 datasets from Huggingface"
+    help: "Download the WikiANN and tlunified-TL-39 datasets from Huggingface"
     script:
       - >-
         python -m scripts.download_datasets
-        --wikitext ${vars.wikitext_silver}
+        --tlunified ${vars.tlunified_silver}
         --wikiann ${vars.wikiann_silver}
         --output corpus/raw/
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
       - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
       - "corpus/raw/${vars.wikiann_silver}-test.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-train.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-validation.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-test.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-train.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-validation.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-test.spacy"
 
   - name: "train-wikiann"
     help: "Train a Tagalog NER model from the WikiANN dataset"
@@ -77,40 +77,40 @@ commands:
       - training/${vars.lang}_${vars.wikiann_silver}/
 
   - name: "annotate-silver"
-    help: "Annotate a larger WikiText-TL-39 dataset using the trained model from WikiANN"
+    help: "Annotate a larger tlunified-TL-39 dataset using the trained model from WikiANN"
     script:
       - >-
         python -m scripts.annotate_silver 
-        corpus/raw/${vars.wikitext_silver}-train.spacy
-        corpus/raw/${vars.wikitext_silver}-validation.spacy
-        corpus/raw/${vars.wikitext_silver}-test.spacy
+        corpus/raw/${vars.tlunified_silver}-train.spacy
+        corpus/raw/${vars.tlunified_silver}-validation.spacy
+        corpus/raw/${vars.tlunified_silver}-test.spacy
         --model training/${vars.lang}_${vars.wikiann_silver}/
         --output corpus/silver/
     deps:
-      - "corpus/raw/${vars.wikitext_silver}-train.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-validation.spacy"
-      - "corpus/raw/${vars.wikitext_silver}-test.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-train.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-validation.spacy"
+      - "corpus/raw/${vars.tlunified_silver}-test.spacy"
     outputs:
-      - "corpus/silver/${vars.wikitext_silver}-train.spacy"
-      - "corpus/silver/${vars.wikitext_silver}-validation.spacy"
-      - "corpus/silver/${vars.wikitext_silver}-test.spacy"
+      - "corpus/silver/${vars.tlunified_silver}-train.spacy"
+      - "corpus/silver/${vars.tlunified_silver}-validation.spacy"
+      - "corpus/silver/${vars.tlunified_silver}-test.spacy"
 
-  - name: "train-wikitext"
-    help: "Train a Tagalog NER model from the WikiText dataset"
+  - name: "train-tlunified"
+    help: "Train a Tagalog NER model from the tlunified dataset"
     script:
       - >-
         python -m spacy train
         configs/${vars.config}.cfg
         --nlp.lang ${vars.lang}
-        --output training/${vars.lang}_${vars.wikitext_silver}/
-        --paths.train corpus/silver/${vars.wikitext_silver}-train.spacy
-        --paths.dev corpus/silver/${vars.wikitext_silver}-validation.spacy
+        --output training/${vars.lang}_${vars.tlunified_silver}/
+        --paths.train corpus/silver/${vars.tlunified_silver}-train.spacy
+        --paths.dev corpus/silver/${vars.tlunified_silver}-validation.spacy
         --gpu-id ${vars.gpu_id}
     deps:
-      - corpus/silver/${vars.wikitext_silver}-train.spacy
-      - corpus/silver/${vars.wikitext_silver}-validation.spacy
+      - corpus/silver/${vars.tlunified_silver}-train.spacy
+      - corpus/silver/${vars.tlunified_silver}-validation.spacy
     outputs:
-      - training/${vars.lang}_${vars.wikitext_silver}/
+      - training/${vars.lang}_${vars.tlunified_silver}/
 
   - name: "evaluate-wikiann"
     help: "Evaluate the trained models to the silver-annotated WikiANN test set"
@@ -122,58 +122,58 @@ commands:
         --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikitext_silver} 
+        training/${vars.lang}_${vars.tlunified_silver} 
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
-      - training/${vars.lang}_${vars.wikitext_silver}
+      - training/${vars.lang}_${vars.tlunified_silver}
       - corpus/silver/${vars.wikiann_silver}-test.spacy
     outputs:
       - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
-      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikitext_silver}.json
+      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}.json
 
-  - name: "evaluate-wikitext"
-    help: "Evaluate the trained models to the silver-annotated WikiText test set"
+  - name: "evaluate-tlunified"
+    help: "Evaluate the trained models to the silver-annotated tlunified test set"
     script:
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}
-        corpus/silver/${vars.wikitext_silver}-test.spacy
-        --output metrics/${vars.wikitext_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        corpus/silver/${vars.tlunified_silver}-test.spacy
+        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikitext_silver} 
-        corpus/silver/${vars.wikitext_silver}-test.spacy
-        --output metrics/${vars.wikitext_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        training/${vars.lang}_${vars.tlunified_silver} 
+        corpus/silver/${vars.tlunified_silver}-test.spacy
+        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
-      - training/${vars.lang}_${vars.wikitext_silver}
-      - corpus/silver/${vars.wikitext_silver}-test.spacy
+      - training/${vars.lang}_${vars.tlunified_silver}
+      - corpus/silver/${vars.tlunified_silver}-test.spacy
     outputs:
-      - metrics/${vars.wikitext_silver}/${vars.lang}_${vars.wikiann_silver}.json
-      - metrics/${vars.wikitext_silver}/${vars.lang}_${vars.wikitext_silver}.json
+      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
 
   - name: "evaluate-gold"
-    help: "Evaluate the trained models on an annotated subset of WikiText"
+    help: "Evaluate the trained models on an annotated subset of tlunified"
     script:
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}
-        corpus/gold/${vars.wikitext_gold}-test.spacy
-        --output metrics/${vars.wikitext_gold}/${vars.lang}_${vars.wikiann_silver}.json
+        corpus/gold/${vars.tlunified_gold}-test.spacy
+        --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikitext_silver} 
-        corpus/gold/${vars.wikitext_gold}-test.spacy
-        --output metrics/${vars.wikitext_gold}/${vars.lang}_${vars.wikiann_silver}.json
+        training/${vars.lang}_${vars.tlunified_silver} 
+        corpus/gold/${vars.tlunified_gold}-test.spacy
+        --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
-      - training/${vars.lang}_${vars.wikitext_silver}
-      - corpus/gold/${vars.wikitext_gold}-test.spacy
+      - training/${vars.lang}_${vars.tlunified_silver}
+      - corpus/gold/${vars.tlunified_gold}-test.spacy
     outputs:
-      - metrics/${vars.wikitext_gold}/${vars.lang}_${vars.wikiann_silver}.json
-      - metrics/${vars.wikitext_gold}/${vars.lang}_${vars.wikitext_silver}.json
+      - metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
+      - metrics/${vars.tlunified_gold}/${vars.lang}_${vars.tlunified_silver}.json
 
   - name: "package"
     help: "Package the trained models from the silver-annotated datasets"
@@ -184,10 +184,10 @@ commands:
         --version ${vars.version}
         --force
       - >-
-        python -m spacy package training/${vars.lang}_${vars.wikitext_silver} packages/
-        --name ${vars.wikitext_silver}
+        python -m spacy package training/${vars.lang}_${vars.tlunified_silver} packages/
+        --name ${vars.tlunified_silver}
         --version ${vars.version}
         --force
     outputs_no_cache:
       - packages/${vars.lang}_${vars.wikiann_silver}-${vars.version}/dist/${vars.lang}_${vars.wikiann_silver}-${vars.version}.tar.gz
-      - packages/${vars.lang}_${vars.wikitext_silver}-${vars.version}/dist/${vars.lang}_${vars.wikitext_silver}-${vars.version}.tar.gz
+      - packages/${vars.lang}_${vars.tlunified_silver}-${vars.version}/dist/${vars.lang}_${vars.tlunified_silver}-${vars.version}.tar.gz
