@@ -13,7 +13,7 @@ description: |
 
 vars:
   version: 0.0.0
-  config: "default_config.cfg"
+  config: "default.cfg"
   gpu_id: 0
   lang: "tl"
   wikiann_silver: "wikiann_silver"
