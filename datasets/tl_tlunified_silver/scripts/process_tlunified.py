@@ -40,14 +40,12 @@ def process_tlunified(
         msg.info("Concatenating sentences (this might take long)")
         texts = _combine_texts(texts)
 
-    # Clean delimiters
-    texts = [
-        text.removeprefix(DELIMITER).removesuffix(DELIMITER)
-        for text in texts
-        if _is_title(text)
-    ]
+    # Clean titles and remove delimiters
+    texts = _clean_titles(texts)
+    msg.info(f"Corpus has {len(texts)} documents.")
 
-    breakpoint()
+    # Split the texts
+    
 
 
 def _is_title(s: str) -> bool:
@@ -56,6 +54,16 @@ def _is_title(s: str) -> bool:
         return True
     else:
         return False
+
+def _clean_titles(texts: List[str]) -> List[str]:
+    """Clean a list of texts by removing the delimiter in the title."""
+    cleaned_texts = []
+    for text in texts:
+        if _is_title(text):
+            cleaned_texts.append(text[1:-1].lstrip(" ").rstrip(" "))
+        else:
+            cleaned_texts.append(text)
+    return cleaned_texts
 
 
 def _combine_texts(lines: List[str], delimiter="=") -> List[str]:
