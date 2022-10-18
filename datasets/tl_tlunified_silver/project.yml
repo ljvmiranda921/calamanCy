@@ -142,9 +142,10 @@ commands:
     script:
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikiann_silver}
+        training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
       - corpus/silver/${vars.wikiann_silver}-test.spacy
@@ -156,9 +157,10 @@ commands:
     script:
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver} 
+        training/${vars.lang}_${vars.tlunified_silver}/model-best/ 
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.tlunified_silver}
       - corpus/silver/${vars.tlunified_silver}-test.spacy
@@ -170,14 +172,16 @@ commands:
     script:
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikiann_silver}
+        training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver} 
+        training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
       - training/${vars.lang}_${vars.tlunified_silver}
@@ -191,14 +195,16 @@ commands:
     script:
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikiann_silver}
+        training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver} 
+        training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
       - training/${vars.lang}_${vars.tlunified_silver}
@@ -212,14 +218,16 @@ commands:
     script:
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.wikiann_silver}
+        training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/gold/${vars.tlunified_gold}-test.spacy
         --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver} 
+        training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/gold/${vars.tlunified_gold}-test.spacy
         --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
       - training/${vars.lang}_${vars.tlunified_silver}
@@ -232,12 +240,12 @@ commands:
     help: "Package the trained models from the silver-annotated datasets"
     script:
       - >-
-        python -m spacy package training/${vars.lang}_${vars.wikiann_silver} packages/
+        python -m spacy package training/${vars.lang}_${vars.wikiann_silver}/model-best/ packages/
         --name ${vars.wikiann_silver}
         --version ${vars.version}
         --force
       - >-
-        python -m spacy package training/${vars.lang}_${vars.tlunified_silver} packages/
+        python -m spacy package training/${vars.lang}_${vars.tlunified_silver}/model-best/ packages/
         --name ${vars.tlunified_silver}
         --version ${vars.version}
         --force

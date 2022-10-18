@@ -13,3 +13,19 @@ download-wikiann:
       md5: 7f608de103a21525dd87c92bc79e0659
   spacy_version: 3.4.1
   spacy_git_version: Unknown
+train-wikiann:
+  cmd: python -m spacy run train-wikiann
+  script:
+    - python -m spacy train configs/default.cfg --nlp.lang tl --output training/tl_wikiann_silver/
+      --paths.train corpus/silver/wikiann_silver-train.spacy --paths.dev corpus/silver/wikiann_silver-validation.spacy
+      --gpu-id 0
+  deps:
+    - path: corpus/silver/wikiann_silver-train.spacy
+      md5: 3deda083a8e31abe28808e114eea4ea7
+    - path: corpus/silver/wikiann_silver-validation.spacy
+      md5: 4f786bbade0928d87c6b22b0d1df29ff
+  outs:
+    - path: training/tl_wikiann_silver/
+      md5: 7e185f71957229c8d9eac4a284a3f180
+  spacy_version: 3.4.1
+  spacy_git_version: Unknown
