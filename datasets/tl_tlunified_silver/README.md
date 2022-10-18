@@ -57,6 +57,6 @@ in the project directory.
 
 | File | Source | Description |
 | --- | --- | --- |
-| `assets/tlunified.zip` | URL | TLUnified dataset |
+| `assets/tlunified.zip` | URL | TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022) |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
