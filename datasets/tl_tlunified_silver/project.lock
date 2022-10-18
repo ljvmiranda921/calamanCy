@@ -29,3 +29,19 @@ train-wikiann:
       md5: 7e185f71957229c8d9eac4a284a3f180
   spacy_version: 3.4.1
   spacy_git_version: Unknown
+evaluate-wikiann:
+  cmd: python -m spacy run evaluate-wikiann
+  script:
+    - mkdir -p metrics/wikiann_silver/
+    - python -m spacy evaluate  training/tl_wikiann_silver/model-best/ corpus/silver/wikiann_silver-test.spacy
+      --output metrics/wikiann_silver/tl_wikiann_silver.json --gpu-id 0
+  deps:
+    - path: training/tl_wikiann_silver
+      md5: 7e185f71957229c8d9eac4a284a3f180
+    - path: corpus/silver/wikiann_silver-test.spacy
+      md5: 7f608de103a21525dd87c92bc79e0659
+  outs:
+    - path: metrics/wikiann_silver/tl_wikiann_silver.json
+      md5: 71a52e688deb4f1eed2dbf0881f9f751
+  spacy_version: 3.4.1
+  spacy_git_version: Unknown

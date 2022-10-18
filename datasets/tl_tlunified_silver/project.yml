@@ -140,6 +140,7 @@ commands:
   - name: "evaluate-wikiann"
     help: "Evaluate WikiANN to its test set"
     script:
+      - mkdir -p metrics/${vars.wikiann_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
@@ -155,6 +156,7 @@ commands:
   - name: "evaluate-tlunified"
     help: "Evaluate TLUnified to its test set"
     script:
+      - mkdir -p metrics/${vars.tlunified_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.tlunified_silver}/model-best/ 
@@ -170,6 +172,7 @@ commands:
   - name: "cross-evaluate-wikiann"
     help: "Evaluate the trained models to the silver-annotated WikiANN test set"
     script:
+      - mkdir -p metrics/${vars.wikiann_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
@@ -180,7 +183,7 @@ commands:
         python -m spacy evaluate 
         training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
-        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
@@ -193,6 +196,7 @@ commands:
   - name: "cross-evaluate-tlunified"
     help: "Evaluate the trained models to the silver-annotated tlunified test set"
     script:
+      - mkdir -p metrics/${vars.tlunified_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
@@ -203,7 +207,7 @@ commands:
         python -m spacy evaluate 
         training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
-        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
@@ -216,6 +220,7 @@ commands:
   - name: "cross-evaluate-gold"
     help: "Evaluate the trained models on an annotated subset of tlunified"
     script:
+      - mkdir -p metrics/${vars.tlunified_gold}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
@@ -226,7 +231,7 @@ commands:
         python -m spacy evaluate 
         training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/gold/${vars.tlunified_gold}-test.spacy
-        --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.tlunified_silver}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
