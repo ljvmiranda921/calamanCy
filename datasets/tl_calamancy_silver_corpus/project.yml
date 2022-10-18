@@ -1,9 +1,9 @@
 title: "Creating a silver-standard dataset from the TLUnified Tagalog corpus"
 description: |
-  This project creates a silver-standard dataset for named-entity recognition
-  (NER). It uses another silver-annotated
-  [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
-  train an initial NER model, and then bootstrapped the annotations of a larger
+  This project creates, `tl_calamancy_silver_corpus` a silver-standard dataset for
+  named-entity recognition (NER). It uses another silver-annotated
+  [WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to train an
+  initial NER model, and then bootstrapped the annotations of a larger
   [TLUnified](https://arxiv.org/abs/2111.06053) corpus (`tlunified`).
 
   For evaluation, I trained two NER models, one from the original WikiANN corpus
