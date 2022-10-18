@@ -46,7 +46,7 @@ workflows:
 assets:
   - dest: "assets/tlunified.zip"
     url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
-    description: "TLUnified dataset"
+    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)"
 
 commands:
   - name: "download"
@@ -55,11 +55,11 @@ commands:
       - >-
         python -m scripts.download_wikiann
         --filename ${vars.wikiann_silver}
-        --output corpus/raw/
+        --output-dir corpus/raw/
       - >-
-        python -m scripts.process_tlunified
+        python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}
-        --output corpus/raw/
+        --output-dir corpus/raw/
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
       - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
