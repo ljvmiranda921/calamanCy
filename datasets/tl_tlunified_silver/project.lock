@@ -1,0 +1,15 @@
+download-wikiann:
+  cmd: python -m spacy run download-wikiann
+  script:
+    - python -m scripts.download_wikiann --filename wikiann_silver --output-dir corpus/silver/
+      --verbose
+  deps: []
+  outs:
+    - path: corpus/silver/wikiann_silver-train.spacy
+      md5: 3deda083a8e31abe28808e114eea4ea7
+    - path: corpus/silver/wikiann_silver-validation.spacy
+      md5: 4f786bbade0928d87c6b22b0d1df29ff
+    - path: corpus/silver/wikiann_silver-test.spacy
+      md5: 7f608de103a21525dd87c92bc79e0659
+  spacy_version: 3.4.1
+  spacy_git_version: Unknown

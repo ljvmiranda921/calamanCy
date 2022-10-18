@@ -62,9 +62,9 @@ commands:
         --output-dir corpus/silver/
         --verbose
     outputs:
-      - "corpus/raw/${vars.wikiann_silver}-train.spacy"
-      - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
-      - "corpus/raw/${vars.wikiann_silver}-test.spacy"
+      - "corpus/silver/${vars.wikiann_silver}-train.spacy"
+      - "corpus/silver/${vars.wikiann_silver}-validation.spacy"
+      - "corpus/silver/${vars.wikiann_silver}-test.spacy"
 
   - name: "process-tlunified"
     help: "Convert the TLUnified dataset to the spaCy format"
@@ -92,12 +92,12 @@ commands:
         configs/${vars.config}
         --nlp.lang ${vars.lang}
         --output training/${vars.lang}_${vars.wikiann_silver}/
-        --paths.train corpus/raw/${vars.wikiann_silver}-train.spacy
-        --paths.dev corpus/raw/${vars.wikiann_silver}-validation.spacy
+        --paths.train corpus/silver/${vars.wikiann_silver}-train.spacy
+        --paths.dev corpus/silver/${vars.wikiann_silver}-validation.spacy
         --gpu-id ${vars.gpu_id}
     deps:
-      - corpus/raw/${vars.wikiann_silver}-train.spacy
-      - corpus/raw/${vars.wikiann_silver}-validation.spacy
+      - corpus/silver/${vars.wikiann_silver}-train.spacy
+      - corpus/silver/${vars.wikiann_silver}-validation.spacy
     outputs:
       - training/${vars.lang}_${vars.wikiann_silver}/
 
