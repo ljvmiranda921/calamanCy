@@ -60,6 +60,9 @@ commands:
         python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}
         --output-dir corpus/raw/
+        --segment
+        --shuffle
+        --verbose
     outputs:
       - "corpus/raw/${vars.wikiann_silver}-train.spacy"
       - "corpus/raw/${vars.wikiann_silver}-validation.spacy"
