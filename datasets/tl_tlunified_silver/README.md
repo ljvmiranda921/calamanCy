@@ -30,7 +30,7 @@ Commands are only re-run if their inputs have changed.
 | --- | --- |
 | `download` | Download the WikiANN and TLUnified datasets and save to spaCy format |
 | `train-wikiann` | Train a Tagalog NER model from the WikiANN dataset |
-| `annotate-silver` | Annotate a larger tlunified-TL-39 dataset using the trained model from WikiANN |
+| `annotate-silver` | Annotate a larger TLUnified dataset using the trained model from WikiANN |
 | `train-tlunified` | Train a Tagalog NER model from the tlunified dataset |
 | `evaluate-wikiann` | Evaluate the trained models to the silver-annotated WikiANN test set |
 | `evaluate-tlunified` | Evaluate the trained models to the silver-annotated tlunified test set |

@@ -89,7 +89,7 @@ commands:
       - training/${vars.lang}_${vars.wikiann_silver}/
 
   - name: "annotate-silver"
-    help: "Annotate a larger tlunified-TL-39 dataset using the trained model from WikiANN"
+    help: "Annotate a larger TLUnified dataset using the trained model from WikiANN"
     script:
       - >-
         python -m scripts.annotate_silver 
