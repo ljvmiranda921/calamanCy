@@ -76,7 +76,7 @@ commands:
     script:
       - >-
         python -m spacy train
-        configs/${vars.config}.cfg
+        configs/${vars.config}
         --nlp.lang ${vars.lang}
         --output training/${vars.lang}_${vars.wikiann_silver}/
         --paths.train corpus/raw/${vars.wikiann_silver}-train.spacy
@@ -112,7 +112,7 @@ commands:
     script:
       - >-
         python -m spacy train
-        configs/${vars.config}.cfg
+        configs/${vars.config}
         --nlp.lang ${vars.lang}
         --output training/${vars.lang}_${vars.tlunified_silver}/
         --paths.train corpus/silver/${vars.tlunified_silver}-train.spacy
