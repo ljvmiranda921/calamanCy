@@ -60,6 +60,7 @@ commands:
         python -m scripts.download_wikiann
         --filename ${vars.wikiann_silver}
         --output-dir corpus/silver/
+        --gpu-id ${vars.gpu_id}
         --verbose
     outputs:
       - "corpus/silver/${vars.wikiann_silver}-train.spacy"
@@ -74,6 +75,7 @@ commands:
         python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}
         --output-dir corpus/raw/
+        --gpu-id ${vars.gpu_id}
         --segment
         --shuffle
         --verbose
@@ -105,12 +107,14 @@ commands:
     help: "Annotate a larger TLUnified dataset using the trained model from WikiANN"
     script:
       - >-
-        python -m scripts.annotate_silver 
+        python -m scripts.annotate 
         corpus/raw/${vars.tlunified_silver}-train.spacy
         corpus/raw/${vars.tlunified_silver}-validation.spacy
         corpus/raw/${vars.tlunified_silver}-test.spacy
-        --model training/${vars.lang}_${vars.wikiann_silver}/
-        --output corpus/silver/
+        --model-path training/${vars.lang}_${vars.wikiann_silver}/
+        --output-dir corpus/silver/
+        --gpu-id ${vars.gpu_id}
+        --verbose
     deps:
       - "corpus/raw/${vars.tlunified_silver}-train.spacy"
       - "corpus/raw/${vars.tlunified_silver}-validation.spacy"
