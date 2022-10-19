@@ -7,6 +7,8 @@ from wasabi import msg
 from datasets import load_dataset
 from spacy.tokens import Doc, DocBin
 
+from .utils import setup_gpu
+
 # Reference: https://huggingface.co/datasets/wikiann#data-fields
 WIKIANN_IOB = ["O", "B-PER", "I-PER", "B-ORG", "I-LOC", "B-LOC", "I-LOC"]
 
@@ -16,12 +18,13 @@ def download_wikiann(
     filename: str = typer.Option("wikiann", "--filename", "-f", help="Filename to save WikiANN data.", show_default=True),
     output_dir: Optional[Path] = typer.Option(None, "--output", "--output-dir", "-o", help="Output directory to save the spaCy datasets."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
+    gpu_id: int = typer.Option(-1, "--gpu", "-g", help="Set the GPU ID.", show_default=True)
     # fmt: on
 ):
     """Download the WikiANN dataset from Huggingface and save it in spaCy format"""
-    nlp = spacy.blank("tl")
-
     msg.info("Downloading and processing WikiANN (tl) dataset")
+    setup_gpu(gpu_id, silent=verbose)
+    nlp = spacy.blank("tl")
     wikiann = load_dataset("wikiann", "tl")
     wikiann_spacy: Dict[str, DocBin] = {}
     for split in wikiann.keys():

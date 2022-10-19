@@ -11,6 +11,8 @@ from spacy.tokens import Doc, DocBin
 from tqdm import tqdm
 from wasabi import msg
 
+from .utils import setup_gpu
+
 DELIMITER = "="
 
 
@@ -24,6 +26,7 @@ def process_tlunified(
     splits: Tuple[float, float, float] = typer.Option((0.8, 0.1, 0.1), "--splits", help="Split ratio for train/validation/test partitions.", show_default=True),
     shuffle: bool = typer.Option(False, "--shuffle", help="Shuffle the texts before splitting."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
+    gpu_id: int = typer.Option(-1, "--gpu", "-g", help="Set the GPU ID.", show_default=True)
     # fmt: on
 ):
     """Split the TLUnified dataset and save it into the spaCy format
@@ -34,6 +37,7 @@ def process_tlunified(
     by the `=` symbol.
     """
     msg.info("Processing the TLUnified dataset")
+    setup_gpu(gpu_id, silent=verbose)
     texts = read_dataset(input_file)
     texts = clean_corpus(texts, segment=segment, verbose=verbose)
     text_splits = split_dataset(
