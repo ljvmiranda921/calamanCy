@@ -19,6 +19,39 @@ following line in your terminal:
 pip install calamancy
 ``` 
 
+## 👩‍💻 Usage
+
+To use the models you first have to download either the small, medium, or large model. To see a list 
+of all available models, run:
+
+```python
+import calamancy
+from model in calamancy.models():
+    print(model)
+
+# ..
+# tl_calamancy_sm-0.1.0
+# tl_calamancy_md-0.1.0
+# tl_calamancy_lg-0.1.0
+```
+
+To download and load a model, run:
+
+```python
+nlp = calamancy.load("tl_calamancy_sm-0.1.0")
+```
+
+This will download the model to the `.calamancy` directory of your home
+directory. You can also download a model to a specific directory:
+
+```python
+calamancy.download_model("tl_calamancy_sm-0.1.0", save_directory)
+nlp = calamancy.load_model("tl_calamancy_sm-0.1.0", save_directory)
+```
+
+The `nlp` object is an instance of spaCy's [`Language`
+class](https://spacy.io/api/language), and you can use it as any other spaCy
+pipeline. Head over to the [documentation]() for more tutorials.
 
 ## 📦 Models and Datasets
 
