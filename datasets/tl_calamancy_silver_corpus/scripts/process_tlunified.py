@@ -25,7 +25,7 @@ def process_tlunified(
     seed: int = typer.Option(42, "--seed", help="Set the random seed for splitting.", show_default=True),
     splits: Tuple[float, float, float] = typer.Option((0.8, 0.1, 0.1), "--splits", help="Split ratio for train/validation/test partitions.", show_default=True),
     limit: int = typer.Option(-1, "--limit", "-l", help="Limit the dataset on a given number of samples. Use -1 for the whole corpora.", show_default=True),
-    shuffle: bool = typer.Option(False, "--shuffle", help="Shuffle the texts before splitting."),
+    shuffle: bool = typer.Option(False, "--shuffle", help="Shuffle the texts before limiting and splitting."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
     gpu_id: int = typer.Option(-1, "--gpu", "--gpu-id", "-g", help="Set the GPU ID.", show_default=True)
     # fmt: on
@@ -39,11 +39,13 @@ def process_tlunified(
     """
     msg.info("Processing the TLUnified dataset")
     setup_gpu(gpu_id, silent=verbose)
+
+    # Preprocessing step
     texts = read_dataset(input_file)
-    if limit > 0:
-        msg.info(f"Limiting to {limit} examples")
-        texts = texts[:limit]
+    texts = limit_dataset(texts, limit=limit, shuffle=shuffle, seed=seed)
     texts = clean_corpus(texts, segment=segment, verbose=verbose)
+
+    # Split the dataset
     text_splits = split_dataset(
         texts, splits=splits, seed=seed, shuffle=shuffle, show=verbose
     )
@@ -84,6 +86,21 @@ def read_dataset(filepath: Path) -> List[str]:
     with filepath.open("r") as f:
         for text in tqdm(f, total=_get_num_lines(filepath)):
             texts.append(text.rstrip())
+    return texts
+
+
+def limit_dataset(texts: List[str], limit: int, shuffle: bool, seed: int) -> List[str]:
+    """Limit the dataset"""
+    if limit > 0:
+        if shuffle:
+            if not seed:
+                msg.fail("Must provide seed when shuffle is True", exits=1)
+
+            rng = random.Random(seed)
+            rng.shuffle(texts)
+
+        texts = texts[:limit]
+        msg.info(f"Limited to {len(texts)} examples")
     return texts
 
 
