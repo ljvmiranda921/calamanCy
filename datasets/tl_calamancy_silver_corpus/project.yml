@@ -12,6 +12,7 @@ description: |
   tlunified's data annotated by me, a native speaker.
 
 vars:
+  seed: 42
   version: 0.0.0
   config: "default.cfg"
   gpu_id: 0
@@ -80,6 +81,7 @@ commands:
         --limit ${vars.tlunified_limit}
         --segment
         --shuffle
+        --seed ${vars.seed}
         --verbose
     deps:
       - "assets/tlunified.zip"
@@ -98,6 +100,7 @@ commands:
         --output training/${vars.lang}_${vars.wikiann_silver}/
         --paths.train corpus/silver/${vars.wikiann_silver}-train.spacy
         --paths.dev corpus/silver/${vars.wikiann_silver}-validation.spacy
+        --system.seed ${vars.seed}
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/silver/${vars.wikiann_silver}-train.spacy
@@ -136,6 +139,7 @@ commands:
         --output training/${vars.lang}_${vars.tlunified_silver}/
         --paths.train corpus/silver/${vars.tlunified_silver}-train.spacy
         --paths.dev corpus/silver/${vars.tlunified_silver}-validation.spacy
+        --system.seed ${vars.seed}
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/silver/${vars.tlunified_silver}-train.spacy
