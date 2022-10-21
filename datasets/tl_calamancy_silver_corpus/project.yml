@@ -72,7 +72,7 @@ commands:
   - name: "process-tlunified"
     help: "Convert the TLUnified dataset to the spaCy format"
     script:
-      - unzip assets/tlunified.zip -d assets/
+      - unzip -o assets/tlunified.zip -d assets/
       - >-
         python -m scripts.process_tlunified assets/tlunified/train.txt
         --filename ${vars.tlunified_silver}
