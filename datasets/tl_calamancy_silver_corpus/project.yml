@@ -16,6 +16,7 @@ vars:
   config: "default.cfg"
   gpu_id: 0
   lang: "tl"
+  tlunified_limit: -1
   wikiann_silver: "wikiann_silver"
   tlunified_silver: "tlunified_silver"
   tlunified_gold: "tlunified_gold"
@@ -76,6 +77,7 @@ commands:
         --filename ${vars.tlunified_silver}
         --output-dir corpus/raw/
         --gpu-id ${vars.gpu_id}
+        --limit ${vars.tlunified_limit}
         --segment
         --shuffle
         --verbose

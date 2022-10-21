@@ -24,6 +24,7 @@ def process_tlunified(
     segment: bool = typer.Option(False, "--segment", help="Segment documents into individual sentences."),
     seed: int = typer.Option(42, "--seed", help="Set the random seed for splitting.", show_default=True),
     splits: Tuple[float, float, float] = typer.Option((0.8, 0.1, 0.1), "--splits", help="Split ratio for train/validation/test partitions.", show_default=True),
+    limit: int = typer.Option(-1, "--limit", "-l", help="Limit the dataset on a given number of samples. Use -1 for the whole corpora.", show_default=True),
     shuffle: bool = typer.Option(False, "--shuffle", help="Shuffle the texts before splitting."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
     gpu_id: int = typer.Option(-1, "--gpu", "--gpu-id", "-g", help="Set the GPU ID.", show_default=True)
@@ -39,6 +40,9 @@ def process_tlunified(
     msg.info("Processing the TLUnified dataset")
     setup_gpu(gpu_id, silent=verbose)
     texts = read_dataset(input_file)
+    if limit > 0:
+        msg.info(f"Limiting to {limit} examples")
+        texts = texts[:limit]
     texts = clean_corpus(texts, segment=segment, verbose=verbose)
     text_splits = split_dataset(
         texts, splits=splits, seed=seed, shuffle=shuffle, show=verbose
