@@ -18,7 +18,7 @@ def download_wikiann(
     filename: str = typer.Option("wikiann", "--filename", "-f", help="Filename to save WikiANN data.", show_default=True),
     output_dir: Optional[Path] = typer.Option(None, "--output", "--output-dir", "-o", help="Output directory to save the spaCy datasets."),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
-    gpu_id: int = typer.Option(-1, "--gpu", "-g", help="Set the GPU ID.", show_default=True)
+    gpu_id: int = typer.Option(-1, "--gpu", "--gpu-id", "-g", help="Set the GPU ID.", show_default=True)
     # fmt: on
 ):
     """Download the WikiANN dataset from Huggingface and save it in spaCy format"""
