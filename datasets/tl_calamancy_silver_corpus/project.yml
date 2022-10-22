@@ -42,7 +42,7 @@ workflows:
     - "train-tlunified"
     - "cross-evaluate-wikiann"
     - "cross-evaluate-tlunified"
-    - "cross-evaluate-gold"
+    # - "cross-evaluate-gold"
     - "package"
   wikiann:
     - "download-wikiann"
