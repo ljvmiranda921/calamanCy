@@ -29,11 +29,11 @@ def annotate(
         annotated_docbin = DocBin()
         for doc in nlp.pipe(docs):
             annotated_docbin.add(doc)
-            if output_dir:
-                output_dir.mkdir(parents=True, exist_ok=True)
-                output_path = output_dir / file.name
-                annotated_docbin.to_disk(output_path)
-                msg.good(f"Saved annotated documents to {output_path}")
+        if output_dir:
+            output_dir.mkdir(parents=True, exist_ok=True)
+            output_path = output_dir / file.name
+            annotated_docbin.to_disk(output_path)
+            msg.good(f"Saved annotated documents to {output_path}")
 
 
 if __name__ == "__main__":
