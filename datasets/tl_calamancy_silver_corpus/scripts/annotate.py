@@ -14,7 +14,7 @@ def annotate(
     files: List[Path] = typer.Argument(..., help="Files (in spaCy format) to annotate."),
     model_path: Path = typer.Option(..., "--model", "--model-path", "-m", help="Model path to apply to the dataset."),
     output_dir: Optional[Path] = typer.Option(None, "--output", "--output-dir", "-o", help="Directory to save the annotated output in spaCy format."),
-    gpu_id: int = typer.Option(-1, "--gpu", "-g", help="Set the GPU ID.", show_default=True),
+    gpu_id: int = typer.Option(-1, "--gpu", "--gpu-id", "-g", help="Set the GPU ID.", show_default=True),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Print extra output to console."),
     # fmt: on
 ):
