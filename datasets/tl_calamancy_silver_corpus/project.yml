@@ -116,7 +116,7 @@ commands:
         corpus/raw/${vars.tlunified_silver}-train.spacy
         corpus/raw/${vars.tlunified_silver}-validation.spacy
         corpus/raw/${vars.tlunified_silver}-test.spacy
-        --model-path training/${vars.lang}_${vars.wikiann_silver}/
+        --model-path training/${vars.lang}_${vars.wikiann_silver}/model-best/
         --output-dir corpus/silver/
         --gpu-id ${vars.gpu_id}
         --verbose
