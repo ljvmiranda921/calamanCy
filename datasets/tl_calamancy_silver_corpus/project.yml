@@ -154,7 +154,7 @@ commands:
         python -m spacy train
         configs/${vars.config}
         --nlp.lang ${vars.lang}
-        --output training/${vars.lang}_${vars.tlunified_silver}/
+        --output training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/
         --paths.train corpus/silver/${vars.tlunified_silver}-train.spacy
         --paths.dev corpus/silver/${vars.tlunified_silver}-validation.spacy
         --system.seed ${vars.seed}
@@ -163,87 +163,87 @@ commands:
       - corpus/silver/${vars.tlunified_silver}-train.spacy
       - corpus/silver/${vars.tlunified_silver}-validation.spacy
     outputs:
-      - training/${vars.lang}_${vars.tlunified_silver}/
+      - training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/
 
   - name: "evaluate-wikiann"
     help: "Evaluate WikiANN to its test set"
     script:
-      - mkdir -p metrics/${vars.wikiann_silver}/
+      - mkdir -p metrics/mono/${vars.wikiann_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
-        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/mono/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
       - corpus/silver/${vars.wikiann_silver}-test.spacy
     outputs:
-      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+      - metrics/mono/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
 
   - name: "evaluate-tlunified"
     help: "Evaluate TLUnified to its test set"
     script:
-      - mkdir -p metrics/${vars.tlunified_silver}/
+      - mkdir -p metrics/mono/${vars.tlunified_silver}/
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver}/model-best/ 
+        training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/ 
         corpus/silver/${vars.tlunified_silver}-test.spacy
-        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/mono/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}-${vars.tlunified_limit}-${vars.seed}.json
         --gpu-id ${vars.gpu_id}
     deps:
-      - training/${vars.lang}_${vars.tlunified_silver}
+      - training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/
       - corpus/silver/${vars.tlunified_silver}-test.spacy
     outputs:
-      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
+      - metrics/mono/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
 
   - name: "cross-evaluate-wikiann"
     help: "Evaluate the trained models to the silver-annotated WikiANN test set"
     script:
-      - mkdir -p metrics/${vars.wikiann_silver}/
+      - mkdir -p metrics/cross/${vars.wikiann_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
-        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver}/model-best/
+        training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
-        --output metrics/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}.json
+        --output metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
-      - training/${vars.lang}_${vars.tlunified_silver}
+      - training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/
       - corpus/silver/${vars.wikiann_silver}-test.spacy
     outputs:
-      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
-      - metrics/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}.json
+      - metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
+      - metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
 
   - name: "cross-evaluate-tlunified"
     help: "Evaluate the trained models to the silver-annotated tlunified test set"
     script:
-      - mkdir -p metrics/${vars.tlunified_silver}/
+      - mkdir -p metrics/cross/${vars.tlunified_silver}/
       - >-
         python -m spacy evaluate 
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
-        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+        --output metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver}/model-best/
+        training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
-        --output metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
+        --output metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.lang}_${vars.wikiann_silver}
-      - training/${vars.lang}_${vars.tlunified_silver}
+      - training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/
       - corpus/silver/${vars.tlunified_silver}-test.spacy
     outputs:
-      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
-      - metrics/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}.json
+      - metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
+      - metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
 
   - name: "cross-evaluate-gold"
     help: "Evaluate the trained models on an annotated subset of tlunified"
