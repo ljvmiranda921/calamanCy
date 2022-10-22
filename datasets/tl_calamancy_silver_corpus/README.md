@@ -18,6 +18,19 @@ The eventual goal of this project is to produce a gold-standard NER dataset
 from TLUnified. This should help train more robust and performance Tagalog models
 for structured prediction.
 
+**How can you help** If you are a native speaker of Tagalog, or a
+computational linguist interested in the language, it would be grand if you
+can help annotate the TLUnified dataset.  First, you need to download the
+unannotated dataset [from this link](), and the silver-standard model [from
+here](). Then, if you have access to [Prodigy](https://prodi.gy), run the
+following command:
+
+```
+prodigy ner.corrrect tl_tlunified_gold  \
+  path/to/silver-standard/model path/to/tlunified.jsonl
+  --label PERSON,ORG,MISC
+```
+
 
 ## 📋 project.yml
 
