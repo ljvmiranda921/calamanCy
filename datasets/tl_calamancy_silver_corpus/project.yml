@@ -9,7 +9,12 @@ description: |
   For evaluation, I trained two NER models, one from the original WikiANN corpus
   (`tl_wikiann_silver`) and another from the TLUnified corpus
   (`tl_tlunified_silver`). I then tested them against a small sample of
-  tlunified's data annotated by me, a native speaker.
+  tlunified's data annotated by me, a native speaker, using
+  [Prodigy](https://prodi.gy).
+
+  The eventual goal of this project is to produce a gold-standard NER dataset
+  from TLUnified. This should help train more robust and performance Tagalog models
+  for structured prediction.
 
 vars:
   seed: 42

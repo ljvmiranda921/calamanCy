@@ -2,16 +2,21 @@
 
 # 🪐 spaCy Project: Creating a silver-standard dataset from the TLUnified Tagalog corpus
 
-This project creates a silver-standard dataset for named-entity recognition
-(NER). It uses another silver-annotated
-[WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to
-train an initial NER model, and then bootstrapped the annotations of a larger
+This project creates, `tl_calamancy_silver_corpus` a silver-standard dataset for
+named-entity recognition (NER). It uses another silver-annotated
+[WikiANN](https://huggingface.co/datasets/wikiann) (`wikiann`) dataset to train an
+initial NER model, and then bootstrapped the annotations of a larger
 [TLUnified](https://arxiv.org/abs/2111.06053) corpus (`tlunified`).
 
 For evaluation, I trained two NER models, one from the original WikiANN corpus
 (`tl_wikiann_silver`) and another from the TLUnified corpus
 (`tl_tlunified_silver`). I then tested them against a small sample of
-tlunified's data annotated by me, a native speaker.
+tlunified's data annotated by me, a native speaker, using
+[Prodigy](https://prodi.gy).
+
+The eventual goal of this project is to produce a gold-standard NER dataset
+from TLUnified. This should help train more robust and performance Tagalog models
+for structured prediction.
 
 
 ## 📋 project.yml
@@ -49,7 +54,7 @@ inputs have changed.
 
 | Workflow | Steps |
 | --- | --- |
-| `all` | `download-wikiann` &rarr; `process-tlunified` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-tlunified` &rarr; `cross-evaluate-wikiann` &rarr; `cross-evaluate-tlunified` &rarr; `cross-evaluate-gold` &rarr; `package` |
+| `all` | `download-wikiann` &rarr; `process-tlunified` &rarr; `train-wikiann` &rarr; `annotate-silver` &rarr; `train-tlunified` &rarr; `cross-evaluate-wikiann` &rarr; `cross-evaluate-tlunified` &rarr; `package` |
 | `wikiann` | `download-wikiann` &rarr; `train-wikiann` &rarr; `evaluate-wikiann` |
 
 ### 🗂 Assets
