@@ -6,28 +6,51 @@ description: |
   initial NER model, and then bootstrapped the annotations of a larger
   [TLUnified](https://arxiv.org/abs/2111.06053) corpus (`tlunified`).
 
-  For evaluation, I trained two NER models, one from the original WikiANN corpus
-  (`tl_wikiann_silver`) and another from the TLUnified corpus
-  (`tl_tlunified_silver`). I then tested them against a small sample of
-  tlunified's data annotated by me, a native speaker, using
-  [Prodigy](https://prodi.gy).
+  ### Evaluation
 
-  The eventual goal of this project is to produce a gold-standard NER dataset
+  After bootstrapping the annotations of TLUnified with a model trained from
+  WikiANN,I split the dataset into train, dev, and test for different sizes
+  (10k, 30k, 50k). I did it this way because unfortunately, the bulk of the
+  TLUnified dataset cannot fit my machine's memory constraints.
+
+  Lastly, I trained a TLUnified model from these silver-standard annotations and
+  evaluated it on its own test set. I did this for five trials, reporting the mean 
+  and standard deviation. You can see the results below:
+
+  | Dataset Size              | ENTS_P      | ENTS_R      | ENTS_F      | SPEED (WPS)       |
+  |---------------------------|-------------|-------------|-------------|-------------------|
+  | tl_tlunified_silver-10000 | 0.59 (0.03) | 0.55 (0.03) | 0.57 (0.03) | 33809.12 (397.81) |
+  | tl_tlunified_silver-30000 | 0.67 (0.02) | 0.66 (0.01) | 0.66 (0.02) | 50477.00 (724.74) |
+  | tl_tlunified_silver-50000 | 0.70 (0.01) | 0.69 (0.03) | 0.70 (0.02) | 56460.42 (590.85) |
+
+  And here are the per-entity results:
+
+  | Dataset Size              | Entity | Precision   | Recall      | F-score     |
+  |---------------------------|--------|-------------|-------------|-------------|
+  | tl_tlunified_silver-10000 | LOC    | 0.57 (0.03) | 0.51 (0.04) | 0.54 (0.03) |
+  |                           | ORG    | 0.68 (0.07) | 0.66 (0.04) | 0.67 (0.05) |
+  |                           | PER    | 0.56 (0.05) | 0.50 (0.04) | 0.53 (0.03) |
+  | tl_tlunified_silver-30000 | LOC    | 0.64 (0.02) | 0.62 (0.02) | 0.63 (0.02) |
+  |                           | ORG    | 0.63 (0.04) | 0.62 (0.03) | 0.63 (0.03) |
+  |                           | PER    | 0.76 (0.04) | 0.76 (0.04) | 0.76 (0.02) |
+  | tl_tlunified_silver-50000 | LOC    | 0.65 (0.03) | 0.64 (0.04) | 0.65 (0.03) |
+  |                           | ORG    | 0.68 (0.02) | 0.66 (0.03) | 0.67 (0.02) |
+  |                           | PER    | 0.79 (0.02) | 0.80 (0.04) | 0.79 (0.02) |
+
+  In addition, I also created a small gold-standard test set to evaluate the
+  models against. The annotations were done by me, a native speaker, using
+  [Prodigy](https://prodi.gy). Here are the results:
+
+
+
+
+
+
+  ### Future goal
+
+  My eventual goal for this project is to produce a gold-standard NER dataset
   from TLUnified. This should help train more robust and performance Tagalog models
   for structured prediction.
-
-  **How can you help** If you are a native speaker of Tagalog, or a
-  computational linguist interested in the language, it would be grand if you
-  can help annotate the TLUnified dataset.  First, you need to download the
-  unannotated dataset [from this link](), and the silver-standard model [from
-  here](). Then, if you have access to [Prodigy](https://prodi.gy), run the
-  following command:
-
-  ```
-  prodigy ner.corrrect tl_tlunified_gold  \
-    path/to/silver-standard/model path/to/tlunified.jsonl
-    --label PERSON,ORG,MISC
-  ```
 
 vars:
   seed: 42
