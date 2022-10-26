@@ -80,6 +80,7 @@ Commands are only re-run if their inputs have changed.
 | `cross-evaluate-tlunified` | Evaluate the trained models to the silver-annotated tlunified test set |
 | `cross-evaluate-gold` | Evaluate the trained models on an annotated subset of tlunified |
 | `package` | Package the trained models from the silver-annotated datasets |
+| `annotate` | Annotate the TLUnified dataset using Prodigy's ner.correct |
 
 ### ⏭ Workflows
 

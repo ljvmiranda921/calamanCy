@@ -62,6 +62,7 @@ vars:
   wikiann_silver: "wikiann_silver"
   tlunified_silver: "tlunified_silver"
   tlunified_gold: "tlunified_gold"
+  prodigy_dataset: "tlunified_gold"
 
 directories:
   - "assets"
@@ -308,3 +309,15 @@ commands:
     outputs_no_cache:
       - packages/${vars.lang}_${vars.wikiann_silver}-${vars.version}/dist/${vars.lang}_${vars.wikiann_silver}-${vars.version}.tar.gz
       - packages/${vars.lang}_${vars.tlunified_silver}-${vars.version}/dist/${vars.lang}_${vars.tlunified_silver}-${vars.version}.tar.gz
+
+  - name: "annotate"
+    help: "Annotate the TLUnified dataset using Prodigy's ner.correct"
+    script:
+      - >-
+        python -m prodigy ner.correct
+        ${vars.prodigy_dataset} 
+        training/${vars.lang}_${vars.tlunified_silver}/model-best/
+        assets/tlunified/train.txt
+    deps:
+      - assets/tlunified/train.txt
+      - training/${vars.lang}_${vars.tlunified_silver}/
