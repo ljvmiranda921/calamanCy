@@ -4,6 +4,9 @@ vars:
   dataset: tl_tlunified_gold
   seed: 42
   gpu_id: 0
+  init_tok2vec: null
+  vectors: null
+  config: baseline
 
 directories:
   - "assets"
@@ -12,6 +15,7 @@ directories:
   - "vectors"
   - "scripts"
   - "training"
+  - "pretraining"
   - "metrics"
 
 assets:
@@ -21,6 +25,18 @@ assets:
   - dest: "assets/fasttext.tl.gz"
     description: "Tagalog fastText vectors"
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+  - dest: "assets/tlunified_pt_chars.bin"
+    description: "Pretrained weights (characters) from TLUnified using `baseline` config"
+    url: ""
+  - dest: "assets/tlunified_pt_vects.bin"
+    description: "Pretrained weights (vectors) from TLUnified using `fastText` config"
+    url: ""
+
+workflows:
+  train:
+    - "convert"
+    - "train-ner"
+    - "evaluate"
 
 commands:
   - name: "convert"
@@ -38,13 +54,38 @@ commands:
       - corpus/dev.spacy
       - corpus/test.spacy
 
+  - name: "raw-text"
+    help: "Get raw text as preparation for pretraining"
+    script:
+      - unzip -o assets/tlunified.zip -d assets/
+      - cp assets/tlunified/train.text assets/raw_text.txt
+    outputs:
+      - assets/raw_text.txt
+
   - name: "init-fasttext"
     help: "Initialize fastText vectors."
     script:
       - "gzip -d assets/fasttext.tl.gz"
       - "python -m spacy init vectors tl assets/fasttext.tl vectors/fasttext-tl"
+    deps:
+      - assets/fasttext.tl.gz
+    outputs:
+      - vectors/fasttext-tl
 
-  - name: "train"
+  - name: "pretrain"
+    help: "Pretrain with information from raw text"
+    script:
+      - >-
+        python -m spacy pretrain configs/${vars.config}.cfg pretraining/${vars.config}/
+        --paths.raw_text assets/tlunified/train.txt
+        --vars.vectors ${vars.vectors}
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - assets/tlunified.zip
+    outputs:
+      - pretraining/${vars.config}/
+
+  - name: "train-ner"
     help: "Train NER model."
     script:
       - >-
@@ -54,6 +95,8 @@ commands:
         --output training/${vars.config}/${vars.seed}/
         --paths.train corpus/train.spacy
         --paths.dev corpus/dev.spacy
+        --initialize.init_tok2vec ${vars.init_tok2vec}
+        --vars.vectors ${vars.vectors}
         --system.seed ${vars.seed}
         --gpu-id ${var.gpu_id}
     deps:
