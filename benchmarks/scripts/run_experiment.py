@@ -34,6 +34,7 @@ def run_baseline(
     for a specified number of trials.
     """
     for trial_num in range(num_trials):
+        msg.divider(f"Trial {trial_num}", icon="\u2600")
         overrides = {
             "--vars.gpu_id": gpu_id,
             "--vars.config": config,
@@ -42,6 +43,7 @@ def run_baseline(
         }
 
         # Run without pretrained weights
+        msg.info("Running experiment without pretrained weights")
         baseline_n_pt = deepcopy(overrides)
         baseline_n_pt["--vars.experiment_id"] = "baseline_n_pt"
         project_run(
@@ -53,6 +55,7 @@ def run_baseline(
         )
 
         # Run with pretrained weights
+        msg.info("Running experiment with pretrained weights")
         baseline_y_pt = deepcopy(overrides)
         baseline_y_pt["--vars.experiment_id"] = "baseline_y_pt"
         baseline_y_pt["--vars.init_tok2vec"] = str(init_tok2vec)
