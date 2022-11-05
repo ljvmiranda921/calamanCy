@@ -100,7 +100,7 @@ commands:
         --initialize.init_tok2vec ${vars.init_tok2vec}
         --vars.vectors ${vars.vectors}
         --system.seed ${vars.seed}
-        --gpu-id ${var.gpu_id}
+        --gpu-id ${vars.gpu_id}
     deps:
       - corpus/train.spacy
       - corpus/dev.spacy
@@ -111,15 +111,15 @@ commands:
   - name: "evaluate"
     help: "Evaluate NER model."
     script:
-      - mkdir -p metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/
+      - mkdir -p metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/
       - >-
         python -m spacy evaluate
         training/${vars.config}/${vars.seed}/model-best
         corpus/test.spacy
-        --output metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
+        --output metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.config}/${vars.seed}/model-best
       - corpus/test.spacy
     outputs:
-      - metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
+      - metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
