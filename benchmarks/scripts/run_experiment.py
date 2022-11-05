@@ -1,9 +1,9 @@
+from copy import deepcopy
 from pathlib import Path
 from typing import Optional
-from copy import deepcopy
 
-from spacy.cli.project.run import project_run
 import typer
+from spacy.cli.project.run import project_run
 from wasabi import msg
 
 Arg = typer.Argument
@@ -103,7 +103,7 @@ def run_fasttext(
         baseline_n_pt["vars.experiment_id"] = "fasttext_n_pt"
         project_run(
             project_dir=Path.cwd(), 
-            overrides=parse_config_overrides(baseline_n_pt),
+            overrides=baseline_n_pt,
             subcommand=subcommand, 
             force=force, 
             dry=dry_run
@@ -116,7 +116,7 @@ def run_fasttext(
         baseline_y_pt["vars.init_tok2vec"] = str(init_tok2vec)
         project_run(
             project_dir=Path.cwd(), 
-            overrides=parse_config_overrides(baseline_y_pt),
+            overrides=baseline_y_pt,
             subcommand=subcommand, 
             force=force, 
             dry=dry_run
