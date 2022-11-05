@@ -7,6 +7,8 @@ vars:
   init_tok2vec: null
   vectors: null
   config: baseline
+  trial_num: 0
+  experiment_id: "baseline"
 
 directories:
   - "assets"
@@ -33,7 +35,7 @@ assets:
     url: ""
 
 workflows:
-  train:
+  ner:
     - "convert"
     - "train-ner"
     - "evaluate"
@@ -109,15 +111,15 @@ commands:
   - name: "evaluate"
     help: "Evaluate NER model."
     script:
-      - mkdir -p metrics/${vars.config}/${vars.seed}/
+      - mkdir -p metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/
       - >-
         python -m spacy evaluate
         training/${vars.config}/${vars.seed}/model-best
         corpus/test.spacy
-        --output metrics/${vars.config}/${vars.seed}/scores.json
+        --output metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.config}/${vars.seed}/model-best
       - corpus/test.spacy
     outputs:
-      - metrics/${vars.config}/${vars.seed}/scores.json
+      - metrics/${experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
