@@ -94,7 +94,7 @@ commands:
         python -m spacy train
         configs/${vars.config}.cfg
         --nlp.lang tl
-        --output training/${vars.config}/${vars.seed}/
+        --output training/${vars.experiment_id}/${vars.config}/${vars.seed}/
         --paths.train corpus/train.spacy
         --paths.dev corpus/dev.spacy
         --initialize.init_tok2vec ${vars.init_tok2vec}
@@ -105,8 +105,8 @@ commands:
       - corpus/train.spacy
       - corpus/dev.spacy
     outputs:
-      - training/${vars.config}/${vars.seed}/model-best
-      - training/${vars.config}/${vars.seed}/model-last
+      - training/${vars.experiment_id}/${vars.config}/${vars.seed}/model-best
+      - training/${vars.experiment_id}/${vars.config}/${vars.seed}/model-last
 
   - name: "evaluate"
     help: "Evaluate NER model."
@@ -114,12 +114,12 @@ commands:
       - mkdir -p metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/
       - >-
         python -m spacy evaluate
-        training/${vars.config}/${vars.seed}/model-best
+        training/${vars.experiment_id}/${vars.config}/${vars.seed}/model-best
         corpus/test.spacy
         --output metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
         --gpu-id ${vars.gpu_id}
     deps:
-      - training/${vars.config}/${vars.seed}/model-best
+      - training/${vars.experiment_id}/${vars.config}/${vars.seed}/model-best
       - corpus/test.spacy
     outputs:
       - metrics/${vars.experiment_id}/${vars.config}/trial-${vars.trial_num}/scores.json
