@@ -80,7 +80,7 @@ commands:
       - >-
         python -m spacy pretrain configs/${vars.config}.cfg pretraining/${vars.config}/
         --paths.raw_text assets/tlunified/train.txt
-        --vars.vectors ${vars.vectors}
+        --paths.vectors ${vars.vectors}
         --gpu-id ${vars.gpu_id}
     deps:
       - assets/tlunified.zip
