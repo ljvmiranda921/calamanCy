@@ -9,6 +9,7 @@ vars:
   config: baseline
   trial_num: 0
   experiment_id: "baseline"
+  raw_text: "raw_text.jsonl"
 
 directories:
   - "assets"
@@ -56,13 +57,15 @@ commands:
       - corpus/dev.spacy
       - corpus/test.spacy
 
-  - name: "raw-text"
+  - name: "prepare-texts"
     help: "Get raw text as preparation for pretraining"
     script:
       - unzip -o assets/tlunified.zip -d assets/
-      - cp assets/tlunified/train.text assets/raw_text.txt
+      - python -m scripts.convert_to_jsonlines assets/tlunified/train.txt assets/${vars.raw_text}
+    deps:
+      - assets/tlunified.zip
     outputs:
-      - assets/raw_text.txt
+      - assets/${vars.raw_text}
 
   - name: "init-fasttext"
     help: "Initialize fastText vectors."
@@ -79,11 +82,11 @@ commands:
     script:
       - >-
         python -m spacy pretrain configs/${vars.config}.cfg pretraining/${vars.config}/
-        --paths.raw_text assets/tlunified/train.txt
+        --paths.raw_text assets/${vars.raw_text}
         --paths.vectors ${vars.vectors}
         --gpu-id ${vars.gpu_id}
     deps:
-      - assets/tlunified.zip
+      - assets/${vars.raw_text}
     outputs:
       - pretraining/${vars.config}/
 
