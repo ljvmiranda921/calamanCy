@@ -1,0 +1,30 @@
+title: "Benchmarking gold-annotated TLUnified data"
+
+vars:
+  seed: 42
+  dataset_version: v1.0
+  gpu_id: 0
+  lang: "tl"
+
+directories:
+  - "assets"
+  - "configs"
+  - "corpus"
+  - "scripts"
+  - "training"
+  - "metrics"
+
+assets:
+  - dest: assets/tl_tlunified_gold_${vars.dataset_version}.jsonl
+    #    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+    description: "Annotated TLUnified dataset"
+
+commands:
+  - name: "preprocess"
+    help: "Preprocess the raw annotated data and convert into spaCy format"
+    script:
+      - >-
+        python -m scripts.preprocess
+        assets/tl_tlunified_gold_${vars.dataset_version}.jsonl corpus/
+        --train-size 0.8
+        --seed ${vars.seed}
