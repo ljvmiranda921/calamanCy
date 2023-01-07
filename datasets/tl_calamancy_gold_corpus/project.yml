@@ -2,7 +2,7 @@ title: "Benchmarking gold-annotated TLUnified data"
 
 vars:
   seed: 42
-  dataset_version: v1.0
+  dataset_version: 1.0
   gpu_id: 0
   lang: "tl"
 
@@ -15,8 +15,8 @@ directories:
   - "metrics"
 
 assets:
-  - dest: assets/tl_tlunified_gold_${vars.dataset_version}.jsonl
-    #    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+  - dest: assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/tl_tlunified_gold.jsonl"
     description: "Annotated TLUnified dataset"
 
 commands:
@@ -25,6 +25,6 @@ commands:
     script:
       - >-
         python -m scripts.preprocess
-        assets/tl_tlunified_gold_${vars.dataset_version}.jsonl corpus/
+        assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl corpus/
         --train-size 0.8
         --seed ${vars.seed}
