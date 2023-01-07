@@ -1,7 +1,8 @@
 import random
 from math import ceil
 from pathlib import Path
-from typing import Optional, Tuple, Sequence, Any, List
+from typing import Any, List, Optional, Sequence, Tuple
+
 import spacy
 import typer
 from spacy.tokens import Doc, DocBin
