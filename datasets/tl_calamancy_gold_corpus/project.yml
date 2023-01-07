@@ -26,5 +26,5 @@ commands:
       - >-
         python -m scripts.preprocess
         assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl corpus/
-        --train-size 0.8
         --seed ${vars.seed}
+        --shuffle
