@@ -11,6 +11,7 @@ vars:
   # the script/run_experiment.py script
   experiment_id: "baseline"
   config: "ner.cfg"
+  init_tok2vec: null
   vectors: null
   trial_num: 0
 
