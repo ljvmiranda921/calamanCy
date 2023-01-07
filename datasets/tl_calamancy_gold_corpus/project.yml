@@ -1,10 +1,17 @@
 title: "Benchmarking gold-annotated TLUnified data"
 
 vars:
+  # General variables
   seed: 42
   dataset_version: 1.0
   gpu_id: 0
   lang: "tl"
+  # Experiment related variables called by
+  # the script/run_experiment.py script
+  experiment_id: "baseline"
+  config: "ner.cfg"
+  vectors: null
+  trial_num: 0
 
 directories:
   - "assets"
@@ -18,10 +25,22 @@ assets:
   - dest: assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/tl_tlunified_gold.jsonl"
     description: "Annotated TLUnified dataset"
+  - dest: "assets/tlunified.zip"
+    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+  - dest: "assets/fasttext.tl.gz"
+    description: "Tagalog fastText vectors"
+    url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+
+workflows:
+  all:
+    - "preprocess"
+    - "train"
+    - "evaluate"
 
 commands:
   - name: "preprocess"
-    help: "Preprocess the raw annotated data and convert into spaCy format"
+    help: "Preprocess the raw annotated data and convert into spaCy format."
     script:
       - >-
         python -m scripts.preprocess
@@ -34,3 +53,40 @@ commands:
       - corpus/train.spacy
       - corpus/dev.spacy
       - corpus/test.spacy
+
+  - name: "train"
+    help: "Train the NER model. Usually called within the `benchmark.py` script."
+    script:
+      - >-
+        python -m spacy train
+        configs/${vars.config}
+        --nlp.lang ${vars.lang}
+        --output training/${vars.experiment_id}/${vars.trial_num}/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --initialize.init_tok2vec ${vars.init_tok2vec}
+        --vars.vectors ${vars.vectors}
+        --system.seed ${vars.seed}
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+    outputs:
+      - training/${vars.experiment_id}/${vars.trial_num}/model-best
+      - training/${vars.experiment_id}/${vars.trial_num}/model-last
+
+  - name: "evaluate"
+    help: "Evaluate NER model. Usually called within the `benchmark.py` script."
+    script:
+      - mkdir -p metrics/${vars.experiment_id}/${vars.trial_num}/
+      - >-
+        python -m spacy evaluate
+        training/${vars.experiment_id}/${vars.trial_num}/model-best
+        corpus/test.spacy
+        --output metrics/${vars.experiment_id}/${vars.trial_num}/scores.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/${vars.experiment_id}/${vars.trial_num}/model-best
+      - corpus/test.spacy
+    outputs:
+      - metrics/${vars.experiment_id}/${vars.trial_num}/scores.json
