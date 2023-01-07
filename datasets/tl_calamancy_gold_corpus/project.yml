@@ -6,6 +6,7 @@ vars:
   dataset_version: 1.0
   gpu_id: 0
   lang: "tl"
+  raw_text: "raw_text.jsonl"
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
@@ -18,7 +19,9 @@ directories:
   - "configs"
   - "corpus"
   - "scripts"
+  - "pretraining"
   - "training"
+  - "vectors"
   - "metrics"
 
 assets:
@@ -31,6 +34,9 @@ assets:
   - dest: "assets/fasttext.tl.gz"
     description: "Tagalog fastText vectors"
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+  - dest: "assets/tlunified_raw_text.jsonl"
+    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)"
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
 
 workflows:
   all:
@@ -53,6 +59,29 @@ commands:
       - corpus/train.spacy
       - corpus/dev.spacy
       - corpus/test.spacy
+
+  - name: "pretrain"
+    help: "Pretrain with information from raw text"
+    script:
+      - >-
+        python -m spacy pretrain configs/${vars.config} pretraining/
+        --paths.raw_text assets/tlunified_raw_text.jsonl
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - assets/tlunified.zip
+      - assets/tlunified_raw_text.jsonl
+    outputs:
+      - pretraining/
+
+  - name: "init-fasttext"
+    help: "Initialize fastText vectors."
+    script:
+      - "gzip -d assets/fasttext.tl.gz"
+      - "python -m spacy init vectors tl assets/fasttext.tl vectors/fasttext-tl"
+    deps:
+      - assets/fasttext.tl.gz
+    outputs:
+      - vectors/fasttext-tl
 
   - name: "train"
     help: "Train the NER model. Usually called within the `benchmark.py` script."
