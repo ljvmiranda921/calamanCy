@@ -165,3 +165,4 @@ training/
 package/
 metrics/
 corpus/
+project.lock
