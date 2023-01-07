@@ -69,7 +69,6 @@ commands:
         --paths.raw_text assets/tlunified_raw_text.jsonl
         --gpu-id ${vars.gpu_id}
     deps:
-      - assets/tlunified.zip
       - assets/tlunified_raw_text.jsonl
     outputs:
       - pretraining/
