@@ -164,5 +164,7 @@ assets/
 training/
 package/
 metrics/
+pretraining/
+vectors/
 corpus/
 project.lock
