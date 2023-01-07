@@ -1,0 +1,4 @@
+spacy>=3.4.0
+wasabi
+typer
+tqdm
