@@ -28,3 +28,9 @@ commands:
         assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl corpus/
         --seed ${vars.seed}
         --shuffle
+    deps:
+      - assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
+    outputs:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
