@@ -19,14 +19,18 @@ def count_entities(
     docs = doc_bin.get_docs(nlp.vocab)
 
     counter = Counter()
+    tokens = 0
     for doc in docs:
+        tokens += len(doc)
         for ent in doc.ents:
             if ent.label_ not in counter.keys():
                 counter[ent.label_] = 1
             else:
                 counter[ent.label_] += 1
 
-    msg.info(f"Found {len(doc_bin)} documents: {_format_counts(counter)}")
+    msg.info(
+        f"Found {len(doc_bin)} documents with {tokens} tokens: {_format_counts(counter)}"
+    )
 
 
 def _format_counts(counter: Counter) -> str:
