@@ -38,8 +38,9 @@ assets:
   - dest: "assets/tlunified_raw_text.jsonl"
     description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
-  - dest: "assets/tl_tlunified_pt.bin"
+  - dest: "assets/tl_tlunified_pt_e10.bin"
     description: "Pretraining weights for Tagalog using spaCy's pretrain command."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_e10.bin"
 
 workflows:
   all:
