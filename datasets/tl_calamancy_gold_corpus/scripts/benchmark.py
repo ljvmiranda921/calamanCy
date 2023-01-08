@@ -41,7 +41,7 @@ def benchmark(
 
         if vectors:
             msg.text(f"Training with static vectors: `{vectors}`")
-            overrides["vars.vectors"] = vectors
+            overrides["vars.vectors"] = str(vectors)
 
         project_run(
             project_dir=Path.cwd(),
