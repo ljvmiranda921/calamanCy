@@ -7,6 +7,7 @@ vars:
   gpu_id: 0
   lang: "tl"
   raw_text: "raw_text.jsonl"
+  pretrain_epoch: 10
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
@@ -38,9 +39,9 @@ assets:
   - dest: "assets/tlunified_raw_text.jsonl"
     description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
-  - dest: "assets/tl_tlunified_pt_e10.bin"
+  - dest: "assets/tl_tlunified_pt.bin"
     description: "Pretraining weights for Tagalog using spaCy's pretrain command."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_e10.bin"
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_e${vars.pretrain_epoch}.bin"
 
 workflows:
   all:
