@@ -33,13 +33,13 @@ assets:
     description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
     url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
   - dest: "assets/fasttext.tl.gz"
-    description: "Tagalog fastText vectors."
+    description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
   - dest: "assets/tlunified_raw_text.jsonl"
     description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
   - dest: "assets/tl_tlunified_pt.bin"
-    description: "Pretraining weights for Tagalog."
+    description: "Pretraining weights for Tagalog using spaCy's pretrain command."
 
 workflows:
   all:

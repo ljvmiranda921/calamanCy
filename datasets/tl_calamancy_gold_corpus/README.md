@@ -43,8 +43,8 @@ in the project directory.
 | --- | --- | --- |
 | `assets/tl_tlunified_gold_v1.0.jsonl` | URL | Annotated TLUnified dataset. |
 | `assets/tlunified.zip` | URL | TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022). |
-| `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors. |
+| `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia). |
 | `assets/tlunified_raw_text.jsonl` | URL | Pre-converted raw text from TLUnified in JSONL format (1.1 GB). |
-| `assets/tl_tlunified_pt.bin` | Local | Pretraining weights for Tagalog. |
+| `assets/tl_tlunified_pt.bin` | Local | Pretraining weights for Tagalog using spaCy's pretrain command. |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
