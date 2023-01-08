@@ -98,7 +98,7 @@ commands:
         --paths.train corpus/train.spacy
         --paths.dev corpus/dev.spacy
         --initialize.init_tok2vec ${vars.init_tok2vec}
-        --vars.vectors ${vars.vectors}
+        --paths.vectors ${vars.vectors}
         --system.seed ${vars.seed}
         --gpu-id ${vars.gpu_id}
     deps:
