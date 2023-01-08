@@ -45,7 +45,6 @@ assets:
 
 workflows:
   all:
-    - "preprocess"
     - "train"
     - "evaluate"
 
