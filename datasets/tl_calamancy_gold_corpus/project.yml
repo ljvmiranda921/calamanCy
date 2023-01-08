@@ -28,16 +28,18 @@ directories:
 assets:
   - dest: assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/tl_tlunified_gold.jsonl"
-    description: "Annotated TLUnified dataset"
+    description: "Annotated TLUnified dataset."
   - dest: "assets/tlunified.zip"
-    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)"
+    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
     url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
   - dest: "assets/fasttext.tl.gz"
-    description: "Tagalog fastText vectors"
+    description: "Tagalog fastText vectors."
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
   - dest: "assets/tlunified_raw_text.jsonl"
-    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)"
+    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
+  - dest: "assets/tl_tlunified_pt.bin"
+    description: "Pretraining weights for Tagalog."
 
 workflows:
   all:
@@ -100,6 +102,8 @@ commands:
     deps:
       - corpus/train.spacy
       - corpus/dev.spacy
+      - assets/tl_tlunified_pt.bin
+      - vectors/fasttext-tl
     outputs:
       - training/${vars.experiment_id}/${vars.trial_num}/model-best
       - training/${vars.experiment_id}/${vars.trial_num}/model-last
