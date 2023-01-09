@@ -107,8 +107,6 @@ commands:
     deps:
       - corpus/train.spacy
       - corpus/dev.spacy
-      - assets/tl_tlunified_pt.bin
-      - vectors/fasttext-tl
     outputs:
       - training/${vars.experiment_id}/${vars.trial_num}/model-best
       - training/${vars.experiment_id}/${vars.trial_num}/model-last
