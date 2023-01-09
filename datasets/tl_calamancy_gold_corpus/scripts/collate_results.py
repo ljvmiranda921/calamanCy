@@ -1,6 +1,6 @@
 import statistics
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import srsly
 import typer
@@ -18,14 +18,18 @@ def collate_results(
     # fmt: on
 ):
     """Summarize results given a metrics folder"""
-    results = _get_raw_results(input_path)
+    results, n_trials = _get_raw_results(input_path)
     summary_metrics = _summarize_results(results, False)
     _format_table(summary_metrics)
     if per_entity_type:
         per_entity_metrics = _summarize_results(results, True)
         _format_entity_table(per_entity_metrics)
     if output_path:
-        results = {"summary": summary_metrics, "per_entity": per_entity_metrics}
+        results = {
+            "n_trials": n_trials,
+            "summary": summary_metrics,
+            "per_entity": per_entity_metrics,
+        }
         srsly.write_json(output_path, results)
 
 
@@ -52,14 +56,15 @@ def _format_entity_table(results: Dict[str, Dict[str, Tuple[float, float]]]) -> 
     return table
 
 
-def _get_raw_results(dir: Path) -> List[Dict[str, Any]]:
+def _get_raw_results(dir: Path) -> Union[List[Dict[str, Any]], int]:
     json_files = [f for f in dir.glob("**/*.json")]
-    msg.info(f"Found {len(json_files)} trials")
+    n_trials = len(json_files)
+    msg.info(f"Found {n_trials} trials")
 
     results = []
     for f in json_files:
         results.append(srsly.read_json(f))
-    return results
+    return results, n_trials
 
 
 def _summarize_results(
