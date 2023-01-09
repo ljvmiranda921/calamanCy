@@ -1,4 +1,5 @@
 import statistics
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -10,15 +11,21 @@ Arg = typer.Argument
 Opt = typer.Option
 
 
+class Dataset(str, Enum):
+    test = "test"
+    dev = "dev"
+
+
 def collate_results(
     # fmt: off
     input_path: Path = Arg(..., help="Path to a metrics directory with trials."),
     output_path: Optional[Path] = Opt(None, "--output-path", "--output", "-o", help="Optional path to save the summarized results as JSON."),
+    dataset: Dataset = Opt(Dataset.test, "--dataset", "-d", help="Dataset type to summarize results upon."),
     per_entity_type: bool = Opt(False, "--per-entity-type", "-E", help="Show results per entity type."),
     # fmt: on
 ):
     """Summarize results given a metrics folder"""
-    results, n_trials = _get_raw_results(input_path)
+    results, n_trials = _get_raw_results(input_path, dataset.value)
     summary_metrics = _summarize_results(results, False)
     _format_table(summary_metrics)
     if per_entity_type:
@@ -56,8 +63,8 @@ def _format_entity_table(results: Dict[str, Dict[str, Tuple[float, float]]]) -> 
     return table
 
 
-def _get_raw_results(dir: Path) -> Union[List[Dict[str, Any]], int]:
-    json_files = [f for f in dir.glob("**/*.json")]
+def _get_raw_results(dir: Path, dataset: str) -> Union[List[Dict[str, Any]], int]:
+    json_files = [f for f in dir.glob(f"**/*_{dataset}.json")]
     n_trials = len(json_files)
     msg.info(f"Found {n_trials} trials")
 

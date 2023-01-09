@@ -121,13 +121,20 @@ commands:
         python -m spacy evaluate
         training/${vars.experiment_id}/${vars.trial_num}/model-best
         corpus/test.spacy
-        --output metrics/${vars.experiment_id}/${vars.trial_num}/scores.json
+        --output metrics/${vars.experiment_id}/${vars.trial_num}/scores_test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/${vars.experiment_id}/${vars.trial_num}/model-best
+        corpus/dev.spacy
+        --output metrics/${vars.experiment_id}/${vars.trial_num}/scores_dev.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/${vars.experiment_id}/${vars.trial_num}/model-best
       - corpus/test.spacy
     outputs:
-      - metrics/${vars.experiment_id}/${vars.trial_num}/scores.json
+      - metrics/${vars.experiment_id}/${vars.trial_num}/scores_test.json
+      - metrics/${vars.experiment_id}/${vars.trial_num}/scores_dev.json
 
   - name: "summarize-results"
     help: "Summarize results for a given experimental run."
