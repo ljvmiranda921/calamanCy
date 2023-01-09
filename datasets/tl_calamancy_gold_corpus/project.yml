@@ -11,7 +11,7 @@ vars:
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
-  config: "ner.cfg"
+  config: "ner_chars.cfg"
   init_tok2vec: null
   vectors: null
   trial_num: 0
@@ -39,9 +39,12 @@ assets:
   - dest: "assets/tlunified_raw_text.jsonl"
     description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
-  - dest: "assets/tl_tlunified_pt.bin"
-    description: "Pretraining weights for Tagalog using spaCy's pretrain command."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_e${vars.pretrain_epoch}.bin"
+  - dest: "assets/tl_tlunified_pt_chars.bin"
+    description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'characters' objective)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_chars_e${vars.pretrain_epoch}.bin"
+  # - dest: "assets/tl_tlunified_pt_vects.bin"
+  #   description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'vectors' objective)."
+  #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_vects_e${vars.pretrain_epoch}.bin"
 
 workflows:
   all:
