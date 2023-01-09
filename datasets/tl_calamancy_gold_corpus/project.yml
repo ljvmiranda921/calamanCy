@@ -129,7 +129,7 @@ commands:
   - name: "summarize-results"
     help: "Summarize results for a given experimental run."
     script:
-      - mkdir -p summarized_metrics
+      - mkdir -p summarized_metrics/${vars.experiment_id}/
       - >-
         python -m scripts.collate_results
         metrics/${vars.experiment_id} 
