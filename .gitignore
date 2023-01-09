@@ -167,4 +167,5 @@ metrics/
 pretraining/
 vectors/
 corpus/
+summarized_metrics/
 project.lock
