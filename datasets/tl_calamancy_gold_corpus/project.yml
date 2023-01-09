@@ -7,7 +7,7 @@ vars:
   gpu_id: 0
   lang: "tl"
   raw_text: "raw_text.jsonl"
-  pretrain_epoch: 10
+  pretrain_epoch: 5
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
