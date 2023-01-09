@@ -125,3 +125,13 @@ commands:
       - corpus/test.spacy
     outputs:
       - metrics/${vars.experiment_id}/${vars.trial_num}/scores.json
+
+  - name: "summarize-results"
+    help: "Summarize results for a given experimental run."
+    script:
+      - mkdir -p summarized_metrics
+      - >-
+        python -m scripts.collate_results
+        metrics/${vars.experiment_id} 
+        --output-path summarized_metrics/${vars.experiment_id}/results.json
+        --per-entity-type

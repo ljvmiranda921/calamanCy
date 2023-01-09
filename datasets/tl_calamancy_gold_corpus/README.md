@@ -21,6 +21,7 @@ Commands are only re-run if their inputs have changed.
 | `init-fasttext` | Initialize fastText vectors. |
 | `train` | Train the NER model. Usually called within the `benchmark.py` script. |
 | `evaluate` | Evaluate NER model. Usually called within the `benchmark.py` script. |
+| `summarize-results` | Summarize results for a given experimental run. |
 
 ### ⏭ Workflows
 
