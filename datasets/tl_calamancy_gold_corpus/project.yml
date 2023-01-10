@@ -11,6 +11,7 @@ vars:
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
+  eval_dataset: "dev"
   config: "ner_chars.cfg"
   init_tok2vec: null
   vectors: null
@@ -141,5 +142,6 @@ commands:
       - >-
         python -m scripts.collate_results
         metrics/${vars.experiment_id} 
+        --dataset ${vars.eval_dataset}
         --output-path summarized_metrics/${vars.experiment_id}/results.json
         --per-entity-type
