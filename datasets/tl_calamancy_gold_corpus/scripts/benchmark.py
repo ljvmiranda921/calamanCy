@@ -15,7 +15,7 @@ def benchmark(
     # fmt: off
     experiment_id: str = Arg(..., help="Experiment ID to keep track of the experiment."),
     num_trials: int = Opt(NUM_TRIALS, "--num-trials", "-n", help="Set the number of trials to run the experiment."),
-    subcommand: str = Opt("all", "--subcommand", "-C", help="Workflow command to run."),
+    subcommand: str = Opt("ner", "--subcommand", "-C", help="Workflow command to run."),
     config: str = Opt("ner_chars.cfg", "--config", "-c", help="Name of the configuration file to use."),
     init_tok2vec: Optional[Path] = Opt(None, "--init-tok2vec", "-w", help="Path to the pretrained weights using the baseline configuration"), 
     vectors: Optional[Path] = Opt(None, "--vectors", "-v", help="Path to the initialized fastText static vectors."),

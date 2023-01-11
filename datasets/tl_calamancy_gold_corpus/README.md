@@ -21,8 +21,8 @@ Commands are only re-run if their inputs have changed.
 | `build-floret` | Build floret binary for training fastText and floret vectors. |
 | `train-vectors` | Train word vectors using the floret binary. |
 | `init-vectors` | Initialize word vectors. |
-| `train` | Train the NER model. Usually called within the `benchmark.py` script. |
-| `evaluate` | Evaluate NER model. Usually called within the `benchmark.py` script. |
+| `train-ner` | Train the NER model. Usually called within the `benchmark.py` script. |
+| `evaluate-ner` | Evaluate NER model. Usually called within the `benchmark.py` script. |
 | `summarize-results` | Summarize results for a given experimental run. |
 
 ### ⏭ Workflows
@@ -34,7 +34,7 @@ inputs have changed.
 
 | Workflow | Steps |
 | --- | --- |
-| `all` | `train` &rarr; `evaluate` |
+| `ner` | `train-ner` &rarr; `evaluate-ner` |
 | `vectors` | `build-floret` &rarr; `train-vectors` &rarr; `init-vectors` |
 
 ### 🗂 Assets

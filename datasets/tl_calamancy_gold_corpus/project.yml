@@ -61,9 +61,9 @@ assets:
     extra: True
 
 workflows:
-  all:
-    - "train"
-    - "evaluate"
+  ner:
+    - "train-ner"
+    - "evaluate-ner"
   vectors:
     - "build-floret"
     - "train-vectors"
@@ -161,7 +161,7 @@ commands:
       - vectors/fasttext-tl-tlunified
       - vectors/floret-tl-tlunified
 
-  - name: "train"
+  - name: "train-ner"
     help: "Train the NER model. Usually called within the `benchmark.py` script."
     script:
       - >-
@@ -182,7 +182,7 @@ commands:
       - training/${vars.experiment_id}/${vars.trial_num}/model-best
       - training/${vars.experiment_id}/${vars.trial_num}/model-last
 
-  - name: "evaluate"
+  - name: "evaluate-ner"
     help: "Evaluate NER model. Usually called within the `benchmark.py` script."
     script:
       - mkdir -p metrics/${vars.experiment_id}/${vars.trial_num}/
