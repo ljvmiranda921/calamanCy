@@ -46,6 +46,13 @@ assets:
   # - dest: "assets/tl_tlunified_pt_vects.bin"
   #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_vects_e${vars.pretrain_epoch}.bin"
   #   description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'vectors' objective)."
+  - dest: "assets/floret"
+    git:
+      repo: "https://github.com/explosion/floret"
+      branch: "master"
+      path: ""
+    description: "Floret repository for training floret and fastText models."
+    extra: True
 
 workflows:
   all:
@@ -80,6 +87,17 @@ commands:
       - assets/tlunified_raw_text.jsonl
     outputs:
       - pretraining/
+
+  - name: "build-floret"
+    help: "Build floret binary for training fastText and floret vectors."
+    script:
+      - make -C assets/floret
+      - chmod +x assets/floret/floret
+      - assets/floret/floret
+    deps:
+      - assets/floret
+    outputs:
+      - assets/floret/floret
 
   - name: "init-fasttext"
     help: "Initialize fastText vectors."
