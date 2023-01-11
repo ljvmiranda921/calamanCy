@@ -18,7 +18,9 @@ Commands are only re-run if their inputs have changed.
 | --- | --- |
 | `preprocess` | Preprocess the raw annotated data and convert into spaCy format. |
 | `pretrain` | Pretrain with information from raw text |
-| `init-fasttext` | Initialize fastText vectors. |
+| `build-floret` | Build floret binary for training fastText and floret vectors. |
+| `train-vectors` | Train word vectors using the floret binary. |
+| `init-vectors` | Initialize word vectors. |
 | `train` | Train the NER model. Usually called within the `benchmark.py` script. |
 | `evaluate` | Evaluate NER model. Usually called within the `benchmark.py` script. |
 | `summarize-results` | Summarize results for a given experimental run. |
@@ -33,6 +35,7 @@ inputs have changed.
 | Workflow | Steps |
 | --- | --- |
 | `all` | `train` &rarr; `evaluate` |
+| `vectors` | `build-floret` &rarr; `train-vectors` &rarr; `init-vectors` |
 
 ### 🗂 Assets
 
@@ -47,5 +50,6 @@ in the project directory.
 | `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia). |
 | `assets/tlunified_raw_text.jsonl` | URL | Pre-converted raw text from TLUnified in JSONL format (1.1 GB). |
 | `assets/tl_tlunified_pt_chars.bin` | URL | Pretraining weights for Tagalog using spaCy's pretrain command (using 'characters' objective). |
+| `assets/floret` | Git | Floret repository for training floret and fastText models. |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->

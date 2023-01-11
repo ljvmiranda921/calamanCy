@@ -16,6 +16,12 @@ vars:
   init_tok2vec: null
   vectors: null
   trial_num: 0
+  # fastText or floret training variables
+  # cf. https://fasttext.cc/docs/en/unsupervised-tutorial.html#advanced-readers-playing-with-the-parameters
+  vectors_dim: 200
+  vectors_minn: 3
+  vectors_maxn: 5
+  vectors_bucket_size: 200000
 
 directories:
   - "assets"
@@ -58,6 +64,10 @@ workflows:
   all:
     - "train"
     - "evaluate"
+  vectors:
+    - "build-floret"
+    - "train-vectors"
+    - "init-vectors"
 
 commands:
   - name: "preprocess"
@@ -99,15 +109,57 @@ commands:
     outputs:
       - assets/floret/floret
 
-  - name: "init-fasttext"
-    help: "Initialize fastText vectors."
+  - name: "train-vectors"
+    help: "Train word vectors using the floret binary."
+    script:
+      - unzip -o assets/tlunified.zip -d assets/
+      - mkdir -p assets/vectors/tl-fasttext-tlunified/
+      - >-
+        assets/floret/floret skipgram
+        -input assets/tlunified/train.txt 
+        -output assets/vectors/tl-fasttext-tlunified/vectors
+        -dim ${vars.vectors_dim}
+        -minn ${vars.vectors_minn}
+        -maxn ${vars.vectors_maxn}
+      - mkdir -p assets/vectors/tl-floret-tlunified/
+      - >-
+        assets/floret/floret skipgram
+        -input assets/tlunified/train.txt 
+        -output assets/vectors/tl-floret-tlunified/vectors
+        -dim ${vars.vectors_dim}
+        -minn ${vars.vectors_minn}
+        -maxn ${vars.vectors_maxn}
+        -mode floret
+        -hashCount 2
+        -bucket ${vars.vectors_bucket_size}
+    deps:
+      - assets/floret/floret
+    outputs:
+      - assets/vectors/tl-fasttext-tlunified/vectors.vec
+      - assets/vectors/tl-floret-tlunified/vectors.floret
+
+  - name: "init-vectors"
+    help: "Initialize word vectors."
     script:
       - "gzip -d assets/fasttext.tl.gz"
       - "python -m spacy init vectors tl assets/fasttext.tl vectors/fasttext-tl"
+      - >-
+        python -m spacy init vectors tl
+        assets/vectors/tl-fasttext-tlunified/vectors.vec
+        vectors/fasttext-tl-tlunified
+      - "python -m spacy init vectors tl {TODO} vectors/floret-tl-tlunified --mode floret"
+      - >-
+        python -m spacy init vectors tl
+        assets/vectors/tl-floret-tlunified/vectors.floret
+        vectors/floret-tl-tlunified
+        --mode floret
     deps:
-      - assets/fasttext.tl.gz
+      - assets/vectors/tl-fasttext-tlunified/vectors.vec
+      - assets/vectors/tl-floret-tlunified/vectors.floret
     outputs:
       - vectors/fasttext-tl
+      - vectors/fasttext-tl-tlunified
+      - vectors/floret-tl-tlunified
 
   - name: "train"
     help: "Train the NER model. Usually called within the `benchmark.py` script."
