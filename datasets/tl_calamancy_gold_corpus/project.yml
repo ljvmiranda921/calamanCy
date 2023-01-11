@@ -2,12 +2,13 @@ title: "Benchmarking gold-annotated TLUnified data"
 
 vars:
   # General variables
-  seed: 42
   dataset_version: 1.0
+  pretrain_epoch: 5
+  vectors_version: 1.0
+  seed: 42
   gpu_id: 0
   lang: "tl"
   raw_text: "raw_text.jsonl"
-  pretrain_epoch: 5
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
@@ -43,9 +44,9 @@ assets:
   # - dest: "assets/tl_tlunified_pt_vects.bin"
   #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_vects_e${vars.pretrain_epoch}.bin"
   #   description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'vectors' objective)."
-  # - dest: "assets/vectors.tar.gz"
-  #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/vectors/vectors.tar.gz"
-  #   description: "spaCy-compatible fastText and floret vectors."
+  - dest: "assets/vectors.tar.gz"
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/vectors/v${vars.vectors_version}/vectors.tar.gz"
+    description: "spaCy-compatible fastText and floret vectors."
   - dest: "assets/fasttext.tl.gz"
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
     description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
