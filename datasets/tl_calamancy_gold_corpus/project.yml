@@ -34,24 +34,34 @@ directories:
   - "metrics"
 
 assets:
-  - dest: assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/tl_tlunified_gold.jsonl"
-    description: "Annotated TLUnified dataset."
-  - dest: "assets/tlunified.zip"
-    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
-    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
-  - dest: "assets/fasttext.tl.gz"
-    url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
-    description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
-  - dest: "assets/tlunified_raw_text.jsonl"
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
-    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
+  - dest: assets/corpus.tar.gz
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/corpus.tar.gz"
+    description: "Annotated TLUnified corpora in spaCy format with train, dev, and test splits."
   - dest: "assets/tl_tlunified_pt_chars.bin"
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_chars_e${vars.pretrain_epoch}.bin"
     description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'characters' objective)."
   # - dest: "assets/tl_tlunified_pt_vects.bin"
   #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/pt/tl_tlunified_pt_vects_e${vars.pretrain_epoch}.bin"
   #   description: "Pretraining weights for Tagalog using spaCy's pretrain command (using 'vectors' objective)."
+  # - dest: "assets/vectors.tar.gz"
+  #   url: "https://storage.googleapis.com/ljvmiranda/calamanCy/vectors/vectors.tar.gz"
+  #   description: "spaCy-compatible fastText and floret vectors."
+  - dest: "assets/fasttext.tl.gz"
+    url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+    description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
+    extra: True
+  - dest: assets/tl_tlunified_gold_v${vars.dataset_version}.jsonl
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/tl_tlunified_gold.jsonl"
+    description: "Annotated TLUnified dataset."
+    extra: True
+  - dest: "assets/tlunified.zip"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
+    extra: True
+  - dest: "assets/tlunified_raw_text.jsonl"
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.jsonl"
+    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
+    extra: True
   - dest: "assets/floret"
     git:
       repo: "https://github.com/explosion/floret"
@@ -62,6 +72,7 @@ assets:
 
 workflows:
   ner:
+    - "setup-ner"
     - "train-ner"
     - "evaluate-ner"
   vectors:
@@ -142,21 +153,39 @@ commands:
     help: "Initialize word vectors."
     script:
       - "gzip -d assets/fasttext.tl.gz"
-      - "python -m spacy init vectors tl assets/fasttext.tl vectors/fasttext-tl"
+      - >-
+        python -m spacy init vectors tl
+        asssets/fasttext.tl 
+        vectors/fasttext-tl
       - >-
         python -m spacy init vectors tl
         assets/vectors/tl-fasttext-tlunified/vectors.vec
         vectors/fasttext-tl-tlunified
-      - "python -m spacy init vectors tl {TODO} vectors/floret-tl-tlunified --mode floret"
       - >-
         python -m spacy init vectors tl
         assets/vectors/tl-floret-tlunified/vectors.floret
         vectors/floret-tl-tlunified
         --mode floret
     deps:
+      - assets/fasttext.tl.gz
       - assets/vectors/tl-fasttext-tlunified/vectors.vec
       - assets/vectors/tl-floret-tlunified/vectors.floret
     outputs:
+      - vectors/fasttext-tl
+      - vectors/fasttext-tl-tlunified
+      - vectors/floret-tl-tlunified
+
+  - name: "setup-ner"
+    help: "Prepare the Tagalog NER corpus, vectors, and pretrained weights."
+    script:
+      - "tar -xzvf assets/corpus.tar.gz -C corpus/"
+      - "tar -xzvf assets/vectors.tar.gz -C vectors/"
+    deps:
+      - assets/corpus.tar.gz
+    outputs:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
       - vectors/fasttext-tl
       - vectors/fasttext-tl-tlunified
       - vectors/floret-tl-tlunified
