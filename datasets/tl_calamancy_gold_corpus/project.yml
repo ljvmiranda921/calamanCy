@@ -155,7 +155,7 @@ commands:
       - "gzip -d assets/fasttext.tl.gz"
       - >-
         python -m spacy init vectors tl
-        asssets/fasttext.tl 
+        assets/fasttext.tl 
         vectors/fasttext-tl
       - >-
         python -m spacy init vectors tl
