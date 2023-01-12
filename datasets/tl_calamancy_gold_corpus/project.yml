@@ -103,7 +103,7 @@ commands:
       - >-
         python -m spacy pretrain configs/${vars.config} pretraining/
         --paths.raw_text assets/tlunified_raw_text.jsonl
-        --paths.vectors vectors/fasttext-tl
+        --paths.vectors ${vars.vectors}
         --gpu-id ${vars.gpu_id}
     deps:
       - assets/tlunified_raw_text.jsonl
