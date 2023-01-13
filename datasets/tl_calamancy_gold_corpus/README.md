@@ -48,6 +48,8 @@ in the project directory.
 | --- | --- | --- |
 | `assets/corpus.tar.gz` | URL | Annotated TLUnified corpora in spaCy format with train, dev, and test splits. |
 | `assets/tl_tlunified_pt_chars.bin` | URL | Pretraining weights for Tagalog using spaCy's pretrain command (using 'characters' objective). |
+| `assets/tl_tlunified_pt_vects.bin` | URL | Pretraining weights for Tagalog using spaCy's pretrain command (using 'vectors' objective). |
+| `assets/vectors.tar.gz` | URL | spaCy-compatible fastText and floret vectors. |
 | `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia). |
 | `assets/tl_tlunified_gold_v1.0.jsonl` | URL | Annotated TLUnified dataset. |
 | `assets/tlunified.zip` | URL | TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022). |
