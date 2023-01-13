@@ -11,7 +11,7 @@ python3 -m scripts.benchmark supervised_ysv_npt_fasttext_tlunified --num-trials 
 python3 -m scripts.benchmark supervised_ysv_npt_floret_tlunified --num-trials 3 --vectors vectors/floret-tl-tlunified --gpu-id 0 
 
 # Transformer experiments
-python3 -m scripts.benchmark trf_roberta_tagalog_base --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf roberta-tagalog-base 
-python3 -m scripts.benchmark trf_roberta_tagalog_large --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf roberta-tagalog-large 
+python3 -m scripts.benchmark trf_roberta_tagalog_base --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf jcblaise/roberta-tagalog-base 
+python3 -m scripts.benchmark trf_roberta_tagalog_large --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf jcblaise/roberta-tagalog-large 
 python3 -m scripts.benchmark trf_xlm_roberta_base --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf xlm-roberta-base 
 python3 -m scripts.benchmark trf_xlm_roberta_large --config ner_trf.cfg --subcommand ner-trf --num-trials 3 --gpu-id 0 --trf xlm-roberta-large
