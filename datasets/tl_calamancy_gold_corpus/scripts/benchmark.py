@@ -19,6 +19,7 @@ def benchmark(
     config: str = Opt("ner_chars.cfg", "--config", "-c", help="Name of the configuration file to use."),
     init_tok2vec: Optional[Path] = Opt(None, "--init-tok2vec", "-w", help="Path to the pretrained weights using the baseline configuration"), 
     vectors: Optional[Path] = Opt(None, "--vectors", "-v", help="Path to the initialized fastText static vectors."),
+    trf_model_name: Optional[str] = Opt(None, "--trf-model-name", "--trf", help="Transformer model name from Huggingface."),
     gpu_id: int = Opt(0, "--gpu-id", "-G", help="Set the GPU ID. Use -1 for CPU."),
     force: bool = Opt(False, "--force", "-f", help="Force run the workflow."),
     dry_run: bool = Opt(False, "--dry-run", "--dry", help="Print the commands, don't run them."),
@@ -42,6 +43,10 @@ def benchmark(
         if vectors:
             msg.text(f"Training with static vectors: `{vectors}`")
             overrides["vars.vectors"] = str(vectors)
+
+        if trf_model_name:
+            msg.text(f"Using transformer model: {trf_model_name}")
+            overrides["vars.trf_model_name"] = trf_model_name
 
         project_run(
             project_dir=Path.cwd(),

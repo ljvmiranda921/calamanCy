@@ -17,6 +17,7 @@ vars:
   init_tok2vec: null
   vectors: null
   trial_num: 0
+  trf_model_name: "roberta-tagalog-base"
   # fastText or floret training variables
   # cf. https://fasttext.cc/docs/en/unsupervised-tutorial.html#advanced-readers-playing-with-the-parameters
   vectors_dim: 200
@@ -72,6 +73,10 @@ assets:
     extra: True
 
 workflows:
+  ner-trf:
+    - "setup-ner"
+    - "train-ner-trf"
+    - "evaluate-ner"
   ner:
     - "setup-ner"
     - "train-ner"
@@ -202,6 +207,27 @@ commands:
         --paths.train corpus/train.spacy
         --paths.dev corpus/dev.spacy
         --initialize.init_tok2vec ${vars.init_tok2vec}
+        --paths.vectors ${vars.vectors}
+        --system.seed ${vars.seed}
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+    outputs:
+      - training/${vars.experiment_id}/${vars.trial_num}/model-best
+      - training/${vars.experiment_id}/${vars.trial_num}/model-last
+
+  - name: "train-ner-trf"
+    help: "Train a transformer NER model. Usually called within the `benchmark.py` script."
+    script:
+      - >-
+        python -m spacy train
+        configs/${vars.config}
+        --nlp.lang ${vars.lang}
+        --output training/${vars.experiment_id}/${vars.trial_num}/
+        --components.transformer.model.name ${vars.trf_model_name}
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
         --paths.vectors ${vars.vectors}
         --system.seed ${vars.seed}
         --gpu-id ${vars.gpu_id}
