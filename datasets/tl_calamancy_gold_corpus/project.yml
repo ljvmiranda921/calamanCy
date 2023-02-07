@@ -109,6 +109,7 @@ directories:
   - "pretraining"
   - "training"
   - "vectors"
+  - "sweep"
   - "metrics"
 
 assets:
