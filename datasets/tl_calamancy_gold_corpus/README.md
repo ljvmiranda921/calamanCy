@@ -55,6 +55,7 @@ python3 -m scripts.benchmark with_fasttext --num-trials 3 --vectors vectors/fast
 
 You can check the `scripts/run_benchmarks.sh` file to see different
 experiments that leverage this tool.
+Pipeline*](https://ljvmiranda921.github.io/notebook/2023/02/04/tagalog-pipeline/).
 
 
 ## 📋 project.yml
