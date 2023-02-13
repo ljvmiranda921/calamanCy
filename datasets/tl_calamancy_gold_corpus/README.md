@@ -35,6 +35,27 @@ Pipeline*](https://ljvmiranda921.github.io/notebook/2023/02/04/tagalog-pipeline/
 where I discuss my annotation process, architectural decisions, and
 performance evaluation.
 
+### Running a benchmark
+
+Instead of using spaCy commands, we use the `scripts/benchmark.py`
+command-line tool to run a benchmark. Under the hood, it calls the `ner` (or
+`ner-trf`) workflow to preprocess data, train a model, and evaluate results.
+
+```sh
+python3 -m scripts.benchmark experiment_id [OPTIONS] 
+```
+
+For example, if we want to conduct a pipeline that uses fastText vectors for
+three trials, we can run the command:
+
+```sh
+# Run benchmark on a pipeline that uses fastText vectors
+python3 -m scripts.benchmark with_fasttext --num-trials 3 --vectors vectors/fasttext-tl
+```
+
+You can check the `scripts/run_benchmarks.sh` file to see different
+experiments that leverage this tool.
+
 
 ## 📋 project.yml
 
