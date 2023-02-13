@@ -1,3 +1,5 @@
+<img src="logo.png" width="125" height="125" align="right" />
+
 # CalamanCy [WIP]
 
 **CalamanCy** is a Tagalog natural language preprocessing framework made with [spaCy](https://spacy.io).
