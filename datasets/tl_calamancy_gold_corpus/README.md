@@ -42,7 +42,7 @@ command-line tool to run a benchmark. Under the hood, it calls the `ner` (or
 `ner-trf`) workflow to preprocess data, train a model, and evaluate results.
 
 ```sh
-python3 -m scripts.benchmark experiment_id [OPTIONS] 
+python -m scripts.benchmark experiment_id [OPTIONS] 
 ```
 
 For example, if we want to conduct a pipeline that uses fastText vectors for
@@ -72,11 +72,26 @@ three trials, we can run the command:
 
 ```sh
 # Run benchmark on a pipeline that uses fastText vectors
-python3 -m scripts.benchmark with_fasttext --num-trials 3 --vectors vectors/fasttext-tl
+python -m scripts.benchmark with_fasttext --num-trials 3 --vectors vectors/fasttext-tl
 ```
 
 You can check the `scripts/run_benchmarks.sh` file to see different
 experiments that leverage this tool.
+
+### Hyperparameter search
+
+You can also perform hyperparameter search using [spaCy's Weight and Biases
+integration](https://docs.wandb.ai/guides/integrations/spacy). First, you need to login:
+
+```sh
+wandb login
+```
+
+And then you can run the `hyperparameter-search` command:
+
+```sh
+python -m spacy project run hyperparameter-search
+```
 
 
 ## 📋 project.yml
@@ -102,6 +117,7 @@ Commands are only re-run if their inputs have changed.
 | `train-ner` | Train the NER model. Usually called within the `benchmark.py` script. |
 | `train-ner-trf` | Train a transformer NER model. Usually called within the `benchmark.py` script. |
 | `evaluate-ner` | Evaluate NER model. Usually called within the `benchmark.py` script. |
+| `hyperparameter-search` | Perform hyperparameter search given a training configuration. |
 | `summarize-results` | Summarize results for a given experimental run. |
 
 ### ⏭ Workflows
