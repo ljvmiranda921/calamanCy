@@ -4,3 +4,4 @@ wasabi
 typer
 srsly
 tqdm
+wandb
