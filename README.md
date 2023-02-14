@@ -1,4 +1,4 @@
-<img src="logo.png" width="125" height="125" align="right" />
+<img src="https://raw.githubusercontent.com/ljvmiranda921/calamanCy/master/logo.png" width="125" height="125" align="right" />
 
 # calamanCy: NLP pipelines for Tagalog [WIP]
 

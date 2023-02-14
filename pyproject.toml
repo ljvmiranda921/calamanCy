@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "calamanCy"
+version = "0.1.0"
+authors = [
+    {name = "Lj V. Miranda", email = "ljvmiranda@gmail.com"}
+]
+description = "NLP Pipelines for Tagalog"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "MIT License"}
+keywords = ["nlp", "natural language processing", "language technology", "tagalog"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering"
+]
+requires-python = ">=3.7"
+dependencies = [
+    "spacy>=3.4.0",
+    "wasabi>=0.9.1",
+    "typer>=0.4.2"
+]
+
+[project.urls]
+"Repository" = "https://github.com/ljvmiranda921/calamanCy"
+"Bug Tracker" = "https://github.com/ljvmiranda921/calamanCy/issues"
+"Release Notes" = "https://github.com/ljvmiranda921/calamanCy/releases"
+
+[tool.setuptools]
+packages = ["calamancy"]
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint.format]
+max-line-length = 88
+
+[tool.flake8]
+ignore = ["E203", "E266", "E501", "E731", "W503", "E741", "F541"]
+max-line-length = 88
+select = ["B", "C", "E", "F", "W", "T4", "B9"]
+exclude = [
+    ".env*",
+    ".git",
+    "__pycache__"
+]
