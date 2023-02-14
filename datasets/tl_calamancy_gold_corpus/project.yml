@@ -347,7 +347,6 @@ commands:
         --paths.train corpus/train.spacy
         --paths.dev corpus/dev.spacy
         --paths.vectors ${vars.vectors}
-        --paths.init_tok2vec ${vars.init_tok2vec}
     deps:
       - corpus/train.spacy
       - corpus/dev.spacy
