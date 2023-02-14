@@ -1,4 +1,4 @@
-method: bayes
+method: random
 metric:
   goal: maximize
   name: ents_f
@@ -11,3 +11,24 @@ parameters:
     distribution: uniform
     max: 0.01
     min: 0.001
+  components.tok2vec.model.encode.width:
+    distribution: categorical
+    values:
+      - 64
+      - 128
+      - 256
+      - 512
+  components.tok2vec.model.encode.depth:
+    distribution: categorical
+    values:
+      - 1
+      - 2
+      - 4
+      - 8
+      - 16
+  components.tok2vec.model.encode.window_size:
+    distribution: categorical
+    values:
+      - 1
+      - 2
+      - 3
