@@ -1,4 +1,0 @@
-isort
-flake8
-black
-mypy
