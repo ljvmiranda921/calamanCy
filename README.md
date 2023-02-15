@@ -21,9 +21,31 @@ following line in your terminal:
 pip install calamanCy
 ``` 
 
+### Development
+
+If you are developing calamanCy, first clone the repository:
+
+```sh
+git clone git@github.com:ljvmiranda921/calamanCy.git
+```
+
+Then, create a virtual environment and install the dependencies:
+
+```sh
+python -m venv venv
+venv/bin/pip install -e .  # requires pip>=23.0
+venv/bin/pip install .[dev]
+
+# Activate the virtual environment
+source venv/bin/activate
+```
+
+or alternatively, use `make dev`.
+
+
 ## 👩‍💻 Usage
 
-To use the calamanCy you first have to download either the medium, large, or
+To use calamanCy you first have to download either the medium, large, or
 transformer model. To see a list of all available models, run:
 
 ```python
