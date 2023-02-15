@@ -95,6 +95,7 @@ vars:
   vectors_bucket_size: 200000
   # Hyperparameter search
   wandb_config: "configs/sweeps/sweep.yml"
+  sweep_n_trials: 30
 
 directories:
   - "assets"
@@ -342,6 +343,7 @@ commands:
       - >-
         python -m scripts.wandb_sweep ${vars.config}
         --wandb-config ${vars.wandb_config}
+        --num-trials ${vars.sweep_n_trials}
         --gpu-id ${vars.gpu_id}
         --nlp.lang ${vars.lang}
         --paths.train corpus/train.spacy

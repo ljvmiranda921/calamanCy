@@ -26,7 +26,7 @@ def wandb_sweep(
     ctx: typer.Context,
     default_config: Path = typer.Argument(..., help="Path to the spaCy training configuration."), 
     wandb_config: Path = typer.Option(DEFAULT_WANDB_CONFIG, "--wandb-config", "--config", "-C", help="Path to the WandB YAML configuration file."),
-    num_trials: int = typer.Option(3, "--num-trials", "-n", help="Number of trials to run the each hyperparameter combination."),
+    num_trials: int = typer.Option(30, "--num-trials", "-n", help="Number of trials to run the each hyperparameter combination."),
     project_name: str = typer.Option("calamanCy", help="Project name to save the sweep results."),
     output_path: Optional[Path] = typer.Option(None, "--output-path", "-o", help="Path to store the trained models."),
     gpu_id: int = Opt(0, "--gpu-id", "-G", help="Set the GPU ID. Use -1 for CPU."),
