@@ -9,6 +9,7 @@ from spacy.training.initialize import init_nlp
 from spacy.training.loop import train
 from srsly import read_yaml
 from thinc.api import Config
+from wasabi import msg
 
 Arg = typer.Argument
 Opt = typer.Option
@@ -25,6 +26,7 @@ def wandb_sweep(
     # fmt: off
     ctx: typer.Context,
     default_config: Path = typer.Argument(..., help="Path to the spaCy training configuration."), 
+    sweep_id: Optional[str] = typer.Option(None, "--sweep-id", "--id", help="Agent id to resume an already started sweep."),
     wandb_config: Path = typer.Option(DEFAULT_WANDB_CONFIG, "--wandb-config", "--config", "-C", help="Path to the WandB YAML configuration file."),
     num_trials: int = typer.Option(30, "--num-trials", "-n", help="Number of trials to run the each hyperparameter combination."),
     project_name: str = typer.Option("calamanCy", help="Project name to save the sweep results."),
@@ -46,8 +48,12 @@ def wandb_sweep(
             train(nlp, output_path=output_path, use_gpu=gpu_id)
 
     sweep_config = dict(read_yaml(wandb_config))
-    sweep_id = wandb.sweep(sweep_config, project=project_name)
-    wandb.agent(sweep_id, train_spacy, count=num_trials)
+    if not sweep_id:
+        msg.info("Creating a new sweep")
+        sweep_id = wandb.sweep(sweep_config, project=project_name)
+
+    msg.info(f"Running sweep {sweep_id} for project '{project_name}'")
+    wandb.agent(sweep_id, train_spacy, project=project_name, count=num_trials)
 
 
 if __name__ == "__main__":

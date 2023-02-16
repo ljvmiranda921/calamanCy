@@ -96,6 +96,7 @@ vars:
   # Hyperparameter search
   wandb_config: "configs/sweeps/sweep.yml"
   sweep_n_trials: 30
+  sweep_id: null
 
 directories:
   - "assets"
@@ -342,6 +343,7 @@ commands:
     script:
       - >-
         python -m scripts.wandb_sweep ${vars.config}
+        --sweep-id ${vars.sweep_id}
         --wandb-config ${vars.wandb_config}
         --num-trials ${vars.sweep_n_trials}
         --gpu-id ${vars.gpu_id}
