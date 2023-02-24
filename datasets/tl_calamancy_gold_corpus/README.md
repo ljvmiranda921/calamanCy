@@ -71,6 +71,18 @@ And then you can run the `hyperparameter-search` command:
 python -m spacy project run hyperparameter-search
 ```
 
+### Training curve
+
+To run the `train-curve` command, you need to install your own version of [Prodigy](https://prodi.gy/buy).
+Here, I trained the model with different portions of the training examples and print the accuracy figures
+in a figure.
+
+```sh
+python -m pip install prodigy -f https://XXXX-XXXX-XXXX-XXXX@download.prodi.gy
+```
+
+With `XXXX-XXXX-XXXX-XXXX` being your personal Prodigy license key.
+
 
 ## 📋 project.yml
 
@@ -97,6 +109,8 @@ Commands are only re-run if their inputs have changed.
 | `evaluate-ner` | Evaluate NER model. Usually called within the `benchmark.py` script. |
 | `hyperparameter-search` | Perform hyperparameter search given a training configuration. |
 | `summarize-results` | Summarize results for a given experimental run. |
+| `train-curve` | Train a model at varying portions of the training data |
+| `clean-datasets` | Drop the Prodigy dataset that was automatically created during the train-curve command |
 
 ### ⏭ Workflows
 
