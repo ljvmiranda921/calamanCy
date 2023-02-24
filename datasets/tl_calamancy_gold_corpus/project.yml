@@ -69,6 +69,18 @@ description: |
   python -m spacy project run hyperparameter-search
   ```
 
+  ### Training curve
+
+  To run the `train-curve` command, you need to install your own version of [Prodigy](https://prodi.gy/buy).
+  Here, I trained the model with different portions of the training examples and print the accuracy figures
+  in a figure.
+
+  ```sh
+  python -m pip install prodigy -f https://XXXX-XXXX-XXXX-XXXX@download.prodi.gy
+  ```
+
+  With `XXXX-XXXX-XXXX-XXXX` being your personal Prodigy license key.
+
 vars:
   # General variables
   dataset_version: 1.0
@@ -78,6 +90,7 @@ vars:
   gpu_id: 0
   lang: "tl"
   raw_text: "raw_text.jsonl"
+  prodigy_dataset: "calamancy_gold"
   # Experiment related variables called by
   # the script/run_experiment.py script
   experiment_id: "baseline"
@@ -94,7 +107,7 @@ vars:
   vectors_maxn: 5
   vectors_bucket_size: 200000
   # Hyperparameter search
-  wandb_config: "configs/sweeps/sweep.yml"
+  wandb_config: "sweep.yml"
   sweep_n_trials: 30
   sweep_id: null
 
@@ -342,9 +355,9 @@ commands:
     help: "Perform hyperparameter search given a training configuration."
     script:
       - >-
-        python -m scripts.wandb_sweep ${vars.config}
+        python -m scripts.wandb_sweep configs/${vars.config}
         --sweep-id ${vars.sweep_id}
-        --wandb-config ${vars.wandb_config}
+        --wandb-config configs/sweeps/${vars.wandb_config}
         --num-trials ${vars.sweep_n_trials}
         --gpu-id ${vars.gpu_id}
         --nlp.lang ${vars.lang}
@@ -365,3 +378,32 @@ commands:
         --dataset ${vars.eval_dataset}
         --output-path summarized_metrics/${vars.experiment_id}/results.json
         --per-entity-type
+
+  - name: "train-curve"
+    help: "Train a model at varying portions of the training data"
+    script:
+      # Create JSONL files to hydrate a prodigy dataset into
+      - python -m scripts.convert_to_jsonl corpus/train.spacy corpus/train.jsonl
+      - python -m scripts.convert_to_jsonl corpus/dev.spacy corpus/dev.jsonl
+      # Hydrate the prodigy dataset
+      - python -m prodigy db-in ${vars.prodigy_dataset} corpus/train.jsonl
+      - python -m prodigy db-in ${vars.prodigy_dataset}_eval corpus/dev.jsonl
+      # Run train-curve command
+      - >-
+        python -m prodigy train-curve
+        --ner ${vars.prodigy_dataset},eval:${vars.prodigy_dataset}_eval
+        --config configs/${vars.config}
+        --gpu-id ${vars.gpu_id}
+        --show-plot
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+    outputs:
+      - corpus/train.jsonl
+      - corpus/dev.jsonl
+
+  - name: "clean-datasets"
+    help: "Drop the Prodigy dataset that was automatically created during the train-curve command"
+    script:
+      - python -m prodigy drop ${vars.prodigy_dataset}
+      - python -m prodigy drop ${vars.prodigy_dataset}_eval
