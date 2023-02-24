@@ -1,9 +1,9 @@
 import random
 from itertools import groupby
+from math import ceil
 from mmap import mmap
 from pathlib import Path
-from typing import List, Optional, Dict, Tuple
-from math import ceil
+from typing import Dict, List, Optional, Tuple
 
 import spacy
 import typer

@@ -1,11 +1,12 @@
-from typing import Optional, Dict
 from pathlib import Path
+from typing import Dict, Optional
 
-import typer
 import spacy
-from wasabi import msg
-from datasets import load_dataset
+import typer
 from spacy.tokens import Doc, DocBin
+from wasabi import msg
+
+from datasets import load_dataset
 
 from .utils import setup_gpu
 
