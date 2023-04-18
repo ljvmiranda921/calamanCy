@@ -81,26 +81,6 @@ pipeline. Head over to the [documentation]() for more tutorials.
 
 calamanCy provides Tagalog models and datasets that you can use in your spaCy
 pipelines. You can download them directly or use the `calamancy` Python library
-to access them.
-
-### Datasets
-
-You can find structured evaluation results for each dataset in the `datasets/` directory.
-
-
-| Name                | Type | Task | Train | Dev | Test | Labels        | Description                                                       |
-|---------------------|------|------|-------|-----|------|---------------|-------------------------------------------------------------------|
-| `tl_tlunified_gold` | Gold | NER  | 6252  | 782 | 782  | PER, ORG, LOC | Annotated portion of the TLUnified corpus (Cruz and Cheng, 2021). |
-
-### Pipelines
-
-The training procedure for each pipeline can be found in the `training/` directory. They are further
-subdivided into versions. Each folder is an instance of a [spaCy project](https://spacy.io/usage/projects).
-
-
-| Name               | Components                                                    | Sources                                             | Description                                                                                                                                                                                    |
-|--------------------|---------------------------------------------------------------|-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `tl_calamancy_md`  | tok2vec, morphologizer, parser, trainable_lemmatizer, ner     | TLUnified (Cruz and Cheng, 2021), UD Tagalog (2023) | Floret vectors (200k) that were trained from the bulk of TLUnified were used for the tok2vec component. Similar to the `lg` variant, it also uses character pretraining to initialize weights. |
-| `tl_calamancy_lg`  | tok2vec, morphologizer, parser, trainable_lemmatizer, ner     | TLUnified (Cruz and Cheng, 2021), UD Tagalog (2023) | The tok2vec component uses fastText vectors (714k) trained from CommonCrawl and Wikipedia. It also uses character pretraining to initialize the token-to-vector weights.                       |
-| `tl_calamancy_trf` | transformer, morphologizer, parser, trainable_lemmatizer, ner | TLUnified (Cruz and Cheng, 2021), UD Tagalog (2023) | The transformer component uses roberta-tagalog-large.                                                                                                                                          |
-
+to access them. The training procedure for each pipeline can be found in the
+`models/` directory. They are further subdivided into versions. Each folder is
+an instance of a [spaCy project](https://spacy.io/usage/projects).
