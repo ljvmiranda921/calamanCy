@@ -1,0 +1,159 @@
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage{EMNLP2023}
+% \usepackage[review]{EMNLP2023}
+
+% Standard package includes
+\usepackage{times}                            % font style
+\usepackage{latexsym}                         % for additional symbols
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}                      % truetype font style
+\usepackage{booktabs}                         % better-looking tables
+\usepackage[raggedrightboxes]{ragged2e}       % better table alignment
+\usepackage{subfiles}                         % file management
+
+
+\title{calamanCy: A Tagalog Natural Language Processing Toolkit}
+
+\author{Lester James V. Miranda \\
+  ExplosionAI GmbH \\
+  \texttt{lj@explosion.ai}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  Despite the presence of language resources for Tagalog, there is still no unifying framework to apply them to downstream tasks.
+  We introduce calamanCy, an open-source toolkit for constructing natural language processing (NLP) pipelines.
+  It is built on top of spaCy, enabling easy experimentation and integration with other frameworks.  
+  calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering efficient multitask models for core NLP tasks.
+  Additionally, we include structured evaluations for dependency parsing, part-of-speech (POS) tagging, and named entity recognition (NER).
+  calamanCy aims to accelerate the progress of Tagalog NLP by consolidating disjointed resources in a unified framework.
+  The calamanCy Github repository can be found at \url{https://github.com/ljvmiranda921/calamanCy}.
+\end{abstract}
+
+\section{Introduction}
+
+Tagalog is a low-resource language belonging to the Austronesian family, with over 76 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
+Despite its speaker population, there are limited resources available for the language \citep{Cruz2021ImprovingLL}. 
+Nevertheless, pretrained language models (LMs) for Tagalog exist. 
+These models include multilingual LMs such as XLM-R and mBERT \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO}, 
+as well as monolingual LMs such as RoBERTa Tagalog \citep{Cruz2021ImprovingLL}. 
+On the data side, language resources are dispersed.
+Tagalog treebanks exist within the Universal Dependencies framework \citep{Dehouck2019PhylogenicMD,Kondratyuk201975L1,Aquino2020ParsingIT}, 
+while domain-specific corpora in literature are scarce \citep{Enriquez2023DeterminingLF,Livelo2018IntelligentDI}. 
+Within this context, a coherent and unified framework for all core NLP tasks in Tagalog is still lacking.
+This issue hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
+
+To address these challenges, we introduce calamanCy,\footnote[1]{
+  The name ``calamanCy'' came from \textit{kalamansi}, a citrus fruit native to the Philippines.}
+an open-source toolkit for Tagalog NLP. 
+It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks, including dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). 
+calamanCy also provides models of different sizes, with a balance between performance and accuracy.
+Finally, our work has two main contributions: (1) a unified framework via calamanCy, and (2) structured benchmarks for Tagalog NLP tasks using efficient multitask pipelines.
+% This following sections will discuss the process of model development, benchmark results on existing Tagalog corpora, and showcase sample applications of calamanCy.
+
+\subfile{tables/entity_types}
+
+
+\section{Related Work}
+
+\paragraph*{Open-source toolkits for NLP}
+There has been a growing body of work in the development of NLP toolkits tailored to specific settings in recent years. 
+For languages, these software include DaCy for Danish \citep{Enevoldsen2021DaCyAU} and HuSpaCy for Hungarian \citep{Orosz2022HuSpaCyAI}.
+For domains, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific text \citep{Neumann2019ScispaCyFA}.
+These tools were based on spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
+Using spaCy as a foundation to build NLP toolkits is an optimal choice given its popularity and integration with other frameworks such as HuggingFace \citep{Wolf2019HuggingFacesTS}.
+However, no tool exists for Tagalog until now.
+In this paper, we will showcase how calamanCy provides similar capabilities as DaCy and HuSpaCy using Tagalog resources.
+
+\paragraph*{Evaluations on Tagalog NLP Tasks} 
+Structured evaluations for core NLP tasks, such as dependency parsing, POS tagging, and NER, are sparse.
+However, we have access to a reasonable amount of data to conduct comprehensive benchmarks.
+For example, TLUnified \citep{Cruz2021ImprovingLL} is a pretraining corpus that combines news reports \citep{Cruz2020ExploitingNA}, a preprocessed version of CommonCrawl \citep{OrtizSuarez2019AsynchronousPF}, and several other datasets.
+However, it was evaluated on domain-specific applications that may not easily transfer to more general tasks.
+For dependency parsing and POS tagging, we have Universal Dependencies treebanks such as TRG \citep{Dehouck2019PhylogenicMD,Kondratyuk201975L1} and Ugnayan \citep{Aquino2020ParsingIT}.
+This paper will fill the evaluation gap by providing structured benchmarks on core NLP tasks.
+
+\section{Implementation}
+
+% In this section, we will discuss the construction of NLP pipelines for calamanCy and their usage within the library.
+The best way to use calamanCy is through its trained pipelines.
+After installing the library, users can access the models via:
+
+\begin{verbatim}
+  import calamancy as cl
+  nlp = cl.load("tl_calamancy_md-0.1.0")
+\end{verbatim}
+
+Here, the variable \texttt{nlp} is a spaCy processsing pipeline.\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}}
+It contains trained components for POS tagging, dependency parsing, and NER.
+calamanCy offers three pipelines of varying capacity: two word vector-based models (\texttt{md}, \texttt{lg}), and one transformer-based model (\texttt{trf}).
+We will discuss how these pipelines were developed in the following section.
+
+\subsection{Pipeline development}
+
+\paragraph*{Data annotation}
+To construct the NER corpus, we curated a portion of TLUnified \citep{Cruz2021ImprovingLL} to only contain Tagalog news articles.
+Including the author, we recruited two more annotators who have at least a Bachelors degree and whose native language is Tagalog.
+The three annotators labeled over the course of four months given three entity types as seen in Table \ref{table:entity_types}.
+The entity types were chosen to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
+We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ without the un-annotated tokens (as recommended by \citealp{Delger2012BuildingGS}) then averaged them for all three pairs.
+This process resulted to a Cohen's $\kappa$ score of 0.78. 
+To avoid confusing with the original TLUnified corpora, we will refer to this annotated NER dataset as \texttt{calamanCy-gold}.
+The final dataset statistics can be found in Table \ref{table:dset_stats}.
+
+\subfile{tables/dataset_statistics}
+
+\paragraph*{Model training}
+
+We considered three design dimensions when training the calamanCy pipelines: (1) presence of pretraining, (2) the word representation, and (3) the representation size.
+\textit{Pretraining} involves learning vectors from raw text to better inform model initialization.
+This process is done using a variant of the cloze task \citep{Devlin2019BERTPO}.
+Here, the pretraining objective asks the model to predict some number of leading and training UTF-8 bytes for the words.
+\textit{Word representations} may either involve training static vectors using floret,\footnote[3]{\url{https://github.com/explosion/floret}} an efficient version of fastText \citep{Bojanowski2016EnrichingWV}, or using context-sensitive vectors from a transformer \citep{Vaswani2017AttentionIA}.
+Finally, \textit{representation size} is an engineering dimension determined via a performance-accuracy tradeoff.
+
+The general process involves pretraining a filtered version of TLUnified (removing overlaps with \texttt{calamanCy-gold}), constructing static vectors if necessary, and training the downstream components.
+We trained the NER component using data from \texttt{calamanCy-gold}, while the dependency parser and POS tagger were trained using the Ugnayan treebank.
+In the end, we came up with three language pipelines of varying sizes:\footnote[4]{The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}}
+
+\begin{itemize}
+  \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static floret vector table containing 50k unique vectors (200 dimensions).
+  \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. The only difference is this pipeline contains 200k unique vectors (200 dimensions).
+  \item \texttt{tl\_calamancy\_trf}: Tagalog transformer pipeline. No pretraining. Instead of a static vector table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL}.
+\end{itemize}
+
+The full training configuration for v0.1.0 of the calamanCy pipelines can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0}.
+
+\section{Evaluation}
+
+% testing on calamanCy-gold test set and TRG treebank
+% testing on robustness
+% testing on domain-specific data (hatespeech, evan's paper)
+
+
+\section{Discussions}
+
+
+\section{Conclusion}
+
+% Then maybe talk about contributions at the end
+% outline contributions
+% 1. NLp framework based on spaCy
+% 2. Benchmarks and evaluations
+% 3. Gold-standard NER annotations
+
+
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{custom}
+\bibliographystyle{acl_natbib}
+
+
+\end{document}
