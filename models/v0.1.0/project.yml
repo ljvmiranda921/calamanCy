@@ -1,0 +1,222 @@
+title: "Release v0.1.0"
+description: |
+  This is a spaCy project that trains the v0.1.0 models for calamanCy.
+
+vars:
+  # Versioning
+  version: v0.1.0
+  dataset_version: 1.0
+  pretrain_epoch: 5
+  # Training
+  lang: "tl"
+  gpu_id: 0
+
+directories:
+  - "assets"
+  - "configs"
+  - "corpus"
+  - "scripts"
+  - "training"
+
+assets:
+  - dest: assets/corpus.tar.gz
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/corpus.tar.gz"
+    description: "Annotated TLUnified corpora in spaCy format with train, dev, and test splits."
+  - dest: "assets/treebank"
+    description: "Treebank data for UD_Tagalog-Ugnayan"
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-Ugnayan"
+      branch: "master"
+      path: ""
+  - dest: "assets/fasttext.tl.gz"
+    url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+    description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
+    extra: True
+  - dest: "assets/tlunified.zip"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+    description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
+  - dest: "assets/floret"
+    git:
+      repo: "https://github.com/explosion/floret"
+      branch: "main"
+      path: ""
+    description: "Floret repository for training floret and fastText models."
+
+workflows:
+  setup:
+    - "setup-training-data"
+    - "setup-pretraining-data"
+    - "setup-fasttext-vectors"
+    - "build-floret"
+  tl-calamancy-trf:
+    - "train-parser-tagger"
+    - "train-ner-trf"
+    - "assemble-trf"
+    - "package"
+  tl-calamancy-lg:
+    - "pretrain"
+    - "train-vectors-lg"
+    - "train-parser-tagger"
+    - "train-ner-lg"
+    - "assemble-lg"
+    - "package"
+  tl-calamancy-md:
+    - "pretrain"
+    - "train-vectors-md"
+    - "train-parser-tagger"
+    - "train-ner-md"
+    - "assemble-md"
+    - "package"
+
+commands:
+  - name: "setup-training-data"
+    help: "Prepare the Tagalog corpora used for training various spaCy components"
+    script:
+      # ner: Extract Tagalog corpora
+      - "tar -xzvf assets/corpus.tar.gz -C corpus/"
+      # parser, tagger: Convert treebank into spaCy format
+      - "mkdir -p corpus/treebank/"
+      - >-
+        python -m spacy convert 
+        assets/treebank/tl_ugnayan-ud-test.conllu corpus/treebank
+        --converter conllu
+        --n-sents 1
+        --merge-subtokens
+    deps:
+      - assets/corpus.tar.gz
+      - assets/treebank/tl_ugnayan-ud-test.conllu
+    outputs:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
+      - corpus/tl_ugnayan-ud-test.spacy
+
+  - name: "setup-pretraining-data"
+    help: "Prepare the Tagalog corpora used for self-supervised learning operations"
+    script:
+      - unzip -o assets/tlunified.zip -d assets/
+    outputs:
+      - assets/tlunified/train.txt
+
+  - name: "setup-fasttext-vectors"
+    help: "Make fastText vectors spaCy compatible"
+    script:
+      - "gzip -d -f assets/fasttext.tl.gz"
+      - >-
+        python -m spacy init vectors
+        tl assets/fasttext.tl vectors/fasttext-tl
+    outputs:
+      - vectors/fasttext-tl
+
+  - name: "train-vectors-lg"
+    help: "Train large-sized word vectors (200 dims, 200k keys) using the floret binary."
+    script:
+      - mkdir -p assets/vectors/floret-tl-lg/
+      - >-
+        assets/floret/floret skipgram
+        -input assets/tlunified/train.txt 
+        -output assets/vectors/floret-tl-lg/vectors
+        -dim 200
+        -minn 3
+        -maxn 5 
+        -mode floret
+        -hashCount 2
+        -bucket 200000
+      - >-
+        python -m spacy init vectors 
+        tl assets/floret-tl-lg/vectors.floret vectors/floret-tl-lg
+        --mode floret
+    deps:
+      - assets/floret/floret
+    outputs:
+      - vectors/floret-tl-lg
+
+  - name: "train-vectors-md"
+    help: "Train medium-sized word vectors (200 dims, 50k keys) using the floret binary."
+    script:
+      - mkdir -p assets/vectors/floret-tl-md/
+      - >-
+        assets/floret/floret skipgram
+        -input assets/tlunified/train.txt 
+        -output assets/vectors/floret-tl-md/vectors
+        -dim 200
+        -minn 3
+        -maxn 5 
+        -mode floret
+        -hashCount 2
+        -bucket 50000
+      - >-
+        python -m spacy init vectors 
+        tl assets/floret-tl-md/vectors.floret vectors/floret-tl-md
+        --mode floret
+    deps:
+      - assets/floret/floret
+    outputs:
+      - vectors/floret-tl-md
+
+  - name: "build-floret"
+    help: "Build floret binary for training fastText / floret vectors"
+    script:
+      - make -C assets/floret
+      - chmod +x assets/floret/floret
+    deps:
+      - assets/floret
+    outputs:
+      - assets/floret/floret
+
+  - name: "train-parser-tagger"
+    help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
+    script:
+      - ls
+
+  - name: "train-ner-md"
+    help: "Train NER component of tl_calamancy_md using floret vectors with pretraining (50k unique vectors)"
+    script:
+      - >-
+        python -m spacy train
+        configs/ner.cfg
+        --nlp.lang ${vars.lang}
+        --output training/ner_md/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --initialize.init_tok2vec assets/tl_tlunified_pt_chars.bin
+        --paths.vectors vectors/floret-tl-md 
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - assets/tl_tlunified_pt_chars.bin
+      - vectors/floret-tl-md
+    outputs:
+      - training/ner_md/model-best
+
+  - name: "train-ner-lg"
+    help: "Train NER component of tl_calamancy_lg using fastText vectors with pretraining (714k unique keys)"
+    script:
+      - >-
+        python -m spacy train
+        configs/ner.cfg
+        --nlp.lang ${vars.lang}
+        --output training/ner_lg/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --initialize.init_tok2vec assets/tl_tlunified_pt_chars.bin
+        --paths.vectors vectors/fasttext-tl
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - assets/tl_tlunified_pt_chars.bin
+      - vectors/fasttext-tl
+    outputs:
+      - training/ner_lg/model-best
+
+  - name: "train-ner-trf"
+    help: "Train NER component of tl_calamancy_trf using context-sensitive vectors from roberta-tagalog"
+    script:
+      - ls
+
+  - name: "package"
+    help: "Package the trained pipeline and prepare them for shipping"
+    script:
+      - ls

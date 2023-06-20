@@ -25,7 +25,7 @@ app = typer.Typer()
 def wandb_sweep(
     # fmt: off
     ctx: typer.Context,
-    default_config: Path = typer.Argument(..., help="Path to the spaCy training configuration."), 
+    default_config: Path = typer.Argument(..., help="Path to the spaCy training configuration."),
     sweep_id: Optional[str] = typer.Option(None, "--sweep-id", "--id", help="Agent id to resume an already started sweep."),
     wandb_config: Path = typer.Option(DEFAULT_WANDB_CONFIG, "--wandb-config", "--config", "-C", help="Path to the WandB YAML configuration file."),
     num_trials: int = typer.Option(30, "--num-trials", "-n", help="Number of trials to run the each hyperparameter combination."),

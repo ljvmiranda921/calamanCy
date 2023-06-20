@@ -35,7 +35,7 @@ dependencies = [
 dev = [
     "black>=23.1.0",
     "isort>=5.0.0",
-    "flake8>=6.0.0",
+    "ruff>=0.0.272",
     "mypy>=1.0.0"
 ]
 
@@ -53,12 +53,17 @@ profile = "black"
 [tool.pylint.format]
 max-line-length = 88
 
-[tool.flake8]
-ignore = ["E203", "E266", "E501", "E731", "W503", "E741", "F541"]
-max-line-length = 88
-select = ["B", "C", "E", "F", "W", "T4", "B9"]
-exclude = [
-    ".env*",
-    ".git",
-    "__pycache__"
+[tool.ruff]
+ignore = ["E203", "E266", "E501", "E731", "E741", "F541"]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # Pyflakes
+    "Q",    # flake8-quotes
+    "T201"  # flake8-print
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
+no_implicit_optional = true
+allow_redefinition = true

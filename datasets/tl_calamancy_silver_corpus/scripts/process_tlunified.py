@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Tuple
 
 import spacy
 import typer
-from spacy.tokens import Doc, DocBin
+from spacy.tokens import DocBin
 from tqdm import tqdm
 from wasabi import msg
 
