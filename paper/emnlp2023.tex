@@ -124,7 +124,7 @@ In the end, we came up with three language pipelines of varying sizes:\footnote[
 \begin{itemize}
   \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static floret vector table containing 50k unique vectors (200 dimensions).
   \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. The only difference is this pipeline contains 200k unique vectors (200 dimensions).
-  \item \texttt{tl\_calamancy\_trf}: Tagalog transformer pipeline. No pretraining. Instead of a static vector table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL}.
+  \item \texttt{tl\_calamancy\_trf}: Transformer-based Tagalog pipeline. No pretraining. Instead of a static vector table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL}.
 \end{itemize}
 
 The full training configuration for v0.1.0 of the calamanCy pipelines can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0}.
