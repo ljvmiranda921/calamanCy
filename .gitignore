@@ -171,3 +171,4 @@ notebooks/
 summarized_metrics/
 project.lock
 wandb/
+.vscode/
