@@ -44,6 +44,7 @@ remotes:
 
 directories:
   - "assets"
+  - "assets/treebank/"
   - "configs"
   - "corpus"
   - "scripts"
@@ -55,10 +56,16 @@ assets:
   - dest: assets/corpus.tar.gz
     description: "Annotated TLUnified corpora in spaCy format with train, dev, and test splits."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v${vars.dataset_version}/corpus.tar.gz"
-  - dest: "assets/treebank"
+  - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
     description: "Treebank data for UD_Tagalog-Ugnayan"
     git:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-Ugnayan"
+      branch: "master"
+      path: ""
+  - dest: "assets/treebank/UD_Tagalog-TRG/"
+    description: "Treebank data for UD_Tagalog-TRG"
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
       branch: "master"
       path: ""
   - dest: "assets/fasttext.tl.gz"
@@ -108,22 +115,34 @@ commands:
       - mkdir -p corpus/ner
       - "tar -xzvf assets/corpus.tar.gz -C corpus/ner"
       # parser, tagger: Convert treebank into spaCy format
+      # we are merging these two treebanks because the amount of data is too small
       - mkdir -p corpus/treebank/
       - >-
         python -m spacy convert 
-        assets/treebank/tl_ugnayan-ud-test.conllu assets/treebank
+        assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu assets/treebank
         --converter conllu
         --n-sents 1
         --merge-subtokens
       - >-
+        python -m spacy convert 
+        assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu assets/treebank
+        --converter conllu
+        --n-sents 1
+        --merge-subtokens
+      - >-
+        python -m scripts.merge_treebanks
+        assets/treebank/tl_trg-ud-test.spacy assets/treebank/tl_ugnayan-ud-test.spacy
+        assets/treebank/ud_merged.spacy
+      - >-
         python -m scripts.split_treebank
-        assets/treebank/tl_ugnayan-ud-test.spacy
+        assets/treebank/ud_merged.spacy
         corpus/treebank
         --lang ${vars.lang}
         --train-size 0.9
     deps:
       - assets/corpus.tar.gz
-      - assets/treebank/tl_ugnayan-ud-test.conllu
+      - assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu
+      - assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu
     outputs:
       - corpus/ner/train.spacy
       - corpus/ner/dev.spacy
