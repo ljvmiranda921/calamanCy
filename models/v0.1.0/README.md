@@ -3,32 +3,38 @@
 # 🪐 spaCy Project: Release v0.1.0
 
 This is a spaCy project that trains the v0.1.0 models for calamanCy. You can
-use this project to replicate the pipelines shipped by the project. First, you need to install the
-required dependencies:
+use this project to replicate the pipelines shipped by the project. First, you
+need to install the required dependencies:
 
 ```
 pip install -r requirements.txt
 ```
 
-Then you need to download all the assets (corpora, static vectors, etc.) via:
+Then run the set-up commands:
 
 ```
 python -m spacy project assets
-```
-
-Before training the pipelines, you first need to run the setup workflow. This step prepares the
-corpora for training (or pretraining) and builds the necessary binaries for other downstream commands.
-
-```
 python -m spacy project run setup
 ```
 
-You can then train a pipeline by passing its name to the spaCy project command. For example, if you wish to train
-`tl_calamancy_md`, you can execute the corresponding workflow like so:
+This step downloads all assets and prepares all the datasets and binaries for
+training use.  You can then train a pipeline by passing its name to the spaCy
+project command. For example, if you wish to train `tl_calamancy_md`, you can
+execute the corresponding workflow like so:
 
 ```
 python -m spacy project run tl-calamancy-md 
 ```
+
+## Model information
+
+| Model                       | Pipelines                                   | Description                                                                                                  |
+|-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| tl_calamancy_md (73.7 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
+| tl_calamancy_lg (431.9 MB)  | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
+| tl_calamancy_trf (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                   |
+
+## Data sources
 
 
 ## 📋 project.yml
@@ -53,13 +59,15 @@ Commands are only re-run if their inputs have changed.
 | `train-vectors-lg` | Train large-sized word vectors (200 dims, 200k keys) using the floret binary. |
 | `pretrain-md` | Pretrain with information from raw text using floret (md) vectors |
 | `pretrain-lg` | Pretrain with information from raw text using fastText vectors |
-| `train-parser-tagger` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
+| `train-parser-tagger-md` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-md` | Train NER component of tl_calamancy_md using floret vectors with pretraining (50k unique vectors) |
+| `assemble-md` | Assemble the tl_calamancy_md model and package it as a spaCy pipeline |
+| `train-parser-tagger-lg` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-lg` | Train NER component of tl_calamancy_lg using fastText vectors with pretraining (714k unique keys) |
+| `assemble-lg` | Assemble the tl_calamancy_lg model and package it as a spaCy pipeline |
+| `train-parser-tagger-trf` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-trf` | Train NER component of tl_calamancy_trf using context-sensitive vectors from roberta-tagalog |
 | `assemble-trf` | Assemble the tl_calamancy_trf model and package it as a spaCy pipeline |
-| `assemble-lg` | Assemble the tl_calamancy_lg model and package it as a spaCy pipeline |
-| `assemble-md` | Assemble the tl_calamancy_md model and package it as a spaCy pipeline |
 
 ### ⏭ Workflows
 
@@ -71,9 +79,9 @@ inputs have changed.
 | Workflow | Steps |
 | --- | --- |
 | `setup` | `setup-training-data` &rarr; `setup-pretraining-data` &rarr; `setup-fasttext-vectors` &rarr; `build-floret` |
-| `tl-calamancy-trf` | `train-parser-tagger` &rarr; `train-ner-trf` &rarr; `assemble-trf` |
-| `tl-calamancy-lg` | `pretrain-lg` &rarr; `train-vectors-lg` &rarr; `train-parser-tagger` &rarr; `train-ner-lg` &rarr; `assemble-lg` |
-| `tl-calamancy-md` | `pretrain-md` &rarr; `train-vectors-md` &rarr; `train-parser-tagger` &rarr; `train-ner-md` &rarr; `assemble-md` |
+| `tl-calamancy-trf` | `train-parser-tagger-trf` &rarr; `train-ner-trf` &rarr; `assemble-trf` |
+| `tl-calamancy-lg` | `pretrain-lg` &rarr; `train-vectors-lg` &rarr; `train-parser-tagger-lg` &rarr; `train-ner-lg` &rarr; `assemble-lg` |
+| `tl-calamancy-md` | `pretrain-md` &rarr; `train-vectors-md` &rarr; `train-parser-tagger-md` &rarr; `train-ner-md` &rarr; `assemble-md` |
 
 ### 🗂 Assets
 
@@ -84,7 +92,8 @@ in the project directory.
 | File | Source | Description |
 | --- | --- | --- |
 | `assets/corpus.tar.gz` | URL | Annotated TLUnified corpora in spaCy format with train, dev, and test splits. |
-| `assets/treebank` | Git | Treebank data for UD_Tagalog-Ugnayan |
+| `assets/treebank/UD_Tagalog-Ugnayan/` | Git | Treebank data for UD_Tagalog-Ugnayan |
+| `assets/treebank/UD_Tagalog-TRG/` | Git | Treebank data for UD_Tagalog-TRG |
 | `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia). |
 | `assets/tlunified.zip` | URL | TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022). |
 | `assets/floret` | Git | Floret repository for training floret and fastText models. |
