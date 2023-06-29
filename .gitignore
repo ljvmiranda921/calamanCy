@@ -172,3 +172,4 @@ summarized_metrics/
 project.lock
 wandb/
 .vscode/
+gcs_creds.json

@@ -1,36 +1,56 @@
 title: "Release v0.1.0"
 description: |
   This is a spaCy project that trains the v0.1.0 models for calamanCy. You can
-  use this project to replicate the pipelines shipped by the project. First, you need to install the
-  required dependencies:
+  use this project to replicate the pipelines shipped by the project. First, you
+  need to install the required dependencies:
 
   ```
   pip install -r requirements.txt
   ```
 
-  Then you need to download all the assets (corpora, static vectors, etc.) via:
+  Then run the set-up commands:
 
   ```
   python -m spacy project assets
-  ```
-
-  Before training the pipelines, you first need to run the setup workflow. This step prepares the
-  corpora for training (or pretraining) and builds the necessary binaries for other downstream commands.
-
-  ```
   python -m spacy project run setup
   ```
 
-  You can then train a pipeline by passing its name to the spaCy project command. For example, if you wish to train
-  `tl_calamancy_md`, you can execute the corresponding workflow like so:
+  This step downloads all assets and prepares all the datasets and binaries for
+  training use.  You can then train a pipeline by passing its name to the spaCy
+  project command. For example, if you wish to train `tl_calamancy_md`, you can
+  execute the corresponding workflow like so:
 
   ```
   python -m spacy project run tl-calamancy-md 
   ```
 
+  ## Model information
+
+  The table below shows an overview of the calamanCy models in this project. For more information,
+  I suggest checking the [language pipeline metadata](https://spacy.io/api/language#meta).
+
+
+  | Model                       | Pipelines                                   | Description                                                                                                  |
+  |-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+  | tl_calamancy_md (73.7 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
+  | tl_calamancy_lg (431.9 MB)  | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
+  | tl_calamancy_trf (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                   |
+
+  ## Data sources
+
+  The table below shows the data sources used to train the pipelines. Note that the Ugnayan treebank
+  is not licensed for commercial use while TLUnified is under GNU GPL. Please consider these licenses
+  when using the calamanCy pipelines in your application.
+
+  | Source                                                                                 | Authors                                          | License         |
+  |----------------------------------------------------------------------------------------|--------------------------------------------------|-----------------|
+  | [TLUnified Dataset](https://aclanthology.org/2022.lrec-1.703/)                         | Jan Christian Blaise Cruz and Charibeth Cheng    | GNU GPL 3.0     |
+  | [UD_Tagalog-TRG](https://universaldependencies.org/treebanks/tl_trg/index.html)        | Stephanie Samson, Daniel Zeman, and Mary Ann Tan | CC BY-SA 3.0    |
+  | [UD_Tagalog-Ugnayan](https://universaldependencies.org/treebanks/tl_ugnayan/index.html) | Angelina Aquino                                  | CC BY-NC_SA 4.0 |
+
 vars:
   # Versioning
-  version: v0.1.0
+  version: 0.1.0
   dataset_version: 1.0
   pretrain_epochs: 3
   # Training
@@ -40,16 +60,17 @@ vars:
 remotes:
   # Create a service account, download a JSON key, and set the credentials path
   # to GOOGLE_APPLICATION_CREDENTIALS env variable
-  gcs: "gs://ljvmiranda/calamanCy/training_cache/${vars.version}/"
+  gcs: "gs://ljvmiranda/calamanCy/training_cache/v${vars.version}/"
 
 directories:
   - "assets"
   - "assets/treebank/"
   - "configs"
   - "corpus"
+  - "packages"
+  - "pretraining"
   - "scripts"
   - "training"
-  - "pretraining"
   - "vectors"
 
 assets:
@@ -91,19 +112,19 @@ workflows:
     - "setup-fasttext-vectors"
     - "build-floret"
   tl-calamancy-trf:
-    - "train-parser-tagger"
+    - "train-parser-tagger-trf"
     - "train-ner-trf"
     - "assemble-trf"
   tl-calamancy-lg:
     - "pretrain-lg"
     - "train-vectors-lg"
-    - "train-parser-tagger"
+    - "train-parser-tagger-lg"
     - "train-ner-lg"
     - "assemble-lg"
   tl-calamancy-md:
     - "pretrain-md"
     - "train-vectors-md"
-    - "train-parser-tagger"
+    - "train-parser-tagger-md"
     - "train-ner-md"
     - "assemble-md"
 
@@ -260,22 +281,23 @@ commands:
     outputs:
       - pretraining/init-tok2vec-lg/model-last.bin
 
-  - name: "train-parser-tagger"
+  - name: "train-parser-tagger-md"
     help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
     script:
       - >-
         python -m spacy train
         configs/parser_tagger.cfg
-        --output training/parser_tagger/
+        --output training/parser_tagger_md/
         --nlp.lang ${vars.lang}
         --paths.train corpus/treebank/train.spacy
         --paths.dev corpus/treebank/dev.spacy
+        --paths.vectors vectors/floret-tl-md
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/treebank/train.spacy
       - corpus/treebank/dev.spacy
     outputs:
-      - training/parser_tagger/model-best
+      - training/parser_tagger_md/model-best
 
   - name: "train-ner-md"
     help: "Train NER component of tl_calamancy_md using floret vectors with pretraining (50k unique vectors)"
@@ -298,6 +320,45 @@ commands:
     outputs:
       - training/ner_md/model-best
 
+  - name: "assemble-md"
+    help: "Assemble the tl_calamancy_md model and package it as a spaCy pipeline"
+    script:
+      - >-
+        python -m spacy assemble configs/assemble.cfg models/tl_calamancy_md
+        --paths.parser_model training/parser_tagger_md/model-best
+        --paths.ner_model training/ner_md/model-best
+      - >-
+        python -m spacy package models/tl_calamancy_md packages/
+        --meta ./meta.json
+        --name calamancy_md
+        --version ${vars.version}
+        --build sdist,wheel
+        --force
+    deps:
+      - training/parser_tagger_md/model-best
+      - training/ner_md/model-best
+    outputs:
+      - packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}.tar.gz
+      - packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl
+
+  - name: "train-parser-tagger-lg"
+    help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
+    script:
+      - >-
+        python -m spacy train
+        configs/parser_tagger.cfg
+        --output training/parser_tagger_lg/
+        --nlp.lang ${vars.lang}
+        --paths.train corpus/treebank/train.spacy
+        --paths.dev corpus/treebank/dev.spacy
+        --paths.vectors vectors/fasttext-tl
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/treebank/train.spacy
+      - corpus/treebank/dev.spacy
+    outputs:
+      - training/parser_tagger_lg/model-best
+
   - name: "train-ner-lg"
     help: "Train NER component of tl_calamancy_lg using fastText vectors with pretraining (714k unique keys)"
     script:
@@ -314,11 +375,49 @@ commands:
     deps:
       - corpus/ner/train.spacy
       - corpus/ner/dev.spacy
-      - assets/tl_tlunified_pt_chars.bin
       - pretraining/init-tok2vec-lg/model-last.bin
       - vectors/fasttext-tl
     outputs:
       - training/ner_lg/model-best
+
+  - name: "assemble-lg"
+    help: "Assemble the tl_calamancy_lg model and package it as a spaCy pipeline"
+    script:
+      - >-
+        python -m spacy assemble configs/assemble.cfg models/tl_calamancy_lg
+        --paths.parser_model training/parser_tagger_lg/model-best
+        --paths.ner_model training/ner_lg/model-best
+      - >-
+        python -m spacy package models/tl_calamancy_lg packages/
+        --meta ./meta.json
+        --name calamancy_lg
+        --version ${vars.version}
+        --build sdist,wheel
+        --force
+    deps:
+      - training/parser_tagger_lg/model-best
+      - training/ner_lg/model-best
+    outputs:
+      - packages/tl_calamancy_lg-${vars.version}/dist/tl_calamancy_lg-${vars.version}.tar.gz
+      - packages/tl_calamancy_lg-${vars.version}/dist/tl_calamancy_lg-${vars.version}-py3-none-any.whl
+
+  - name: "train-parser-tagger-trf"
+    help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
+    script:
+      - >-
+        python -m spacy train
+        configs/parser_tagger_trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/parser_tagger_trf/
+        --components.transformer.model.name jcblaise/roberta-tagalog-base
+        --paths.train corpus/treebank/train.spacy
+        --paths.dev corpus/treebank/dev.spacy
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/treebank/train.spacy
+      - corpus/treebank/dev.spacy
+    outputs:
+      - training/parser_tagger_trf/model-best
 
   - name: "train-ner-trf"
     help: "Train NER component of tl_calamancy_trf using context-sensitive vectors from roberta-tagalog"
@@ -341,14 +440,20 @@ commands:
   - name: "assemble-trf"
     help: "Assemble the tl_calamancy_trf model and package it as a spaCy pipeline"
     script:
-      - ls
-
-  - name: "assemble-lg"
-    help: "Assemble the tl_calamancy_lg model and package it as a spaCy pipeline"
-    script:
-      - ls
-
-  - name: "assemble-md"
-    help: "Assemble the tl_calamancy_md model and package it as a spaCy pipeline"
-    script:
-      - ls
+      - >-
+        python -m spacy assemble configs/assemble_trf.cfg models/tl_calamancy_trf
+        --paths.parser_model training/parser_tagger_trf/model-best
+        --paths.ner_model training/ner_trf/model-best
+      - >-
+        python -m spacy package models/tl_calamancy_trf packages/
+        --meta ./meta.json
+        --name calamancy_trf
+        --version ${vars.version}
+        --build sdist,wheel
+        --force
+    deps:
+      - training/parser_tagger_trf/model-best
+      - training/ner_trf/model-best
+    outputs:
+      - packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}.tar.gz
+      - packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}-py3-none-any.whl
