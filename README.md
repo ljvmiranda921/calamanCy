@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/ljvmiranda921/calamanCy/master/logo.png" width="125" height="125" align="right" />
 
-# calamanCy: NLP pipelines for Tagalog [WIP]
+# calamanCy: NLP pipelines for Tagalog
 
 **calamanCy** is a Tagalog natural language preprocessing framework made with
 [spaCy](https://spacy.io). Its goal is to provide pipelines and datasets for
