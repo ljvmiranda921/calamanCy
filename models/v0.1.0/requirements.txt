@@ -1,5 +1,6 @@
 spacy>=3.5.0
 spacy-transformers
+spacy-huggingface-hub>=0.0.9
 pathy[gcs]
 typer
 wasabi
