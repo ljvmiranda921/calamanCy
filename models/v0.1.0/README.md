@@ -28,6 +28,10 @@ python -m spacy project run tl-calamancy-md
 
 ## Model information
 
+The table below shows an overview of the calamanCy models in this project. For more information,
+I suggest checking the [language pipeline metadata](https://spacy.io/api/language#meta).
+
+
 | Model                       | Pipelines                                   | Description                                                                                                  |
 |-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | tl_calamancy_md (73.7 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
@@ -35,6 +39,16 @@ python -m spacy project run tl-calamancy-md
 | tl_calamancy_trf (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                   |
 
 ## Data sources
+
+The table below shows the data sources used to train the pipelines. Note that the Ugnayan treebank
+is not licensed for commercial use while TLUnified is under GNU GPL. Please consider these licenses
+when using the calamanCy pipelines in your application.
+
+| Source                                                                                 | Authors                                          | License         |
+|----------------------------------------------------------------------------------------|--------------------------------------------------|-----------------|
+| [TLUnified Dataset](https://aclanthology.org/2022.lrec-1.703/)                         | Jan Christian Blaise Cruz and Charibeth Cheng    | GNU GPL 3.0     |
+| [UD_Tagalog-TRG](https://universaldependencies.org/treebanks/tl_trg/index.html)        | Stephanie Samson, Daniel Zeman, and Mary Ann Tan | CC BY-SA 3.0    |
+| [UD_Tagalog-Ugnayan](https://universaldependencies.org/treebanks/tl_ugnayan/index.html) | Angelina Aquino                                  | CC BY-NC_SA 4.0 |
 
 
 ## 📋 project.yml
