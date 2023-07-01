@@ -56,6 +56,11 @@ vars:
   # Training
   lang: "tl"
   gpu_id: 0
+  # Publishing
+  publish_message: "Update spaCy pipeline"
+
+env:
+  HUGGINGFACE_TOKEN: HUGGINGFACE_TOKEN
 
 remotes:
   # Create a service account, download a JSON key, and set the credentials path
@@ -456,4 +461,25 @@ commands:
       - training/ner_trf/model-best
     outputs:
       - packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}.tar.gz
+      - packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}-py3-none-any.whl
+
+  - name: "publish"
+    help: "Publish models to Huggingface Hub"
+    script:
+      - huggingface-cli login --token ${env.HUGGINGFACE_TOKEN}
+      - >-
+        python -m spacy huggingface-hub push packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl 
+        --msg "(calamanCy ${vars.version}): ${vars.publish_message}"
+        --verbose
+      - >-
+        python -m spacy huggingface-hub push packages/tl_calamancy_lg-${vars.version}/dist/tl_calamancy_lg-${vars.version}-py3-none-any.whl
+        --msg "(calamanCy ${vars.version}): ${vars.publish_message}"
+        --verbose
+      - >-
+        python -m spacy huggingface-hub push packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}-py3-none-any.whl
+        --msg "(calamanCy ${vars.version}): ${vars.publish_message}"
+        --verbose
+    deps:
+      - packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl
+      - packages/tl_calamancy_lg-${vars.version}/dist/tl_calamancy_lg-${vars.version}-py3-none-any.whl
       - packages/tl_calamancy_trf-${vars.version}/dist/tl_calamancy_trf-${vars.version}-py3-none-any.whl

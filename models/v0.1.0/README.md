@@ -82,6 +82,7 @@ Commands are only re-run if their inputs have changed.
 | `train-parser-tagger-trf` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-trf` | Train NER component of tl_calamancy_trf using context-sensitive vectors from roberta-tagalog |
 | `assemble-trf` | Assemble the tl_calamancy_trf model and package it as a spaCy pipeline |
+| `publish` | Publish models to Huggingface Hub |
 
 ### ⏭ Workflows
 
