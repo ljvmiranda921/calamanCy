@@ -50,16 +50,34 @@ assets:
       branch: "master"
       path: ""
 
+workflows:
+  setup:
+    - "install-models"
+    - "process-datasets"
+  textcat-hatespeech:
+    - "train-hatespeech"
+    - "evaluate-hatespeech"
+  textcat_multilabel-dengue:
+    - "train-dengue"
+    - "evaluate-dengue"
+  ner-calamancy_gold:
+    # No training here because the training data is already
+    # part of the original pipeline.
+    - "evaluate-calamancy"
+  parser-ud:
+    # Using 10-fold cross-validation as recommended by the UD framework
+    - "evaluate-ud"
+
 commands:
-  - name: install-calamancy-models
-    help: Install models in the spaCy workspace
+  - name: "install-models"
+    help: "Install models in the spaCy workspace"
     script:
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/${vars.calamancy_model_hash}/tl_calamancy_md-any-py3-none-any.whl
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/${vars.calamancy_model_hash}/tl_calamancy_lg-any-py3-none-any.whl
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/${vars.calamancy_model_hash}/tl_calamancy_trf-any-py3-none-any.whl
 
-  - name: process-datasets
-    help: Process the datasets and convert them into spaCy format
+  - name: "process-datasets"
+    help: "Process the datasets and convert them into spaCy format"
     script:
       - ls
     deps:
@@ -78,3 +96,68 @@ commands:
       - corpus/ner-calamancy_gold/train.spacy
       - corpus/ner-calamancy_gold/dev.spacy
       - corpus/ner-calamancy_gold/test.spacy
+      - corpus/parser-ud/train.spacy
+      - corpus/parser-ud/dev.spacy
+      - corpus/parser-ud/test.spacy
+
+  - name: "train-hatespeech"
+    help: "Train binary textcat on Hatespeech dataset"
+    script:
+      - ls
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/textcat-hatespeech/model-best/
+
+  - name: "evaluate-hatespeech"
+    help: "Evaluate binary textcat on Hatespeech test data"
+    script:
+      - ls
+    deps:
+      - training/textcat-hatespeech/model-best/
+      - corpus/textcat-hatespeech/test.spacy
+    outputs:
+      - metrics/textcat-hatespeech.json
+
+  - name: "train-dengue"
+    help: "Train multilabel textcat on Dengue dataset"
+    script:
+      - ls
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/textcat_multilabel-dengue/model-best/
+
+  - name: "evaluate-dengue"
+    help: "Evaluate multilabel textcat on Dengue test data"
+    script:
+      - ls
+    deps:
+      - training/textcat_multilabel-dengue/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+    outputs:
+      - metrics/textcat_multilabel-dengue.json
+
+  - name: "evaluate-calamancy"
+    help: "Evaluate ner on calamanCy gold dev and test data"
+    script:
+      - ls
+    deps:
+      - corpus/ner-calamancy_gold/dev.spacy
+      - corpus/ner-calamancy_gold/test.spacy
+    outputs:
+      - metrics/ner-calamancy_gold-dev.json
+      - metrics/ner-calamancy_gold-test.json
+
+  - name: "evaluate-ud"
+    help: "Evaluate parser and tagger on the combined Ugnayan and TRG treebanks via 10-fold cross-validation"
+    script:
+      - ls
+    deps:
+      - corpus/parser-ud/train.spacy
+      - corpus/parser-ud/dev.spacy
+      - corpus/parser-ud/test.spacy
+    outputs:
+      - metrics/parser-ud.json
