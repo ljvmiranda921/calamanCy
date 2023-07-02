@@ -63,19 +63,12 @@ To download and load a model, run:
 
 ```python
 nlp = calamancy.load("tl_calamancy_md-0.1.0")
-```
-
-This will download the model to the `.calamancy` directory of your home
-directory. You can also download a model to a specific directory:
-
-```python
-calamancy.download_model("tl_calamancy_md-0.1.0", save_directory)
-nlp = calamancy.load_model("tl_calamancy_md-0.1.0", save_directory)
+doc = nlp("Ako si Juan de la Cruz")
 ```
 
 The `nlp` object is an instance of spaCy's [`Language`
-class](https://spacy.io/api/language), and you can use it as any other spaCy
-pipeline. Head over to the [documentation]() for more tutorials.
+class](https://spacy.io/api/language) and you can use it as any other spaCy
+pipeline. 
 
 ## 📦 Models and Datasets
 
