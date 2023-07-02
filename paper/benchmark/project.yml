@@ -29,13 +29,13 @@ vars:
 
 assets:
   - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
-    description: "Treebank data for UD_Tagalog-Ugnayan"
+    description: "Treebank data for UD_Tagalog-Ugnayan. Originally sourced from *Parsing in the absence of related languages: Evaluating low-resource dependency parsers in Tagalog* by Aquino and de Leon (2020)."
     git:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-Ugnayan"
       branch: "master"
       path: ""
   - dest: "assets/treebank/UD_Tagalog-TRG/"
-    description: "Treebank data for UD_Tagalog-TRG"
+    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesi, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)"
     git:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
       branch: "master"
