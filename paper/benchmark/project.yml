@@ -35,7 +35,7 @@ assets:
       branch: "master"
       path: ""
   - dest: "assets/treebank/UD_Tagalog-TRG/"
-    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesi, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)"
+    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesi, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)."
     git:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
       branch: "master"
