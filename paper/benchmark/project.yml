@@ -1,0 +1,25 @@
+title: "Benchmarking project for calamanCy"
+description: |
+  This is a spaCy project that benchmarks calamanCy on a variety of tasks.
+  You can use this project to reproduce the experiments in the write-up. First, 
+  you need to install the required dependencies:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+  Then run the set-up commands:
+
+  ```
+  python -m spacy project assets
+  python -m spacy project run setup
+  ```
+
+  This step downloads all the necessary datasets and models for benchmarking use.
+
+directories:
+  - "assets"
+  - "configs"
+  - "corpus"
+  - "training"
+  - "metrics"
