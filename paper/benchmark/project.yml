@@ -35,7 +35,7 @@ assets:
       branch: "master"
       path: ""
   - dest: "assets/treebank/UD_Tagalog-TRG/"
-    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesi, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)."
+    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesis, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)."
     git:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
       branch: "master"
@@ -44,7 +44,7 @@ assets:
     description: "Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018)."
     url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/hatenonhate/hatespeech_raw.zip"
   - dest: "assets/dengue.tar.gz"
-    description: "Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag, Chen, et al. (2019)"
+    description: "Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019)"
     url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/dengue/dengue_raw.zip"
   - dest: assets/calamancy_gold.tar.gz
     description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
