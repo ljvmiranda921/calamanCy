@@ -23,3 +23,58 @@ directories:
   - "corpus"
   - "training"
   - "metrics"
+
+vars:
+  calamancy_model_hash: 55ef01a244f3ca77676de6ba5a2beea0ba3e0021
+
+assets:
+  - dest: "assets/hatespeech.tar.gz"
+    description: "Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text classification)"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/hatenonhate/hatespeech_raw.zip"
+  - dest: "assets/dengue.tar.gz"
+    description: "Contains tweets on dengue for multilabel text classification."
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/dengue/dengue_raw.zip"
+  - dest: assets/calamancy_gold.tar.gz
+    description: "Contains the annotated TLUnified corpora in spaCy format with train, dev, and test splits."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+  - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
+    description: "Treebank data for UD_Tagalog-Ugnayan"
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-Ugnayan"
+      branch: "master"
+      path: ""
+  - dest: "assets/treebank/UD_Tagalog-TRG/"
+    description: "Treebank data for UD_Tagalog-TRG"
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
+      branch: "master"
+      path: ""
+
+commands:
+  - name: install-calamancy-models
+    help: Install models in the spaCy workspace
+    script:
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/${vars.calamancy_model_hash}/tl_calamancy_md-any-py3-none-any.whl
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/${vars.calamancy_model_hash}/tl_calamancy_lg-any-py3-none-any.whl
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/${vars.calamancy_model_hash}/tl_calamancy_trf-any-py3-none-any.whl
+
+  - name: process-datasets
+    help: Process the datasets and convert them into spaCy format
+    script:
+      - ls
+    deps:
+      - assets/hatespeech.tar.gz
+      - assets/dengue.tar.gz
+      - assets/calamancy_gold.tar.gz
+      - assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu
+      - assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu
+    outputs:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+      - corpus/textcat-hatespeech/test.spacy
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+      - corpus/textcat_multilabel-dengue/test.spacy
+      - corpus/ner-calamancy_gold/train.spacy
+      - corpus/ner-calamancy_gold/dev.spacy
+      - corpus/ner-calamancy_gold/test.spacy

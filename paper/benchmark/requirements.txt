@@ -1,0 +1,4 @@
+spacy>=3.5.0
+calamancy==0.1.0
+typer
+wasabi
