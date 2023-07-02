@@ -66,9 +66,9 @@ in the project directory.
 
 | File | Source | Description |
 | --- | --- | --- |
-| `assets/hatespeech.tar.gz` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). |
-| `assets/dengue.tar.gz` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). |
-| `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with PER,ORG,LOC as entity labels (named entity recognition). |
+| `assets/hatespeech.tar.gz` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018). |
+| `assets/dengue.tar.gz` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag, Chen, et al. (2019) |
+| `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). |
 | `assets/treebank/UD_Tagalog-Ugnayan/` | Git | Treebank data for UD_Tagalog-Ugnayan |
 | `assets/treebank/UD_Tagalog-TRG/` | Git | Treebank data for UD_Tagalog-TRG |
 
