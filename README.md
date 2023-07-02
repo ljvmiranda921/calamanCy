@@ -2,6 +2,11 @@
 
 # calamanCy: NLP pipelines for Tagalog
 
+![example workflow](https://github.com/ljvmiranda921/calamancy/actions/workflows/test.yml/badge.svg)
+![PyPI](https://img.shields.io/pypi/v/calamancy?labelColor=%23272c32&color=%2333cc56&logo=pypi&logoColor=white)
+
+
+
 **calamanCy** is a Tagalog natural language preprocessing framework made with
 [spaCy](https://spacy.io). Its goal is to provide pipelines and datasets for
 downstream NLP tasks. This repository contains material for using calamanCy,
