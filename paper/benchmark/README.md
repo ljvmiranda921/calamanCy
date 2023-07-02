@@ -17,7 +17,9 @@ python -m spacy project assets
 python -m spacy project run setup
 ```
 
-This step downloads all the necessary datasets and models for benchmarking use.
+This step downloads all the necessary datasets and models for benchmarking
+use. You can then run one of the [workflows](#-) below. They are organized by
+task and a dataset identifier.
 
 
 ## 📋 project.yml
