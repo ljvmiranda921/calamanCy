@@ -28,15 +28,6 @@ vars:
   calamancy_model_hash: 55ef01a244f3ca77676de6ba5a2beea0ba3e0021
 
 assets:
-  - dest: "assets/hatespeech.tar.gz"
-    description: "Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018)."
-    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/hatenonhate/hatespeech_raw.zip"
-  - dest: "assets/dengue.tar.gz"
-    description: "Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag, Chen, et al. (2019)"
-    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/dengue/dengue_raw.zip"
-  - dest: assets/calamancy_gold.tar.gz
-    description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition)."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
   - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
     description: "Treebank data for UD_Tagalog-Ugnayan"
     git:
@@ -49,6 +40,15 @@ assets:
       repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
       branch: "master"
       path: ""
+  - dest: "assets/hatespeech.tar.gz"
+    description: "Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018)."
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/hatenonhate/hatespeech_raw.zip"
+  - dest: "assets/dengue.tar.gz"
+    description: "Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag, Chen, et al. (2019)"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/dengue/dengue_raw.zip"
+  - dest: assets/calamancy_gold.tar.gz
+    description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
 
 workflows:
   setup:
