@@ -41,7 +41,7 @@ Commands are only re-run if their inputs have changed.
 | `train-dengue` | Train multilabel textcat on Dengue dataset |
 | `evaluate-dengue` | Evaluate multilabel textcat on Dengue test data |
 | `evaluate-calamancy` | Evaluate ner on calamanCy gold dev and test data |
-| `evaluate-ud` | Evaluate parser and tagger on the combined Ugnayan and TRG treebanks via 10-fold cross-validation |
+| `evaluate-ud` | Evaluate parser and tagger on the combined Tagalog treebanks |
 
 ### ⏭ Workflows
 
@@ -66,9 +66,9 @@ in the project directory.
 
 | File | Source | Description |
 | --- | --- | --- |
-| `assets/hatespeech.tar.gz` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text classification) |
-| `assets/dengue.tar.gz` | URL | Contains tweets on dengue for multilabel text classification. |
-| `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with train, dev, and test splits. |
+| `assets/hatespeech.tar.gz` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). |
+| `assets/dengue.tar.gz` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). |
+| `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with PER,ORG,LOC as entity labels (named entity recognition). |
 | `assets/treebank/UD_Tagalog-Ugnayan/` | Git | Treebank data for UD_Tagalog-Ugnayan |
 | `assets/treebank/UD_Tagalog-TRG/` | Git | Treebank data for UD_Tagalog-TRG |
 

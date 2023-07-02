@@ -152,7 +152,7 @@ commands:
       - metrics/ner-calamancy_gold-test.json
 
   - name: "evaluate-ud"
-    help: "Evaluate parser and tagger on the combined Ugnayan and TRG treebanks via 10-fold cross-validation"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks"
     script:
       - ls
     deps:
