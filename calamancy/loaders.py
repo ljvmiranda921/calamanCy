@@ -2,20 +2,24 @@
 
 import subprocess
 import sys
-from typing import List
+from typing import Dict, List
 
 import spacy
 from spacy.util import get_installed_models
 from wasabi import msg
 
 
-MODELS_URL = {
-    # fmt: off
-    "tl_calamancy_md-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_md-any-py3-none-any.whl",
-    "tl_calamancy_lg-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_lg-any-py3-none-any.whl",
-    "tl_calamancy_trf-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_trf-any-py3-none-any.whl",
-    # fmt: on
-}
+def _get_models_url() -> Dict[str, str]:
+    """Get a mapping of each calamanCy pipeline (versioned) and their download links
+
+    This will be actively maintained to ensure that the latest versions are
+    tracked and the download functions below work as expected.
+    """
+    return {
+        "tl_calamancy_md-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_md-any-py3-none-any.whl",
+        "tl_calamancy_lg-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_lg-any-py3-none-any.whl",
+        "tl_calamancy_trf-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_trf-any-py3-none-any.whl",
+    }
 
 
 def _get_name(model: str) -> str:
@@ -32,7 +36,8 @@ def get_latest_version(model: str) -> str:
     model (str): string indicating the model.
     RETURNS (str): latest version of the model.
     """
-    compat = [model_name for model_name in MODELS_URL if model_name.startswith(model)]
+    models_url = _get_models_url()
+    compat = [model_name for model_name in models_url if model_name.startswith(model)]
     versions = sorted(
         [_get_version(model) for model in compat],
         key=lambda s: [int(u) for u in s.split(".")],
@@ -46,7 +51,8 @@ def models() -> List[str]:
 
     RETURNS (List[str]): list of valid calamanCy models.
     """
-    return list(MODELS_URL.keys())
+    models_url = _get_models_url()
+    return list(models_url.keys())
 
 
 def load(model: str, force: bool = False, **kwargs) -> "spacy.language.Language":
@@ -59,7 +65,6 @@ def load(model: str, force: bool = False, **kwargs) -> "spacy.language.Language"
     force (bool): force download the model. Defaults to False.
     kwargs: additional arguments to spacy.load().
     RETURNS (Language): a spaCy language pipeline.
-
     """
     model_name = download_model(model, force=force)
     return spacy.load(model_name, **kwargs)
@@ -82,7 +87,8 @@ def download_model(model: str, force: bool = False, verbose: bool = False) -> st
     verbose (bool): set the verbosity of this command. Defaults to False.
     RETURNS (str): path to the model location.
     """
-    if model not in MODELS_URL:
+    models_url = _get_models_url()
+    if model not in models_url:
         raise ValueError(
             f"The model '{model}' is not available in calamanCy. "
             f"Available models are: {','.join(m for m in models())}"
@@ -94,6 +100,6 @@ def download_model(model: str, force: bool = False, verbose: bool = False) -> st
         msg.text(f"Model '{model}' is already installed.", show=verbose)
         return _get_name(model)
 
-    msg.info(f"Installing '{model}' from {MODELS_URL[model]}...")
-    install(MODELS_URL[model])
+    msg.info(f"Installing '{model}' from {models_url[model]}...")
+    install(models_url[model])
     return _get_name(model)
