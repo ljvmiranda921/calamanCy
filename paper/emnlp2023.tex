@@ -36,12 +36,11 @@
 
 \section{Introduction}
 
-Tagalog is a low-resource language that belongs to the Austronesian family with over 76 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
-Despite its speaker population, limited resources are available for the language \citep{Cruz2021ImprovingLL}. 
-For example, Tagalog has few monolingual language models (LMs) \citep{Cruz2021ImprovingLL,Jiang2021PretrainedLM}, and it is underrepresented in the training pool of most multilingual LMs \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO}.
-Language resources are also scarce.
-Tagalog treebanks within the Universal Dependencies framework are tiny \citep{Samson2018TRG,Aquino2020ParsingIT}, 
+Tagalog is a low-resource language from the Austronesian family with over 76 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
+Despite its speaker population, few resources exist for the language \citep{Cruz2021ImprovingLL}. 
+Universal Dependencies (UD) treebanks for Tagalog framework are tiny ($\ll$ 20k words) \citep{Samson2018TRG,Aquino2020ParsingIT}, 
 while domain-specific corpora are only a handful \citep{Enriquez2023DeterminingLF,Livelo2018IntelligentDI}. 
+In addition, Tagalog language models (LMs) \citep{Cruz2021ImprovingLL,Jiang2021PretrainedLM} are few while most multilingual LMs \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO} underrepresent the language.
 Thus, consolidating these disjointed resources in a coherent framework is still an open problem.
 The lack of such framework hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
 
@@ -59,12 +58,12 @@ Finally, our work has two main contributions: (1) an open-source toolkit via cal
 
 \paragraph*{Open-source toolkits for NLP}
 There has been a growing body of work in the development of NLP toolkits in recent years. 
-For languages, these software include DaCy for Danish \citep{Enevoldsen2021DaCyAU} and HuSpaCy for Hungarian \citep{Orosz2022HuSpaCyAI}.
-For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific text \citep{Neumann2019ScispaCyFA}.
-These tools were based on spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
-Using spaCy as a foundation to build NLP toolkits is an optimal choice given its popularity and integration with other frameworks such as HuggingFace \citep{Wolf2019HuggingFacesTS}.
+For languages, these toolkits include DaCy for Danish \citep{Enevoldsen2021DaCyAU} and HuSpaCy for Hungarian \citep{Orosz2022HuSpaCyAI}.
+For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific articles \citep{Neumann2019ScispaCyFA}.
+These tools employ spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
+Using spaCy as a foundation is an optimal choice given its popularity and tight integration with other frameworks such as HuggingFace \citep{Wolf2019HuggingFacesTS}.
 However, no tool exists for Tagalog until now.
-In this paper, we will showcase how calamanCy provides similar capabilities as DaCy and HuSpaCy using Tagalog resources.
+In this paper, we will showcase how calamanCy provides similar capabilities to DaCy and HuSpaCy using Tagalog resources.
 
 \paragraph*{Evaluations on Tagalog NLP Tasks} 
 Structured evaluations for core NLP tasks, such as dependency parsing, POS tagging, and NER, are sparse.
@@ -72,7 +71,7 @@ However, we have access to a reasonable amount of data to conduct comprehensive 
 For example, TLUnified \citep{Cruz2021ImprovingLL} is a pretraining corpus that combines news reports \citep{Cruz2020ExploitingNA}, a preprocessed version of CommonCrawl \citep{OrtizSuarez2019AsynchronousPF}, and several other datasets.
 However, it was evaluated on domain-specific applications that may not easily transfer to more general tasks.
 For dependency parsing and POS tagging, we have Universal Dependencies treebanks such as TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT}.
-This paper will fill the evaluation gap by providing structured benchmarks on core NLP tasks.
+This paper will fill the evaluation gap by providing structured benchmarks on these core tasks.
 
 \section{Implementation}
 
@@ -85,9 +84,9 @@ After installing the library, users can access the models via:
   nlp = cl.load("tl_calamancy_md-0.1.0")
 \end{verbatim}
 
-Here, the variable \texttt{nlp} is a spaCy processsing pipeline.\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}}
+Here, the variable \texttt{nlp} is a spaCy processing pipeline.\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}}
 It contains trained components for POS tagging, dependency parsing, and NER.
-calamanCy offers three pipelines of varying capacity: two word vector-based models (\texttt{md}, \texttt{lg}), and one transformer-based model (\texttt{trf}).
+calamanCy offers three pipelines of varying capacity: two static word vector-based models (\texttt{md}, \texttt{lg}), and one transformer-based model (\texttt{trf}).
 We will discuss how these pipelines were developed in the following section.
 
 \subsection{Pipeline development}
@@ -114,13 +113,13 @@ Here, the pretraining objective asks the model to predict some number of leading
 Finally, \textit{representation size} is an engineering dimension determined via a performance-accuracy tradeoff.
 
 The general process involves pretraining a filtered version of TLUnified (removing overlaps with \texttt{calamanCy-gold}), constructing static word embeddings if necessary, and training the downstream components.
-We trained the NER component using data from \texttt{calamanCy-gold}, while the dependency parser and POS tagger were trained using the Ugnayan treebank.
+We trained the NER component using data from \texttt{calamanCy-gold}, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
 In the end, we came up with three language pipelines of varying sizes:\footnote[4]{The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}}
 
 \begin{itemize}
-  \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static word embedding table (floret) containing 50k unique vectors (200 dimensions).
-  \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. Compared to the medium-sized model, this pipeline contains 200k unique vectors (200 dimensions).
-  \item \texttt{tl\_calamancy\_trf}: Transformer-based Tagalog pipeline. No pretraining. Instead of a static word embedding table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL}.
+  \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static word embedding table (floret) containing 50k unique vectors (74 MB).
+  \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. Compared to the medium-sized model, this pipeline contains 714k unique vectors (432 MB).
+  \item \texttt{tl\_calamancy\_trf}: Transformer-based Tagalog pipeline. No pretraining. Instead of a static word embedding table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL} (775 MB).
 \end{itemize}
 
 The full training configuration for v0.1.0 of the calamanCy pipelines can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0}.
