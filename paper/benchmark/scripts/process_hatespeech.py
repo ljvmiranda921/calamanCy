@@ -64,6 +64,8 @@ def process_hatespeech(
             doc_bin.add(doc)
 
         # Save the DocBin to disk
+        if not outdir.is_dir():
+            outdir.mkdir(parents=True, exist_ok=True)
         outfile = outdir / f"{infile.stem}.spacy"
         doc_bin.to_disk(outfile)
         msg.good(f"Saved {len(doc_bin)} documents to {outfile}")
