@@ -86,12 +86,12 @@ commands:
     help: "Process the datasets and convert them into spaCy format"
     script:
       # textcat: extract and process Hatespeech dataset
-      - mkdir -p assets/hatespeech/
-      - unzip -o assets/hatespeech.zip -d assets/hatespeech/
+      - unzip -o assets/hatespeech.zip -d assets/
+      - mv assets/hatespeech/valid.csv assets/hatespeech/dev.csv
       - python -m scripts.process_hatespeech assets/hatespeech/ corpus/textcat-hatespeech/
       # textcat_multilabel: extract and process Dengue dataset
-      - mkdir -p assets/dengue/
-      - unzip -o assets/dengue.zip -d assets/dengue/
+      - unzip -o assets/dengue.zip -d assets/
+      - mv assets/dengue/valid.csv assets/dengue/dev.csv
       - python -m scripts.process_dengue assets/dengue.tar.gz corpus/textcat_multilabel-dengue/
       # ner: extract calamancy-gold dataset.
       - mkdir -p corpus/ner-calamancy_gold/
