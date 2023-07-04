@@ -23,7 +23,7 @@ from wasabi import msg
 
 
 # Filenames for the three splits
-SPLIT_FILENAMES = ("train.csv", "test.csv", "valid.csv")
+SPLIT_FILENAMES = ("train.csv", "test.csv", "dev.csv")
 CATEGORIES = {"HATESPEECH", "NOT_HATESPEECH"}
 
 

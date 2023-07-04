@@ -129,6 +129,11 @@ commands:
         python -m spacy train
         configs/textcat-hatespeech.cfg
         --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-md/model-best/
+        --paths.vectors tl_calamancy_md
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
