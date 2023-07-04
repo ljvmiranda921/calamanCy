@@ -88,11 +88,11 @@ commands:
       # textcat: extract and process Hatespeech dataset
       - unzip -o assets/hatespeech.zip -d assets/
       - mv assets/hatespeech/valid.csv assets/hatespeech/dev.csv
-      - python -m scripts.process_hatespeech assets/hatespeech/ corpus/textcat-hatespeech/
+      - python -m scripts.process_hatespeech assets/hatespeech/ corpus/textcat-hatespeech/ --include-pretraining
       # textcat_multilabel: extract and process Dengue dataset
       - unzip -o assets/dengue.zip -d assets/
       - mv assets/dengue/valid.csv assets/dengue/dev.csv
-      - python -m scripts.process_dengue assets/dengue.tar.gz corpus/textcat_multilabel-dengue/
+      - python -m scripts.process_dengue assets/dengue.tar.gz corpus/textcat_multilabel-dengue/ --include-pretraining
       # ner: extract calamancy-gold dataset.
       - mkdir -p corpus/ner-calamancy_gold/
       - tar -xzvf assets/calamancy_gold.tar.gz -C corpus/ner-calamancy_gold/
@@ -112,9 +112,11 @@ commands:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
       - corpus/textcat-hatespeech/test.spacy
+      - corpus/textcat-hatespeech/pretraining.jsonl
       - corpus/textcat_multilabel-dengue/train.spacy
       - corpus/textcat_multilabel-dengue/dev.spacy
       - corpus/textcat_multilabel-dengue/test.spacy
+      - corpus/textcat_multilabel-dengue/pretraining.jsonl
       - corpus/ner-calamancy_gold/train.spacy
       - corpus/ner-calamancy_gold/dev.spacy
       - corpus/ner-calamancy_gold/test.spacy
@@ -127,20 +129,20 @@ commands:
     script:
       - >-
         python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_md/
-        --paths.raw_text assets/hatespeech.jsonl
+        --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
         --pretraining.max_epochs 5
         --pretraining.n_save_every 1
         --paths.vectors tl_calamancy_md
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_lg/
-        --paths.raw_text assets/hatespeech.jsonl
+        --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
         --pretraining.max_epochs 5
         --pretraining.n_save_every 1
         --paths.vectors tl_calamancy_lg
         --gpu-id ${vars.gpu_id}
     deps:
-      - assets/hatespeech.jsonl
+      - corpus/textcat-hatespeech/pretraining.jsonl
     outputs:
       - pretraining/hatespeech_md/model-last.bin
       - pretraining/hatespeech_lg/model-last.bin
@@ -152,7 +154,7 @@ commands:
         python -m spacy train
         configs/textcat-hatespeech.cfg
         --nlp.lang ${vars.lang}
-        --output training/textcat-hatespeech-md/model-best/
+        --output training/textcat-hatespeech-md/
         --paths.vectors tl_calamancy_md
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
@@ -162,12 +164,18 @@ commands:
         python -m spacy train
         configs/textcat-hatespeech.cfg
         --nlp.lang ${vars.lang}
-        --output training/textcat-hatespeech-lg/model-best/
+        --output training/textcat-hatespeech-lg/
         --paths.vectors tl_calamancy_lg
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
         --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
         --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m spacy train
+      #   configs/textcat-hatespeech-trf.cfg
+      #   --nlp.lang ${vars.lang}
+      #   --output training/textcat-hatespeech-trf/
+      #   --components.transformer
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
@@ -176,7 +184,7 @@ commands:
     outputs:
       - training/textcat-hatespeech-md/model-best/
       - training/textcat-hatespeech-lg/model-best/
-      - training/textcat-hatespeech-trf/model-best/
+      # - training/textcat-hatespeech-trf/model-best/
 
   - name: "evaluate-hatespeech"
     help: "Evaluate binary textcat on Hatespeech test data"
@@ -187,6 +195,29 @@ commands:
       - corpus/textcat-hatespeech/test.spacy
     outputs:
       - metrics/textcat-hatespeech.json
+
+  - name: "pretrain-dengue"
+    help: "Pretrain on Dengue training data to initialize vectors"
+    script:
+      - >-
+        python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_md/
+        --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
+        --pretraining.max_epochs 5
+        --pretraining.n_save_every 1
+        --paths.vectors tl_calamancy_md
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_lg/
+        --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
+        --pretraining.max_epochs 5
+        --pretraining.n_save_every 1
+        --paths.vectors tl_calamancy_lg
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/pretraining.jsonl
+    outputs:
+      - pretraining/dengue_md/model-last.bin
+      - pretraining/dengue_lg/model-last.bin
 
   - name: "train-dengue"
     help: "Train multilabel textcat on Dengue dataset"
