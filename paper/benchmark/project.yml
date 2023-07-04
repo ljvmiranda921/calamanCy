@@ -122,6 +122,29 @@ commands:
       - corpus/parser-ud/dev.spacy
       - corpus/parser-ud/test.spacy
 
+  - name: "pretrain-hatespeech"
+    help: "Pretrain on Hatespeech training data to initialize vectors"
+    script:
+      - >-
+        python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_md/
+        --paths.raw_text assets/hatespeech.jsonl
+        --pretraining.max_epochs 5
+        --pretraining.n_save_every 1
+        --paths.vectors tl_calamancy_md
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_lg/
+        --paths.raw_text assets/hatespeech.jsonl
+        --pretraining.max_epochs 5
+        --pretraining.n_save_every 1
+        --paths.vectors tl_calamancy_lg
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - assets/hatespeech.jsonl
+    outputs:
+      - pretraining/hatespeech_md/model-last.bin
+      - pretraining/hatespeech_lg/model-last.bin
+
   - name: "train-hatespeech"
     help: "Train binary textcat on Hatespeech dataset"
     script:
@@ -133,12 +156,27 @@ commands:
         --paths.vectors tl_calamancy_md
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
-
+        --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-lg/model-best/
+        --paths.vectors tl_calamancy_lg
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
+        --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
+      - pretraining/hatespeech_md/model-last.bin
+      - pretraining/hatespeech_lg/model-last.bin
     outputs:
-      - training/textcat-hatespeech/model-best/
+      - training/textcat-hatespeech-md/model-best/
+      - training/textcat-hatespeech-lg/model-best/
+      - training/textcat-hatespeech-trf/model-best/
 
   - name: "evaluate-hatespeech"
     help: "Evaluate binary textcat on Hatespeech test data"
