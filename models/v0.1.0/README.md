@@ -70,12 +70,12 @@ Commands are only re-run if their inputs have changed.
 | `setup-fasttext-vectors` | Make fastText vectors spaCy compatible |
 | `build-floret` | Build floret binary for training fastText / floret vectors |
 | `train-vectors-md` | Train medium-sized word vectors (200 dims, 50k keys) using the floret binary. |
-| `train-vectors-lg` | Train large-sized word vectors (200 dims, 200k keys) using the floret binary. |
 | `pretrain-md` | Pretrain with information from raw text using floret (md) vectors |
-| `pretrain-lg` | Pretrain with information from raw text using fastText vectors |
 | `train-parser-tagger-md` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-md` | Train NER component of tl_calamancy_md using floret vectors with pretraining (50k unique vectors) |
 | `assemble-md` | Assemble the tl_calamancy_md model and package it as a spaCy pipeline |
+| `train-vectors-lg` | Train large-sized word vectors (200 dims, 200k keys) using the floret binary. |
+| `pretrain-lg` | Pretrain with information from raw text using fastText vectors |
 | `train-parser-tagger-lg` | Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank |
 | `train-ner-lg` | Train NER component of tl_calamancy_lg using fastText vectors with pretraining (714k unique keys) |
 | `assemble-lg` | Assemble the tl_calamancy_lg model and package it as a spaCy pipeline |

@@ -230,30 +230,6 @@ commands:
     outputs:
       - vectors/floret-tl-md
 
-  - name: "train-vectors-lg"
-    help: "Train large-sized word vectors (200 dims, 200k keys) using the floret binary."
-    script:
-      - mkdir -p assets/vectors/floret-tl-lg/
-      - >-
-        assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
-        -output assets/vectors/floret-tl-lg/vectors
-        -dim 200
-        -minn 3
-        -maxn 5 
-        -mode floret
-        -hashCount 2
-        -bucket 200000
-      - mkdir -p vectors/floret-tl-lg
-      - >-
-        python -m spacy init vectors 
-        tl assets/vectors/floret-tl-lg/vectors.floret vectors/floret-tl-lg
-        --mode floret
-    deps:
-      - assets/floret/floret
-    outputs:
-      - vectors/floret-tl-lg
-
   - name: "pretrain-md"
     help: "Pretrain with information from raw text using floret (md) vectors"
     script:
@@ -269,22 +245,6 @@ commands:
       - vectors/floret-tl-md
     outputs:
       - pretraining/init-tok2vec-md/model-last.bin
-
-  - name: "pretrain-lg"
-    help: "Pretrain with information from raw text using fastText vectors"
-    script:
-      - >-
-        python -m spacy pretrain configs/ner.cfg pretraining/init-tok2vec-lg/
-        --paths.raw_text assets/tlunified_raw_text.jsonl
-        --pretraining.max_epochs ${vars.pretrain_epochs}
-        --pretraining.n_save_every 1
-        --paths.vectors vectors/fasttext-tl
-        --gpu-id ${vars.gpu_id}
-    deps:
-      - assets/tlunified_raw_text.jsonl
-      - vectors/fasttext-tl
-    outputs:
-      - pretraining/init-tok2vec-lg/model-last.bin
 
   - name: "train-parser-tagger-md"
     help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
@@ -345,6 +305,46 @@ commands:
     outputs:
       - packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}.tar.gz
       - packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl
+
+  - name: "train-vectors-lg"
+    help: "Train large-sized word vectors (200 dims, 200k keys) using the floret binary."
+    script:
+      - mkdir -p assets/vectors/floret-tl-lg/
+      - >-
+        assets/floret/floret skipgram
+        -input assets/tlunified/train.txt 
+        -output assets/vectors/floret-tl-lg/vectors
+        -dim 200
+        -minn 3
+        -maxn 5 
+        -mode floret
+        -hashCount 2
+        -bucket 200000
+      - mkdir -p vectors/floret-tl-lg
+      - >-
+        python -m spacy init vectors 
+        tl assets/vectors/floret-tl-lg/vectors.floret vectors/floret-tl-lg
+        --mode floret
+    deps:
+      - assets/floret/floret
+    outputs:
+      - vectors/floret-tl-lg
+
+  - name: "pretrain-lg"
+    help: "Pretrain with information from raw text using fastText vectors"
+    script:
+      - >-
+        python -m spacy pretrain configs/ner.cfg pretraining/init-tok2vec-lg/
+        --paths.raw_text assets/tlunified_raw_text.jsonl
+        --pretraining.max_epochs ${vars.pretrain_epochs}
+        --pretraining.n_save_every 1
+        --paths.vectors vectors/fasttext-tl
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - assets/tlunified_raw_text.jsonl
+      - vectors/fasttext-tl
+    outputs:
+      - pretraining/init-tok2vec-lg/model-last.bin
 
   - name: "train-parser-tagger-lg"
     help: "Train the parser and tagger components using the Universal Dependencies Ugnayan Treebank"
