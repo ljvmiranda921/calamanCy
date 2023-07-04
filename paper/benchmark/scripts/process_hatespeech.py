@@ -31,6 +31,7 @@ def process_hatespeech(
     # fmt: off
     indir: Path = typer.Argument(..., help="Path to the unzipped hatespeech dataset containing the split CSV files."),
     outdir: Path = typer.Argument(..., help="Path to save the converted outputs."),
+    verbose: bool = typer.Option(False, "-v", "--verbose", help="Show additional information.")
     # fmt: on
 ):
     """Convert the Hatespeech dataset into the spaCy format"""
@@ -44,7 +45,10 @@ def process_hatespeech(
 
             for row in reader:
                 if line_count == 0:
-                    msg.info(f"Column names are '{','.join(row)}' ({indir / filename})")
+                    msg.text(
+                        f"Column names are '{','.join(row)}' ({indir / filename})",
+                        show=verbose,
+                    )
                     line_count += 1
                 else:
                     if len(row) == 2:
@@ -54,13 +58,19 @@ def process_hatespeech(
         # Convert examples into spaCy Doc objects
         doc_bin = DocBin()
         nlp = spacy.blank("tl")
+        # Note: positive here means positive examples (labeled as 1), not
+        # positive sentiment.
+        n_positive = 0
+        n_negative = 0
         for text, label in examples:
             doc = nlp.make_doc(text)
             doc.cats = {category: 0 for category in CATEGORIES}
             if int(label) == 1:
                 doc.cats["HATESPEECH"] = 1
+                n_positive += 1
             else:
                 doc.cats["NOT_HATESPEECH"] = 1
+                n_negative += 1
             doc_bin.add(doc)
 
         # Save the DocBin to disk
@@ -68,7 +78,9 @@ def process_hatespeech(
             outdir.mkdir(parents=True, exist_ok=True)
         outfile = outdir / f"{infile.stem}.spacy"
         doc_bin.to_disk(outfile)
-        msg.good(f"Saved {len(doc_bin)} documents to {outfile}")
+        msg.good(
+            f"Saved {len(doc_bin)} documents to {outfile} (HATESPEECH={n_positive}, NOT_HATESPEECH={n_negative})"
+        )
 
 
 if __name__ == "__main__":
