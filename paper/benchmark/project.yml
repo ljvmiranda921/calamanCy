@@ -125,7 +125,10 @@ commands:
   - name: "train-hatespeech"
     help: "Train binary textcat on Hatespeech dataset"
     script:
-      - ls
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
