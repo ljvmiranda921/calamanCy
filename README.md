@@ -73,7 +73,7 @@ doc = nlp("Ako si Juan de la Cruz")
 
 The `nlp` object is an instance of spaCy's [`Language`
 class](https://spacy.io/api/language) and you can use it as any other spaCy
-pipeline. 
+pipeline. You can also [access these models on Hugging Face](https://huggingface.co/ljvmiranda921) 🤗.
 
 ## 📦 Models and Datasets
 
