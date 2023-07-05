@@ -58,6 +58,7 @@ vars:
   gpu_id: 0
   # Publishing
   publish_message: "Update spaCy pipeline"
+  remote_gcs_bucket: "ljvmiranda"
 
 env:
   HUGGINGFACE_TOKEN: HUGGINGFACE_TOKEN
@@ -65,7 +66,7 @@ env:
 remotes:
   # Create a service account, download a JSON key, and set the credentials path
   # to GOOGLE_APPLICATION_CREDENTIALS env variable
-  gcs: "gs://ljvmiranda/calamanCy/training_cache/v${vars.version}/"
+  gcs: "gs://${vars.remote_gcs_bucket}/calamanCy/training_cache/v${vars.version}/"
 
 directories:
   - "assets"
