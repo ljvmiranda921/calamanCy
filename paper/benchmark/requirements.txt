@@ -1,4 +1,6 @@
 spacy>=3.5.0
+spacy-transformers
+pathy[gcs]
 calamancy==0.1.0
 typer
 wasabi
