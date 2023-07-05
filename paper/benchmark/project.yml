@@ -34,7 +34,6 @@ vars:
   seed: 0
   gpu_id: 0
   lang: "tl"
-  calamancy_model_hash: 55ef01a244f3ca77676de6ba5a2beea0ba3e0021
 
 assets:
   - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
