@@ -194,12 +194,32 @@ commands:
   - name: "evaluate-hatespeech"
     help: "Evaluate binary textcat on Hatespeech test data"
     script:
-      - ls
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-md/model-best/ 
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-md.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-lg/model-best/ 
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-lg.json
+        --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m spacy evaluate
+      #   training/textcat-hatespeech-trf/model-best/
+      #   corpus/textcat-hatespeech/test.spacy
+      #   --output metrics/textcat-hatespeech-trf.json
+      #   --gpu-id ${vars.gpu_id}
     deps:
-      - training/textcat-hatespeech/model-best/
+      - training/textcat-hatespeech-md/model-best/
+      - training/textcat-hatespeech-lg/model-best/
       - corpus/textcat-hatespeech/test.spacy
     outputs:
-      - metrics/textcat-hatespeech.json
+      - metrics/textcat-hatespeech-md.json
+      - metrics/textcat-hatespeech-lg.json
+      # - metrics/textcat-hatespeech-trf.json
 
   - name: "pretrain-dengue"
     help: "Pretrain on Dengue training data to initialize vectors"
