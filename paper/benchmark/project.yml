@@ -27,13 +27,14 @@ directories:
   - "training"
   - "metrics"
 
-remotes:
-  gcs: "gs://ljvmiranda/calamanCy/benchmark_cache/"
-
 vars:
   seed: 0
   gpu_id: 0
   lang: "tl"
+  remote_gcs_bucket: "ljvmiranda"
+
+remotes:
+  gcs: "gs://${vars.remote_gcs_bucket}/calamanCy/benchmark_cache/"
 
 assets:
   - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
