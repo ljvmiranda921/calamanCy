@@ -18,6 +18,7 @@ from typing import Dict
 import spacy
 import typer
 from spacy.tokens import DocBin
+from srsly import write_jsonl
 from wasabi import msg
 
 # Filenames for the three splits
@@ -29,10 +30,12 @@ def process_dengue(
     # fmt: off
     indir: Path = typer.Argument(..., help="Path to the unzipped dengue dataset containing the split CSV files."),
     outdir: Path = typer.Argument(..., help="Path to save the converted outputs."),
+    include_pretraining: bool = typer.Option(False, "-pt", "--include-pretraining", "Create pretraining corpora."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Show additional information.")
     # fmt: on
 ):
     """Convert the Dengue dataset into the spaCy format"""
+    pretraining_corpora = []
     for filename in SPLIT_FILENAMES:
         # Read examples from CSV file
         infile = indir / filename
@@ -59,6 +62,7 @@ def process_dengue(
         doc_bin = DocBin()
         nlp = spacy.blank("tl")
         for text, *labels in examples:
+            pretraining_corpora.append({"text": text})
             doc = nlp.make_doc(text)
             doc.cats = {cat: int(label) for cat, label in zip(CATEGORIES, labels)}
             doc_bin.add(doc)
@@ -74,6 +78,10 @@ def process_dengue(
             [f"{cat} ({count})" for cat, count in dict(counts).items()]
         )
         msg.good(f"Saved {len(doc_bin)} documents to {outfile} ({counts_msg})")
+
+    if include_pretraining:
+        write_jsonl(outdir / "pretraining.jsonl")
+        msg.good(f"Saved pretraining corpora to {outdir / 'pretraining.jsonl'}")
 
 
 def _count_total_cats(doc_bin: DocBin, nlp) -> Dict[str, int]:

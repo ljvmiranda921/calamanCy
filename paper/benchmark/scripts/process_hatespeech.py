@@ -19,6 +19,7 @@ from pathlib import Path
 import spacy
 import typer
 from spacy.tokens import DocBin
+from srsly import write_jsonl
 from wasabi import msg
 
 
@@ -31,10 +32,12 @@ def process_hatespeech(
     # fmt: off
     indir: Path = typer.Argument(..., help="Path to the unzipped hatespeech dataset containing the split CSV files."),
     outdir: Path = typer.Argument(..., help="Path to save the converted outputs."),
+    include_pretraining: bool = typer.Option(False, "-pt", "--include-pretraining", "Create pretraining corpora."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Show additional information.")
     # fmt: on
 ):
     """Convert the Hatespeech dataset into the spaCy format"""
+    pretraining_corpora = []
     for filename in SPLIT_FILENAMES:
         # Read examples from CSV file
         infile = indir / filename
@@ -64,6 +67,7 @@ def process_hatespeech(
         n_negative = 0
         for text, label in examples:
             doc = nlp.make_doc(text)
+            pretraining_corpora.append({"text": text})
             doc.cats = {category: 0 for category in CATEGORIES}
             if int(label) == 1:
                 doc.cats["HATESPEECH"] = 1
@@ -81,6 +85,10 @@ def process_hatespeech(
         msg.good(
             f"Saved {len(doc_bin)} documents to {outfile} (HATESPEECH={n_positive}, NOT_HATESPEECH={n_negative})"
         )
+
+    if include_pretraining:
+        write_jsonl(outdir / "pretraining.jsonl")
+        msg.good(f"Saved pretraining corpora to {outdir / 'pretraining.jsonl'}")
 
 
 if __name__ == "__main__":
