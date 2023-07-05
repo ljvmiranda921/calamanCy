@@ -87,7 +87,7 @@ def process_hatespeech(
         )
 
     if include_pretraining:
-        write_jsonl(outdir / "pretraining.jsonl")
+        write_jsonl(outdir / "pretraining.jsonl", lines=pretraining_corpora)
         msg.good(f"Saved pretraining corpora to {outdir / 'pretraining.jsonl'}")
 
 

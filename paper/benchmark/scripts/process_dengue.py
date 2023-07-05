@@ -80,7 +80,7 @@ def process_dengue(
         msg.good(f"Saved {len(doc_bin)} documents to {outfile} ({counts_msg})")
 
     if include_pretraining:
-        write_jsonl(outdir / "pretraining.jsonl")
+        write_jsonl(outdir / "pretraining.jsonl", lines=pretraining_corpora)
         msg.good(f"Saved pretraining corpora to {outdir / 'pretraining.jsonl'}")
 
 
