@@ -32,7 +32,7 @@ def process_hatespeech(
     # fmt: off
     indir: Path = typer.Argument(..., help="Path to the unzipped hatespeech dataset containing the split CSV files."),
     outdir: Path = typer.Argument(..., help="Path to save the converted outputs."),
-    include_pretraining: bool = typer.Option(False, "-pt", "--include-pretraining", "Create pretraining corpora."),
+    include_pretraining: bool = typer.Option(False, "-pt", "--include-pretraining", help="Create pretraining corpora."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Show additional information.")
     # fmt: on
 ):
