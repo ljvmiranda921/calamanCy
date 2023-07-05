@@ -27,6 +27,9 @@ directories:
   - "training"
   - "metrics"
 
+remotes:
+  gcs: "gs://ljvmiranda/calamanCy/benchmark_cache/"
+
 vars:
   seed: 0
   gpu_id: 0
