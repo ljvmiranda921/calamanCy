@@ -136,14 +136,14 @@ commands:
         python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_md/
         --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
         --pretraining.max_epochs 20
-        --pretraining.n_save_every 1
+        --pretraining.n_save_every 5
         --paths.vectors tl_calamancy_md
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_lg/
         --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
         --pretraining.max_epochs 20
-        --pretraining.n_save_every 1
+        --pretraining.n_save_every 5
         --paths.vectors tl_calamancy_lg
         --gpu-id ${vars.gpu_id}
     deps:
@@ -208,14 +208,14 @@ commands:
         python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_md/
         --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
         --pretraining.max_epochs 20
-        --pretraining.n_save_every 1
+        --pretraining.n_save_every 5
         --paths.vectors tl_calamancy_md
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_lg/
         --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
         --pretraining.max_epochs 20
-        --pretraining.n_save_every 1
+        --pretraining.n_save_every 5
         --paths.vectors tl_calamancy_lg
         --gpu-id ${vars.gpu_id}
     deps:
