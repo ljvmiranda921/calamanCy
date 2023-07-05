@@ -64,9 +64,11 @@ workflows:
     - "install-models"
     - "process-datasets"
   textcat-hatespeech:
+    - "pretrain-hatespeech"
     - "train-hatespeech"
     - "evaluate-hatespeech"
   textcat_multilabel-dengue:
+    - "pretrain-dengue"
     - "train-dengue"
     - "evaluate-dengue"
   ner-calamancy_gold:
