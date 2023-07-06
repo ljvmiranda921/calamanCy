@@ -384,13 +384,52 @@ commands:
   - name: "evaluate-calamancy"
     help: "Evaluate ner on calamanCy gold dev and test data"
     script:
-      - ls
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-md-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-md-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_lg
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-lg-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-lg-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-trf-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-trf-dev.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - corpus/ner-calamancy_gold/dev.spacy
       - corpus/ner-calamancy_gold/test.spacy
     outputs:
-      - metrics/ner-calamancy_gold-dev.json
-      - metrics/ner-calamancy_gold-test.json
+      - metrics/ner-calamancy_gold-md-dev.json
+      - metrics/ner-calamancy_gold-md-test.json
+      - metrics/ner-calamancy_gold-lg-dev.json
+      - metrics/ner-calamancy_gold-lg-test.json
+      - metrics/ner-calamancy_gold-trf-dev.json
+      - metrics/ner-calamancy_gold-trf-test.json
 
   - name: "evaluate-ud"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks"
