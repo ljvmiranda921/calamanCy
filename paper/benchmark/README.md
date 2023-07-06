@@ -38,9 +38,13 @@ Commands are only re-run if their inputs have changed.
 | --- | --- |
 | `install-models` | Install models in the spaCy workspace |
 | `process-datasets` | Process the datasets and convert them into spaCy format |
+| `pretrain-hatespeech` | Pretrain on Hatespeech training data to initialize vectors |
 | `train-hatespeech` | Train binary textcat on Hatespeech dataset |
+| `train-hatespeech-trf` | Train binary textcat on Hatespeech dataset using transformers |
 | `evaluate-hatespeech` | Evaluate binary textcat on Hatespeech test data |
+| `pretrain-dengue` | Pretrain on Dengue training data to initialize vectors |
 | `train-dengue` | Train multilabel textcat on Dengue dataset |
+| `train-dengue-trf` | Train multilabel textcat on Dengue dataset using transformers |
 | `evaluate-dengue` | Evaluate multilabel textcat on Dengue test data |
 | `evaluate-calamancy` | Evaluate ner on calamanCy gold dev and test data |
 | `evaluate-ud` | Evaluate parser and tagger on the combined Tagalog treebanks |
@@ -55,8 +59,8 @@ inputs have changed.
 | Workflow | Steps |
 | --- | --- |
 | `setup` | `install-models` &rarr; `process-datasets` |
-| `textcat-hatespeech` | `train-hatespeech` &rarr; `evaluate-hatespeech` |
-| `textcat_multilabel-dengue` | `train-dengue` &rarr; `evaluate-dengue` |
+| `textcat-hatespeech` | `pretrain-hatespeech` &rarr; `train-hatespeech` &rarr; `train-hatespeech-trf` &rarr; `evaluate-hatespeech` |
+| `textcat_multilabel-dengue` | `pretrain-dengue` &rarr; `train-dengue` &rarr; `train-dengue-trf` &rarr; `evaluate-dengue` |
 | `ner-calamancy_gold` | `evaluate-calamancy` |
 | `parser-ud` | `evaluate-ud` |
 
@@ -70,8 +74,8 @@ in the project directory.
 | --- | --- | --- |
 | `assets/treebank/UD_Tagalog-Ugnayan/` | Git | Treebank data for UD_Tagalog-Ugnayan. Originally sourced from *Parsing in the absence of related languages: Evaluating low-resource dependency parsers in Tagalog* by Aquino and de Leon (2020). |
 | `assets/treebank/UD_Tagalog-TRG/` | Git | Treebank data for UD_Tagalog-TRG. Originally sourced from the thesis, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018). |
-| `assets/hatespeech.tar.gz` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018). |
-| `assets/dengue.tar.gz` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019) |
+| `assets/hatespeech.zip` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018). |
+| `assets/dengue.zip` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019) |
 | `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021). |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
