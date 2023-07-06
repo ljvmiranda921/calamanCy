@@ -194,6 +194,8 @@ commands:
         configs/textcat-hatespeech-trf.cfg
         --nlp.lang ${vars.lang}
         --output training/textcat-hatespeech-trf/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat-hatespeech/train.spacy
