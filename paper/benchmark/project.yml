@@ -210,28 +210,50 @@ commands:
         python -m spacy evaluate 
         training/textcat-hatespeech-md/model-best/ 
         corpus/textcat-hatespeech/test.spacy
-        --output metrics/textcat-hatespeech-md.json
+        --output metrics/textcat-hatespeech-md-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-md/model-best/ 
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-md-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
         training/textcat-hatespeech-lg/model-best/ 
         corpus/textcat-hatespeech/test.spacy
-        --output metrics/textcat-hatespeech-lg.json
+        --output metrics/textcat-hatespeech-lg-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-lg/model-best/ 
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-lg-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate
         training/textcat-hatespeech-trf/model-best/
         corpus/textcat-hatespeech/test.spacy
-        --output metrics/textcat-hatespeech-trf.json
+        --output metrics/textcat-hatespeech-trf-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/textcat-hatespeech-trf/model-best/
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-trf-dev.json
         --gpu-id ${vars.gpu_id}
     deps:
       - training/textcat-hatespeech-md/model-best/
       - training/textcat-hatespeech-lg/model-best/
       - corpus/textcat-hatespeech/test.spacy
+      - corpus/textcat-hatespeech/dev.spacy
     outputs:
-      - metrics/textcat-hatespeech-md.json
-      - metrics/textcat-hatespeech-lg.json
-      - metrics/textcat-hatespeech-trf.json
+      - metrics/textcat-hatespeech-md-test.json
+      - metrics/textcat-hatespeech-md-dev.json
+      - metrics/textcat-hatespeech-lg-test.json
+      - metrics/textcat-hatespeech-lg-dev.json
+      - metrics/textcat-hatespeech-trf-test.json
+      - metrics/textcat-hatespeech-trf-dev.json
 
   - name: "pretrain-dengue"
     help: "Pretrain on Dengue training data to initialize vectors"
