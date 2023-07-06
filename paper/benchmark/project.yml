@@ -65,7 +65,8 @@ workflows:
     - "process-datasets"
   textcat-hatespeech:
     - "pretrain-hatespeech"
-    - "train-hatespeech"
+    - "train-hatespeech-vec"
+    - "train-hatespeech-trf"
     - "evaluate-hatespeech"
   textcat_multilabel-dengue:
     - "pretrain-dengue"
@@ -152,29 +153,42 @@ commands:
       - pretraining/hatespeech_md/model-last.bin
       - pretraining/hatespeech_lg/model-last.bin
 
-  - name: "train-hatespeech"
+  - name: "train-hatespeech-vec"
     help: "Train binary textcat on Hatespeech dataset"
     script:
-      # - >-
-      #   python -m spacy train
-      #   configs/textcat-hatespeech.cfg
-      #   --nlp.lang ${vars.lang}
-      #   --output training/textcat-hatespeech-md/
-      #   --paths.vectors tl_calamancy_md
-      #   --paths.train corpus/textcat-hatespeech/train.spacy
-      #   --paths.dev corpus/textcat-hatespeech/dev.spacy
-      #   --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
-      #   --gpu-id ${vars.gpu_id}
-      # - >-
-      #   python -m spacy train
-      #   configs/textcat-hatespeech.cfg
-      #   --nlp.lang ${vars.lang}
-      #   --output training/textcat-hatespeech-lg/
-      #   --paths.vectors tl_calamancy_lg
-      #   --paths.train corpus/textcat-hatespeech/train.spacy
-      #   --paths.dev corpus/textcat-hatespeech/dev.spacy
-      #   --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
-      #   --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-md/
+        --paths.vectors tl_calamancy_md
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-lg/
+        --paths.vectors tl_calamancy_lg
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+      - pretraining/hatespeech_md/model-last.bin
+      - pretraining/hatespeech_lg/model-last.bin
+    outputs:
+      - training/textcat-hatespeech-md/model-best/
+      - training/textcat-hatespeech-lg/model-best/
+      - training/textcat-hatespeech-trf/model-best/
+
+  - name: "train-hatespeech-trf"
+    help: "Train binary textcat on Hatespeech dataset using transformers"
+    script:
       - >-
         python -m spacy train
         configs/textcat-hatespeech-trf.cfg
@@ -184,11 +198,7 @@ commands:
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
-      - pretraining/hatespeech_md/model-last.bin
-      - pretraining/hatespeech_lg/model-last.bin
     outputs:
-      # - training/textcat-hatespeech-md/model-best/
-      # - training/textcat-hatespeech-lg/model-best/
       - training/textcat-hatespeech-trf/model-best/
 
   - name: "evaluate-hatespeech"
@@ -206,12 +216,12 @@ commands:
         corpus/textcat-hatespeech/test.spacy
         --output metrics/textcat-hatespeech-lg.json
         --gpu-id ${vars.gpu_id}
-      # - >-
-      #   python -m spacy evaluate
-      #   training/textcat-hatespeech-trf/model-best/
-      #   corpus/textcat-hatespeech/test.spacy
-      #   --output metrics/textcat-hatespeech-trf.json
-      #   --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/textcat-hatespeech-trf/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-trf.json
+        --gpu-id ${vars.gpu_id}
     deps:
       - training/textcat-hatespeech-md/model-best/
       - training/textcat-hatespeech-lg/model-best/
@@ -219,7 +229,7 @@ commands:
     outputs:
       - metrics/textcat-hatespeech-md.json
       - metrics/textcat-hatespeech-lg.json
-      # - metrics/textcat-hatespeech-trf.json
+      - metrics/textcat-hatespeech-trf.json
 
   - name: "pretrain-dengue"
     help: "Pretrain on Dengue training data to initialize vectors"
