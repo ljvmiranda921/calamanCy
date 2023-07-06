@@ -155,41 +155,41 @@ commands:
   - name: "train-hatespeech"
     help: "Train binary textcat on Hatespeech dataset"
     script:
-      - >-
-        python -m spacy train
-        configs/textcat-hatespeech.cfg
-        --nlp.lang ${vars.lang}
-        --output training/textcat-hatespeech-md/
-        --paths.vectors tl_calamancy_md
-        --paths.train corpus/textcat-hatespeech/train.spacy
-        --paths.dev corpus/textcat-hatespeech/dev.spacy
-        --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
-        --gpu-id ${vars.gpu_id}
-      - >-
-        python -m spacy train
-        configs/textcat-hatespeech.cfg
-        --nlp.lang ${vars.lang}
-        --output training/textcat-hatespeech-lg/
-        --paths.vectors tl_calamancy_lg
-        --paths.train corpus/textcat-hatespeech/train.spacy
-        --paths.dev corpus/textcat-hatespeech/dev.spacy
-        --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
-        --gpu-id ${vars.gpu_id}
       # - >-
       #   python -m spacy train
-      #   configs/textcat-hatespeech-trf.cfg
+      #   configs/textcat-hatespeech.cfg
       #   --nlp.lang ${vars.lang}
-      #   --output training/textcat-hatespeech-trf/
-      #   --components.transformer
+      #   --output training/textcat-hatespeech-md/
+      #   --paths.vectors tl_calamancy_md
+      #   --paths.train corpus/textcat-hatespeech/train.spacy
+      #   --paths.dev corpus/textcat-hatespeech/dev.spacy
+      #   --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
+      #   --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m spacy train
+      #   configs/textcat-hatespeech.cfg
+      #   --nlp.lang ${vars.lang}
+      #   --output training/textcat-hatespeech-lg/
+      #   --paths.vectors tl_calamancy_lg
+      #   --paths.train corpus/textcat-hatespeech/train.spacy
+      #   --paths.dev corpus/textcat-hatespeech/dev.spacy
+      #   --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
+      #   --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-trf/
+        --components.transformer
     deps:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
       - pretraining/hatespeech_md/model-last.bin
       - pretraining/hatespeech_lg/model-last.bin
     outputs:
-      - training/textcat-hatespeech-md/model-best/
-      - training/textcat-hatespeech-lg/model-best/
-      # - training/textcat-hatespeech-trf/model-best/
+      # - training/textcat-hatespeech-md/model-best/
+      # - training/textcat-hatespeech-lg/model-best/
+      - training/textcat-hatespeech-trf/model-best/
 
   - name: "evaluate-hatespeech"
     help: "Evaluate binary textcat on Hatespeech test data"
