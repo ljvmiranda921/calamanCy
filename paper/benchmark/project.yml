@@ -185,7 +185,6 @@ commands:
     outputs:
       - training/textcat-hatespeech-md/model-best/
       - training/textcat-hatespeech-lg/model-best/
-      - training/textcat-hatespeech-trf/model-best/
 
   - name: "train-hatespeech-trf"
     help: "Train binary textcat on Hatespeech dataset using transformers"
