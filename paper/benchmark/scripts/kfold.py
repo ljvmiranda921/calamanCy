@@ -151,7 +151,7 @@ def train_kfold(
     msg.text(f"Tracking the following metrics: {','.join(scores_per_fold.keys())}")
     for idx, fold in enumerate(folds):
         dev = fold
-        train = _flatten(_get_all_except(idx, folds=folds))
+        train = _flatten(_get_all_except(idx, arr=folds))
         msg.divider(f"Fold {idx+1}, train: {len(train)}, dev: {len(dev)}")
 
         with tempfile.TemporaryDirectory() as tmpdir:
