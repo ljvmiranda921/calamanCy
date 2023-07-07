@@ -104,11 +104,11 @@ commands:
       - mkdir -p corpus/ner-calamancy_gold/
       - tar -xzvf assets/calamancy_gold.tar.gz -C corpus/ner-calamancy_gold/
       # parser: convert treebank into spaCy format and then merge them
-      - mkdir -p corpus/treebank/
+      - mkdir -p corpus/parser-ud/
       - python -m spacy convert assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu assets/treebank --converter conllu --n-sents 1 --merge-subtokens
       - python -m spacy convert assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu assets/treebank --converter conllu --n-sents 1 --merge-subtokens
       - python -m scripts.merge_treebanks assets/treebank/tl_trg-ud-test.spacy assets/treebank/tl_ugnayan-ud-test.spacy assets/treebank/ud_merged.spacy --seed ${vars.seed}
-      - python -m scripts.split_treebank assets/treebank/ud_merged.spacy corpus/treebank --lang ${vars.lang} --train-size 0.9 --seed ${vars.seed}
+      - python -m scripts.split_treebank assets/treebank/ud_merged.spacy corpus/parser-ud/ --lang ${vars.lang} --train-size 0.9 --seed ${vars.seed}
     deps:
       - assets/hatespeech.zip
       - assets/dengue.zip
