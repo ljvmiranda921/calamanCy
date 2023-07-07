@@ -434,10 +434,16 @@ commands:
   - name: "evaluate-ud"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks"
     script:
-      - ls
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+        --output metrics/parser-ud.json
+        --seed ${vars.seed}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --output metrics/parser-ud-trf.json
+        --seed ${vars.seed}
     deps:
-      - corpus/parser-ud/train.spacy
-      - corpus/parser-ud/dev.spacy
-      - corpus/parser-ud/test.spacy
+      - corpus/parser-ud/
     outputs:
       - metrics/parser-ud.json
+      - metrics/parser-ud-trf.json
