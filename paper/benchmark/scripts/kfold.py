@@ -1,7 +1,9 @@
+import random
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+import spacy
 import typer
 from spacy.cli._util import parse_config_overrides, show_validation_error
 from spacy.tokens import Doc, DocBin
@@ -30,6 +32,7 @@ def kfold(
     n_folds: int = typer.Option(10, "-n", "--n-folds", help="Number of folds to split the corpus."),
     metrics: str = typer.Option(",".join(METRICS), "-m", "--metrics", help="Comma-separated list of metrics we want to track.", callback=lambda x: x.split(",")),
     seed: Optional[int] = typer.Option(None, "-s", "--seed", help="If set, shuffle the merged corpus using the given seed."),
+    lang: str = typer.Option("tl", "-l", "--lang", help="Language code for reading the spaCy files."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Print out additional information."),
     use_gpu: int = typer.Option(-1, "--gpu-id", "-g", help="GPU ID or -1 for CPU"),
     # fmt: on
@@ -45,7 +48,7 @@ def kfold(
     value of "batch_size" in the block "[training]".
     """
     overrides = parse_config_overrides(ctx.args)
-    docs = merge_corpus(corpus_dir, seed=seed)
+    docs = merge_corpus(corpus_dir, seed=seed, verbose=verbose)
     train_kfold(
         docs,
         config_path,
@@ -88,14 +91,30 @@ def _flatten(arr: List[Any]) -> List[Any]:
     return [item for sublist in arr for item in sublist]
 
 
-def merge_corpus(corpus_dir: Path, *, seed: int) -> List[Doc]:
-    """Combine spaCy files into a single.
+def merge_corpus(corpus_dir: Path, *, lang: str, seed: int, verbose: bool) -> List[Doc]:
+    """Combine spaCy files into a single list.
 
     corpus_dir (Path): the path to the corpus containing the spaCy files.
-    seed (int): If set, shuffle the merged corpus with the given seed.
+    lang (str): language code to read the spaCy files.
+    seed (int): if set, shuffle the merged corpus with the given seed.
+    verbose (bool): flag to show additional information.
     RETURNS (List[Doc]): the combined list of spaCy Doc objects.
     """
-    pass
+    nlp = spacy.blank(lang)
+    merged_docs = []
+    for spacy_file in corpus_dir.glob("*.spacy"):
+        msg.text(f"Found file '{spacy_file}'", show=verbose)
+        doc_bin = DocBin().from_disk(spacy_file)
+        docs = list(doc_bin.get_docs(nlp.vocab))
+        merged_docs.extend(docs)
+
+    if seed:
+        msg.text(f"Shuffling Doc objects using seed '{seed}'", show=verbose)
+        random.seed(seed)
+        random.shuffle(merged_docs)  # shuffles inplace
+
+    msg.text(f"Merged a total of {len(merged_docs)} documents")
+    return merged_docs
 
 
 def train_kfold(
@@ -130,15 +149,12 @@ def train_kfold(
         train = _flatten(_get_all_except(idx, folds=folds))
         msg.divider(f"Fold {idx+1}, train: {len(train)}, dev: {len(dev)}")
 
-        cache = tempfile.TemporaryDirectory() if not cache_dir else str(cache_dir)
-        with cache as tmpdir:
+        with tempfile.TemporaryDirectory() as tmpdir:
             # Save the train and test corpora into a temporary directory then
             # train within the context of that directory.
             msg.text("Preparing data for training", show=verbose)
-            overrides = {
-                "paths.train": str(Path(tmpdir) / "tmp_train.spacy"),
-                "paths.dev": str(Path(tmpdir) / "tmp_dev.spacy"),
-            }
+            overrides["paths.train"] = str(Path(tmpdir) / "tmp_train.spacy")
+            overrides["paths.dev"] = str(Path(tmpdir) / "tmp_dev.spacy")
             DocBin(docs=train).to_disk(overrides.get("paths.train"))
             DocBin(docs=dev).to_disk(overrides.get("paths.dev"))
             msg.text(
