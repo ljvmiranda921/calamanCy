@@ -129,7 +129,6 @@ commands:
       - corpus/ner-calamancy_gold/test.spacy
       - corpus/parser-ud/train.spacy
       - corpus/parser-ud/dev.spacy
-      - corpus/parser-ud/test.spacy
 
   - name: "pretrain-hatespeech"
     help: "Pretrain on Hatespeech training data to initialize vectors"
