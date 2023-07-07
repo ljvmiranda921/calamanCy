@@ -9,6 +9,7 @@ from spacy.training.corpus import Corpus
 from spacy.training.initialize import init_nlp
 from spacy.training.loop import train as train_nlp
 from spacy.util import load_config
+from srsly import write_json
 from wasabi import msg
 
 app = typer.Typer()
@@ -44,9 +45,9 @@ def kfold(
     value of "batch_size" in the block "[training]".
     """
     overrides = parse_config_overrides(ctx.args)
-    corpus = merge_corpus(corpus_dir, seed=seed)
+    docs = merge_corpus(corpus_dir, seed=seed)
     train_kfold(
-        corpus,
+        docs,
         config_path,
         n_folds=n_folds,
         output_path=output_path,
@@ -84,6 +85,7 @@ def _flatten(arr: List[Any]) -> List[Any]:
     arr (List[Any]): the list to flatten.
     RETURNS (List[Any]): the flattened list.
     """
+    return [item for sublist in arr for item in sublist]
 
 
 def merge_corpus(corpus_dir: Path, *, seed: int) -> List[Doc]:
@@ -99,12 +101,14 @@ def merge_corpus(corpus_dir: Path, *, seed: int) -> List[Doc]:
 def train_kfold(
     docs: List[Doc],
     config_path: Path,
+    *,
     n_folds: int,
     output_path: Path,
     metrics: List[str],
     use_gpu: int,
     overrides: Dict[str, Any],
     verbose: bool,
+    cache_dir: Optional[Path] = None,
 ):
     """Train and evaluate using k-fold cross validation.
 
@@ -115,6 +119,7 @@ def train_kfold(
     metrics (List[str]): list of metrics we want to track for evaluation.
     use_gpu (int): the GPU machine to use. Set to -1 to use CPU.
     overrides (Dict[str, Any]): overrides to the configuration file.
+    cache_dir (Path): optional path to save the created folds.
     verbose (bool): print out extra information.
     """
     folds = list(_chunk(docs, n_folds))
@@ -125,7 +130,8 @@ def train_kfold(
         train = _flatten(_get_all_except(idx, folds=folds))
         msg.divider(f"Fold {idx+1}, train: {len(train)}, dev: {len(dev)}")
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        cache = tempfile.TemporaryDirectory() if not cache_dir else str(cache_dir)
+        with cache as tmpdir:
             # Save the train and test corpora into a temporary directory then
             # train within the context of that directory.
             msg.text("Preparing data for training", show=verbose)
@@ -147,7 +153,7 @@ def train_kfold(
             with show_validation_error(config_path, hint_fill=False):
                 config = load_config(config_path, overrides, interpolate=False)
                 nlp = init_nlp(config)
-            nlp, _ = train_nlp(nlp, None)
+            nlp, _ = train_nlp(nlp, None, use_gpu=use_gpu)
 
             # Perform evaluation
             msg.text(f"Evaluating on the development dataset", show=verbose)
@@ -163,6 +169,19 @@ def train_kfold(
                         f"Metric '{metric}' not found in pipeline. "
                         f"Available metrics are: {','.join(scores.keys())}"
                     )
+            msg.text(
+                f"Scores for fold '{idx+1}'"
+                f"{', '.join([f'{m}: {scores[m]}' for m in metrics if m in scores])}",
+                show=verbose,
+            )
+
+    msg.info(f"Computing final {n_folds}-fold cross-validation score")
+    avg_scores = {
+        metric: sum(scores) / len(scores) for metric, scores in scores_per_fold.items()
+    }
+    msg.table(avg_scores, header=("Metric", "Score"))
+    if output_path:
+        write_json(output_path, avg_scores, indent=4)
 
 
 if __name__ == "__main__":
