@@ -118,6 +118,8 @@ def train_kfold(
     verbose (bool): print out extra information.
     """
     folds = list(_chunk(docs, n_folds))
+    scores_per_fold = {metric: [] for metric in metrics}
+    msg.text(f"Tracking the following metrics: {','.join(scores_per_fold.keys())}")
     for idx, fold in enumerate(folds):
         dev = fold
         train = _flatten(_get_all_except(idx, folds=folds))
@@ -152,6 +154,15 @@ def train_kfold(
             corpus = Corpus(overrides["paths.dev"], gold_preproc=False)
             examples = corpus(nlp)
             scores = nlp.evaluate(examples)
+
+            for metric in metrics:
+                if metric in scores:
+                    scores_per_fold[metric].append(scores[metric])
+                else:
+                    msg.warn(
+                        f"Metric '{metric}' not found in pipeline. "
+                        f"Available metrics are: {','.join(scores.keys())}"
+                    )
 
 
 if __name__ == "__main__":
