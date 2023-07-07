@@ -48,7 +48,12 @@ def kfold(
     value of "batch_size" in the block "[training]".
     """
     overrides = parse_config_overrides(ctx.args)
-    docs = merge_corpus(corpus_dir, seed=seed, verbose=verbose)
+    docs = merge_corpus(
+        corpus_dir,
+        seed=seed,
+        lang=lang,
+        verbose=verbose,
+    )
     train_kfold(
         docs,
         config_path,
