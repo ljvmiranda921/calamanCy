@@ -404,7 +404,7 @@ commands:
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        tl_calamancy_md
+        tl_calamancy_lg
         corpus/ner-calamancy_gold/dev.spacy
         --output metrics/ner-calamancy_gold-lg-dev.json
         --gpu-id ${vars.gpu_id}
@@ -416,7 +416,7 @@ commands:
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy evaluate 
-        tl_calamancy_md
+        tl_calamancy_trf
         corpus/ner-calamancy_gold/dev.spacy
         --output metrics/ner-calamancy_gold-trf-dev.json
         --gpu-id ${vars.gpu_id}
