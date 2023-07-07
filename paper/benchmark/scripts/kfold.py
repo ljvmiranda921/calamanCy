@@ -1,6 +1,6 @@
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Iterable, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 import typer
 from spacy.cli._util import parse_config_overrides, show_validation_error
