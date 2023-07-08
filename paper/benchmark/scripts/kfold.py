@@ -33,19 +33,23 @@ def kfold(
     metrics: str = typer.Option(",".join(METRICS), "-m", "--metrics", help="Comma-separated list of metrics we want to track.", callback=lambda x: x.split(",")),
     seed: Optional[int] = typer.Option(None, "-s", "--seed", help="If set, shuffle the merged corpus using the given seed."),
     lang: str = typer.Option("tl", "-l", "--lang", help="Language code for reading the spaCy files."),
+    cache_dir: Optional[Path] = typer.Opion(None, "-c", "--cache-dir", "--cache", help="Optional path to save the spaCy documents at a given fold."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Print out additional information."),
     use_gpu: int = typer.Option(-1, "--gpu-id", "-g", help="GPU ID or -1 for CPU"),
     # fmt: on
 ):
     """
     Perform k-fold cross validation by training a model at each fold and then
-    reporting the average across `n_folds`.
+    reporting the average across 'n_folds'.
 
     The config file includes all settings and hyperparmeters used during
     training. To oeverride settings in the config, e.g., settings that point to
     local paths or that you want to experiment with, you can override them as
     command line options. For instance, --training.batch_size 128 overrides the
     value of "batch_size" in the block "[training]".
+
+    You can also pass a value to the 'cache_dir' parameter to optionally save
+    the spaCy files at the current fold.
     """
     overrides = parse_config_overrides(ctx.args)
     docs = merge_corpus(
@@ -62,6 +66,7 @@ def kfold(
         metrics=metrics,
         use_gpu=use_gpu,
         overrides=overrides,
+        cache_dir=cache_dir
         verbose=verbose,
     )
 
@@ -131,12 +136,12 @@ def train_kfold(
     metrics: List[str],
     use_gpu: int,
     overrides: Dict[str, Any],
+    cache_dir: Path,
     verbose: bool,
-    cache_dir: Optional[Path] = None,
 ):
     """Train and evaluate using k-fold cross validation.
 
-    corpus (List[Doc]): spaCy documents to split and train from.
+    docs (List[Doc]): spaCy documents to split and train from.
     config_path (Path): path to the spaCy training configuration file.
     n_folds (int): number of folds to create.
     output_path (Path): path to save the metrics file.
@@ -158,15 +163,19 @@ def train_kfold(
             # Save the train and test corpora into a temporary directory then
             # train within the context of that directory.
             msg.text("Preparing data for training", show=verbose)
-            overrides["paths.train"] = str(Path(tmpdir) / "tmp_train.spacy")
-            overrides["paths.dev"] = str(Path(tmpdir) / "tmp_dev.spacy")
+            overrides["paths.train"] = str(Path(tmpdir) / f"tmp_train-{idx+1}.spacy")
+            overrides["paths.dev"] = str(Path(tmpdir) / f"tmp_dev-{idx+1}.spacy")
             DocBin(docs=train).to_disk(overrides.get("paths.train"))
             DocBin(docs=dev).to_disk(overrides.get("paths.dev"))
+            if cache_dir:
+                msg.text(f"Saving to {cache_dir}", show=verbose)
+                DocBin(docs=train).to_disk(cache_dir / f"train-{idx+1}.spacy")
+                DocBin(docs=dev).to_disk(cache_dir / f"dev-{idx+1}.spacy")
             msg.text(
-                f"Temp files at {overrides.get('paths.train')} and {overrides.get('paths.dev')}",
+                f"Temp files at {overrides.get('paths.train')} "
+                f"and {overrides.get('paths.dev')}",
                 show=verbose,
             )
-
             # Train the model for the current fold.
             msg.text(
                 f"Training the model for the current fold: '{idx+1}'", show=verbose
