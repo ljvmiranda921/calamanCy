@@ -433,35 +433,38 @@ commands:
   - name: "evaluate-ud"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks"
     script:
-      - >-
-        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
-        --n-folds 10
-        --output metrics/parser-ud-md.json
-        --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
-        --paths.vectors tl_calamancy_md
-        --gpu-id ${vars.gpu_id}
-      - >-
-        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
-        --n-folds 10
-        --output metrics/parser-ud-lg.json
-        --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
-        --paths.vectors tl_calamancy_lg
-        --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+      #   --n-folds 10
+      #   --output metrics/parser-ud-md.json
+      #   --seed ${vars.seed}
+      #   --lang ${vars.lang}
+      #   --nlp.lang ${vars.lang}
+      #   --paths.vectors tl_calamancy_md
+      #   --verbose
+      #   --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+      #   --n-folds 10
+      #   --output metrics/parser-ud-lg.json
+      #   --seed ${vars.seed}
+      #   --lang ${vars.lang}
+      #   --nlp.lang ${vars.lang}
+      #   --paths.vectors tl_calamancy_lg
+      #   --verbose
+      #   --gpu-id ${vars.gpu_id}
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
-        --n-folds 10
+        --n-folds 3
         --output metrics/parser-ud-trf.json
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
+        --verbose
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/parser-ud/
     outputs:
-      - metrics/parser-ud-md.json
-      - metrics/parser-ud-lg.json
+      # - metrics/parser-ud-md.json
+      # - metrics/parser-ud-lg.json
       - metrics/parser-ud-trf.json
