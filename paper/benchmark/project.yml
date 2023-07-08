@@ -455,7 +455,7 @@ commands:
       #   --gpu-id ${vars.gpu_id}
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
-        --n-folds 3
+        --n-folds 10
         --output metrics/parser-ud-trf.json
         --seed ${vars.seed}
         --lang ${vars.lang}
