@@ -458,7 +458,6 @@ commands:
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
-        --paths.vectors tl_calamancy_trf
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/parser-ud/
