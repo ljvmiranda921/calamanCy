@@ -66,7 +66,7 @@ def kfold(
         metrics=metrics,
         use_gpu=use_gpu,
         overrides=overrides,
-        cache_dir=cache_dir
+        cache_dir=cache_dir,
         verbose=verbose,
     )
 
