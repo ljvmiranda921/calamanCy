@@ -6,7 +6,7 @@
 Pipeline  &  Pretraining objective & Word embeddings & Dimensions \\ \midrule
 Medium-sized pipeline (\texttt{tl\_calamancy\_md}) & Predict some number of leading and trailing UTF-8 bytes for the words. & Uses floret vectors trained on the TLUnified corpora. & 50k unique vectors (200 dimensions), Size: 77 MB\\
 Large-sized pipeline (\texttt{tl\_calamancy\_lg})  & Same pretraining objective as the medium-sized pipeline.    & Uses fastText vectors trained on CommonCrawl corpora.                  & 714k unique vectors (300 dimensions), Size: 455 MB \\
-Transformer-based pipeline (\texttt{tl\_calamancy\_trf}) & No separate pretraining because there's no token-to-vector component. & Context-sensitive and vectors from a transformer network.      & Uses roberta-tagalog-base. Size: 813 MB  \\ \bottomrule
+Transformer-based pipeline (\texttt{tl\_calamancy\_trf}) & No separate pretraining because there's no token-to-vector component. & Context-sensitive vectors from a transformer network.      & Uses roberta-tagalog-base. Size: 813 MB  \\ \bottomrule
 \end{tabular}
 \caption{
     Language pipelines available in calamanCy (v0.1.0).

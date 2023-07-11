@@ -59,7 +59,7 @@ This work has two main contributions: (1) an open-source toolkit containing mult
 \paragraph*{Open-source toolkits for NLP}
 There has been a growing body of work in the development of NLP toolkits in recent years. 
 For languages, these toolkits include DaCy for Danish \citep{Enevoldsen2021DaCyAU} and HuSpaCy for Hungarian \citep{Orosz2022HuSpaCyAI}.
-For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific articles \citep{Neumann2019ScispaCyFA}.
+For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific documents \citep{Neumann2019ScispaCyFA}.
 These tools employ spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
 Using spaCy as a foundation is an optimal choice given its popularity and tight integration with other frameworks such as HuggingFace \citep{Wolf2019HuggingFacesTS}.
 However, no tool exists for Tagalog until now.
@@ -105,6 +105,8 @@ For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG
 
 \subfile{tables/pipelines}
 
+\subfile{tables/benchmark_datasets}
+
 \paragraph*{Model training}
 
 We considered three design dimensions when training the calamanCy pipelines: (1) presence of pretraining, (2) the word representation, and (3) the representation or dimension size.
@@ -131,11 +133,11 @@ In the end, we came up with three language pipelines of varying sizes as seen in
 \section{Evaluation}
 
 \paragraph*{Tasks and benchmark datasets} 
-We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchark_datasets}.
+We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
-So instead, we used a held-out test split from \texttt{calamanCy-gold} for NER and then merged the two UD treebanks. 
+So instead, we used a held-out test split from \texttt{calamanCy-gold} (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
 However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
-% We evaluated on the following tasks and datasets:
+Finally, we evaluated all the other datasets for five trials and then reported their average and standard deviation.
 
 % \begin{itemize}
 %   \item \textbf{Text classification} 
