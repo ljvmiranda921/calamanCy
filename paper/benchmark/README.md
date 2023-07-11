@@ -22,7 +22,7 @@ use. You can then run one of the [workflows](#-) below. They are organized by
 task and a dataset identifier (e.g., `textcat-hatespeech`,
 `textcat_multilabel-dengue`).
 
-## Benchmark results
+## Benchmarking results
 
 We benchmarked on the following datasets by training the pipeline on the train
 and development data and evaluating on a held-out test set. We did this for
