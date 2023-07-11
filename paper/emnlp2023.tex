@@ -131,13 +131,19 @@ In the end, we came up with three language pipelines of varying sizes as seen in
 \section{Evaluation}
 
 \paragraph*{Tasks and benchmark datasets} 
-We evaluated on the following tasks and datasets:
-\begin{itemize}
-  \item \textbf{Text classification} For binary text classification, we used the \textit{Hatespeech} dataset \citep{Cabasag2016HatespeechIP} that contains 10k tweets during the 2016 Philippine Presidential Election labeled as hate speech or non-hate speech.
-  For multilabel text classification, we used the \textit{Dengue} dataset \citep{Livelo2018IntelligentDI} that also contains tweets on the dengue 
-  \item \textbf{Named entity recognition}
-  \item \textbf{Dependency parsing}
-\end{itemize}
+We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchark_datasets}.
+Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
+So instead, we used a held-out test split from \texttt{calamanCy-gold} for NER and then merged the two UD treebanks. 
+However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
+% We evaluated on the following tasks and datasets:
+
+% \begin{itemize}
+%   \item \textbf{Text classification} 
+%   For binary text classification, we used the \textit{Hatespeech} dataset \citep{Cabasag2016HatespeechIP} that contains 10k tweets during the 2016 Philippine Presidential Election labeled as hate speech or non-hate speech.
+%   For multilabel text classification, we used the \textit{Dengue} dataset \citep{Livelo2018IntelligentDI} that also contains dengue-related tweets labeled to one or more of five different classes.
+%   \item \textbf{Named entity recognition}
+%   \item \textbf{Dependency parsing}
+% \end{itemize}
 
 \paragraph*{Architectures}
 
