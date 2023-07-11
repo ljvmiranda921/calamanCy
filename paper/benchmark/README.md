@@ -19,7 +19,26 @@ python -m spacy project run setup
 
 This step downloads all the necessary datasets and models for benchmarking
 use. You can then run one of the [workflows](#-) below. They are organized by
-task and a dataset identifier.
+task and a dataset identifier (e.g., `textcat-hatespeech`,
+`textcat_multilabel-dengue`).
+
+## Benchmark results
+
+We benchmarked on the following datasets by training the pipeline on the train
+and development data and evaluating on a held-out test set. We did this for
+five (5) trials and we report their average. Since the combined treebank has
+little data, we opted to evaluate it using k-fold cross-validation:
+
+- **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
+- **Dengue** (Livelo and Cheng, 2018): a multilabel text categorization task that contains dengue-related tweets across five labels: *absent*, *dengue*, *health*, and *mosquito*. We report the macro F1-score on the test set.
+- **calamanCy gold**: an annotated version of the TLUnified dataset (Cruz and Cheng, 2021). Labeled by three annotators across a four-month period with an IAA (Cohen's Kappa) of 0.78. We report the F1-score on the test set.
+- **Merged UD**: a merged version of the Ugnayan (Aquino and de Leon, 2020) and TRG  (Samson, 2018) treebanks. We shuffled the two treebanks after merging and evaluated via 10-fold cross validation. We report both UAS and LAs results.
+
+| Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (calamanCy Gold) | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+|------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+| tl_calamancy_md-0.1.0  | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
+| tl_calamancy_lg-0.1.0  | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 60.32                               |
+| tl_calamancy_trf-0.1.0 | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.92                               |
 
 
 ## 📋 project.yml
@@ -74,8 +93,8 @@ in the project directory.
 | --- | --- | --- |
 | `assets/treebank/UD_Tagalog-Ugnayan/` | Git | Treebank data for UD_Tagalog-Ugnayan. Originally sourced from *Parsing in the absence of related languages: Evaluating low-resource dependency parsers in Tagalog* by Aquino and de Leon (2020). |
 | `assets/treebank/UD_Tagalog-TRG/` | Git | Treebank data for UD_Tagalog-TRG. Originally sourced from the thesis, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018). |
-| `assets/hatespeech.zip` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018). |
-| `assets/dengue.zip` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019) |
+| `assets/hatespeech.zip` | URL | Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019) |
+| `assets/dengue.zip` | URL | Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018). |
 | `assets/calamancy_gold.tar.gz` | URL | Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021). |
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
