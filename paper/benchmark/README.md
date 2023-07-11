@@ -10,7 +10,8 @@ you need to install the required dependencies:
 pip install -r requirements.txt
 ```
 
-Then run the set-up commands:
+This step installs [spaCy](https://spacy.io) that allows you to access its
+command-line interface.  Now run the set-up commands:
 
 ```
 python -m spacy project assets
