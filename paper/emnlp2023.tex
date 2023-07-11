@@ -31,7 +31,7 @@
   It is built on top of spaCy, enabling easy experimentation and integration with other frameworks.  
   calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering efficient multitask models with out-of-the-box support for dependency parsing, part-of-speech (POS) tagging, and named entity recognition (NER).
   calamanCy aims to accelerate the progress of Tagalog NLP by consolidating disjointed resources in a unified framework.
-  The calamanCy Github repository can be found at \url{https://github.com/ljvmiranda921/calamanCy}.
+  The calamanCy toolkit can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy}.
 \end{abstract}
 
 \section{Introduction}
@@ -39,7 +39,7 @@
 Tagalog is a low-resource language from the Austronesian family with over 76 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
 Despite its speaker population, few resources exist for the language \citep{Cruz2021ImprovingLL}. 
 For example, Universal Dependencies (UD) treebanks for Tagalog are tiny ($\ll$ 20k words) \citep{Samson2018TRG,Aquino2020ParsingIT}, 
-while domain-specific corpora are modest \citep{Enriquez2023DeterminingLF,Livelo2018IntelligentDI}. 
+while domain-specific corpora are sparse \citep{Cabasag2016HatespeechIPLivelo2018IntelligentDI}. 
 In addition, Tagalog language models (LMs) \citep{Cruz2021ImprovingLL,Jiang2021PretrainedLM} are few while most multilingual LMs \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO} underrepresent the language.
 Thus, consolidating these disjointed resources in a coherent framework is still an open problem.
 The lack of such framework hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
@@ -49,7 +49,7 @@ To address this problem, we introduce calamanCy,\footnote[1]{
 an open-source toolkit for Tagalog NLP. 
 It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks such as dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). 
 calamanCy also provides models of different sizes to fit any performance or accuracy requirements.
-Finally, our work has two main contributions: (1) an open-source toolkit via calamanCy, and (2) out-of-the-box support for Tagalog NLP tasks using efficient multitask pipelines with reasonable benchmarks.
+This work has two main contributions: (1) an open-source toolkit containing multitask pipelines with out-of-the box support for common NLP tasks, and (2) the first structured benchmark that evaluates on several Tagalog core NLP tasks.
 
 \subfile{tables/entity_types}
 
@@ -99,33 +99,47 @@ We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kap
 This process resulted to a Cohen's $\kappa$ score of 0.78. 
 To avoid confusing with the original TLUnified corpora, we will refer to this annotated NER dataset as \texttt{calamanCy-gold}.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
+For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT} treebanks to leverage their small yet relevant examples.
 
 \subfile{tables/dataset_statistics}
 
+\subfile{tables/pipelines}
+
 \paragraph*{Model training}
 
-We considered three design dimensions when training the calamanCy pipelines: (1) presence of pretraining, (2) the word representation, and (3) the representation size.
+We considered three design dimensions when training the calamanCy pipelines: (1) presence of pretraining, (2) the word representation, and (3) the representation or dimension size.
 \textit{Pretraining} involves learning vectors from raw text to better inform model initialization.
 This process is done using a variant of the cloze task \citep{Devlin2019BERTPO}.
-Here, the pretraining objective asks the model to predict some number of leading and training UTF-8 bytes for the words.
+Here, the pretraining objective asks the model to predict some number of leading and trailing UTF-8 bytes for the words.
 \textit{Word representations} may either involve training static word embeddings using floret,\footnote[3]{\url{https://github.com/explosion/floret}} an efficient version of fastText \citep{Bojanowski2016EnrichingWV}, or using context-sensitive vectors from a transformer \citep{Vaswani2017AttentionIA}.
-Finally, \textit{representation size} is an engineering dimension determined via a performance-accuracy tradeoff.
+Finally, the \textit{dimension} is determined via a performance-accuracy tradeoff.
 
-The general process involves pretraining a filtered version of TLUnified (removing overlaps with \texttt{calamanCy-gold}), constructing static word embeddings if necessary, and training the downstream components.
+
+The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
 We trained the NER component using data from \texttt{calamanCy-gold}, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
-In the end, we came up with three language pipelines of varying sizes:\footnote[4]{The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}}
+In the end, we came up with three language pipelines of varying sizes as seen in Table \ref{table:calamancy_pipelines}.\footnote[4]{
+  The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}. 
+  The full training configuration for the 0.1.0 version can be found on Github: \url{https://github.com/ljvimrainda921/calamanCy/tree/master/models/v0.1.0}
+}
 
-\begin{itemize}
-  \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static word embedding table (floret) containing 50k unique vectors (74 MB).
-  \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. Compared to the medium-sized model, this pipeline contains 714k unique vectors (432 MB).
-  \item \texttt{tl\_calamancy\_trf}: Transformer-based Tagalog pipeline. No pretraining. Instead of a static word embedding table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL} (775 MB).
-\end{itemize}
-
-The full training configuration for v0.1.0 of the calamanCy pipelines can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0}.
+% \begin{itemize}
+%   \item \texttt{tl\_calamancy\_md}: Medium-sized Tagalog pipeline optimized for CPU. Pretrained using raw texts from TLUnified. Includes a static word embedding table (floret) containing 50k unique vectors (74 MB).
+%   \item \texttt{tl\_calamancy\_lg}: Large-sized Tagalog pipeline optimized for CPU. Same training setup as the medium-sized model. Compared to the medium-sized model, this pipeline contains 714k unique vectors (432 MB).
+%   \item \texttt{tl\_calamancy\_trf}: Transformer-based Tagalog pipeline. No character or vector pretraining. Instead of a static word embedding table, it uses context-sensitive vectors from the roberta-tagalog-base transformer \citep{Cruz2021ImprovingLL} (775 MB).
+% \end{itemize}
 
 \section{Evaluation}
 
-We evaluated 
+\paragraph*{Tasks and benchmark datasets} 
+We evaluated on the following tasks and datasets:
+\begin{itemize}
+  \item \textbf{Text classification} For binary text classification, we used the \textit{Hatespeech} dataset \citep{Cabasag2016HatespeechIP} that contains 10k tweets during the 2016 Philippine Presidential Election labeled as hate speech or non-hate speech.
+  For multilabel text classification, we used the \textit{Dengue} dataset \citep{Livelo2018IntelligentDI} that also contains tweets on the dengue 
+  \item \textbf{Named entity recognition}
+  \item \textbf{Dependency parsing}
+\end{itemize}
+
+\paragraph*{Architectures}
 
 % testing on calamanCy-gold test set and TRG treebank
 % testing on robustness
