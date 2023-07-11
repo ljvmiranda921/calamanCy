@@ -17,7 +17,8 @@ description: |
 
   This step downloads all the necessary datasets and models for benchmarking
   use. You can then run one of the [workflows](#-) below. They are organized by
-  task and a dataset identifier.
+  task and a dataset identifier (e.g., `textcat-hatespeech`,
+  `textcat_multilabel-dengue`).
 
 directories:
   - "assets"
