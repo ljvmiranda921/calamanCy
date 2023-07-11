@@ -29,7 +29,7 @@
 \begin{abstract}
   We introduce calamanCy, an open-source toolkit for constructing natural language processing (NLP) pipelines for Tagalog.
   It is built on top of spaCy, enabling easy experimentation and integration with other frameworks.  
-  calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering efficient multitask models with out-of-the-box support for dependency parsing, part-of-speech (POS) tagging, and named entity recognition (NER).
+  calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering general-purpose multitask models with out-of-the-box support for dependency parsing, part-of-speech (POS) tagging, and named entity recognition (NER).
   calamanCy aims to accelerate the progress of Tagalog NLP by consolidating disjointed resources in a unified framework.
   The calamanCy toolkit can be found on Github: \url{https://github.com/ljvmiranda921/calamanCy}.
 \end{abstract}
@@ -49,7 +49,7 @@ To address this problem, we introduce calamanCy,\footnote[1]{
 an open-source toolkit for Tagalog NLP. 
 It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks such as dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). 
 calamanCy also provides models of different sizes to fit any performance or accuracy requirements.
-This work has two main contributions: (1) an open-source toolkit containing multitask pipelines with out-of-the box support for common NLP tasks, and (2) structured benchmarks that evaluate on several Tagalog core NLP tasks.
+This work has two main contributions: (1) an open-source toolkit containing general-purpose multitask pipelines with out-of-the box support for common NLP tasks, and (2) structured benchmarks that evaluate on several Tagalog core NLP tasks.
 
 \subfile{tables/entity_types}
 
@@ -137,7 +137,7 @@ We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Ta
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
 So instead, we used a held-out test split from \texttt{calamanCy-gold} (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
 However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
-Finally, we evaluated all the other datasets for five trials and then reported their average and standard deviation.
+For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
 % \begin{itemize}
 %   \item \textbf{Text classification} 
@@ -149,9 +149,13 @@ Finally, we evaluated all the other datasets for five trials and then reported t
 
 \paragraph*{Architectures}
 
+We used spaCy's out-of-the-box architectures for %ner and textcat?
 % testing on calamanCy-gold test set and TRG treebank
 % testing on robustness
 % testing on domain-specific data (hatespeech, evan's paper)
+
+
+\paragraph*{Reproducibility}
 
 
 \section{Discussions}
