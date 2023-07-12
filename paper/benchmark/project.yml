@@ -19,6 +19,7 @@ description: |
   This step downloads all the necessary datasets and models for benchmarking use. 
   You can then run one of the [workflows](#-) below. 
   They are organized by task and a dataset identifier (e.g., `textcat-hatespeech`, `textcat_multilabel-dengue`).
+  You can find the training configuration (i.e., hyperparameters, architectures, etc.) in the `configs/` directory.
 
   > **Note**
   > Some commands may take some time to run. 
@@ -38,9 +39,9 @@ description: |
 
   | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (calamanCy Gold) | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
   |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
-  | tl_calamancy_md-0.1.0  | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
-  | tl_calamancy_lg-0.1.0  | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 60.32                               |
-  | tl_calamancy_trf-0.1.0 | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.92                               |
+  | tl_calamancy_md        | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
+  | tl_calamancy_lg        | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 60.32                               |
+  | tl_calamancy_trf       | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.92                               |
 
 directories:
   - "assets"
