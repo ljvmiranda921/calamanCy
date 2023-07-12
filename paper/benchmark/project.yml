@@ -570,3 +570,70 @@ commands:
       - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
       - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
       - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
+
+  - name: "evaluate-calamancy-crosslingual"
+    help: "Train crosslingual models for the calamanCy gold test data"
+    script:
+      - >-
+        python -m spacy evaluate
+        uk_core_news_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        ca_core_news_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        ro_core_news_lg
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/dev.spacy
+      - corpus/ner-calamancy_gold/test.spacy
+    outputs:
+      - metrics/crosslingual/ner-calamancy_gold-uk.json
+      - metrics/crosslingual/ner-calamancy_gold-ca.json
+      - metrics/crosslingual/ner-calamancy_gold-ro.json
+
+  - name: "evaluate-ud-crosslingual"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks using crosslingual models"
+    script:
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-uk.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.trf_source uk_core_news_trf
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-ca.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.trf_source ca_core_news_trf
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-ro.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.trf_source ro_core_news_lg
+        --verbose
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - metrics/crosslingual/parser-ud-uk.json
+      - metrics/crosslingual/parser-ud-ca.json
+      - metrics/crosslingual/parser-ud-ro.json
