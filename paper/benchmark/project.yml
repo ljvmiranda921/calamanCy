@@ -215,6 +215,7 @@ commands:
         --output training/textcat-hatespeech-trf/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source tl_calamancy_trf
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat-hatespeech/train.spacy
@@ -340,6 +341,7 @@ commands:
         --output training/textcat_multilabel-dengue-trf/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source tl_calamancy_trf
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat_multilabel-dengue/train.spacy
@@ -480,6 +482,7 @@ commands:
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
+        --paths.trf_source tl_calamancy_trf
         --verbose
         --gpu-id ${vars.gpu_id}
     deps:
