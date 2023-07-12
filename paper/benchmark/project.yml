@@ -100,6 +100,13 @@ workflows:
   parser-ud:
     # Using 10-fold cross-validation as recommended by the UD framework
     - "evaluate-ud"
+  crosslingual:
+    - "train-hatespeech-crosslingual"
+    - "evaluate-hatespeech-crosslingual"
+    - "train-dengue-crosslingual"
+    - "evaluate-dengue-crosslingual"
+    - "evaluate-calamancy-crosslingual"
+    - "evaluate-ud-crosslingual"
 
 commands:
   - name: "install-models"

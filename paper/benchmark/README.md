@@ -68,6 +68,12 @@ Commands are only re-run if their inputs have changed.
 | `evaluate-dengue` | Evaluate multilabel textcat on Dengue test data |
 | `evaluate-calamancy` | Evaluate ner on calamanCy gold dev and test data |
 | `evaluate-ud` | Evaluate parser and tagger on the combined Tagalog treebanks |
+| `train-hatespeech-crosslingual` | Train crosslingual models for the Hatespeech dataset |
+| `evaluate-hatespeech-crosslingual` | Evaluate crosslingual models for the Hatespeech dataset |
+| `train-dengue-crosslingual` | Train crosslingual models for the Dengue dataset |
+| `evaluate-dengue-crosslingual` | Evaluate crosslingual models for the Dengue dataset |
+| `evaluate-calamancy-crosslingual` | Train crosslingual models for the calamanCy gold test data |
+| `evaluate-ud-crosslingual` | Evaluate parser and tagger on the combined Tagalog treebanks using crosslingual models |
 
 ### ⏭ Workflows
 
@@ -83,6 +89,7 @@ inputs have changed.
 | `textcat_multilabel-dengue` | `pretrain-dengue` &rarr; `train-dengue` &rarr; `train-dengue-trf` &rarr; `evaluate-dengue` |
 | `ner-calamancy_gold` | `evaluate-calamancy` |
 | `parser-ud` | `evaluate-ud` |
+| `crosslingual` | `train-hatespeech-crosslingual` &rarr; `evaluate-hatespeech-crosslingual` &rarr; `train-dengue-crosslingual` &rarr; `evaluate-dengue-crosslingual` &rarr; `evaluate-calamancy-crosslingual` &rarr; `evaluate-ud-crosslingual` |
 
 ### 🗂 Assets
 
