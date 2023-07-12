@@ -3,25 +3,25 @@
 # 🪐 spaCy Project: Benchmarking project for calamanCy
 
 This is a spaCy project that benchmarks calamanCy on a variety of tasks.
-You can use this project to reproduce the experiments in the write-up. First, 
-you need to install the required dependencies:
+You can use this project to reproduce the experiments in the write-up. 
+First, you need to install the required dependencies:
 
 ```
 pip install -r requirements.txt
 ```
 
-This step installs [spaCy](https://spacy.io) that allows you to access its
-command-line interface.  Now run the set-up commands:
+This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+Now run the set-up commands:
 
 ```
 python -m spacy project assets
 python -m spacy project run setup
 ```
 
-This step downloads all the necessary datasets and models for benchmarking
-use. You can then run one of the [workflows](#-) below. They are organized by
-task and a dataset identifier (e.g., `textcat-hatespeech`,
-`textcat_multilabel-dengue`).
+This step downloads all the necessary datasets and models for benchmarking use. 
+You can then run one of the [workflows](#-) below. 
+They are organized by task and a dataset identifier (e.g., `textcat-hatespeech`, `textcat_multilabel-dengue`).
+You can find the training configuration (i.e., hyperparameters, architectures, etc.) in the `configs/` directory.
 
 > **Note**
 > Some commands may take some time to run. 
@@ -31,10 +31,8 @@ task and a dataset identifier (e.g., `textcat-hatespeech`,
 
 ## Benchmarking results
 
-We benchmarked on the following datasets by training the pipeline on the train
-and development data and evaluating on a held-out test set. We did this for
-five (5) trials and we report their average. Since the combined treebank has
-little data, we opted to evaluate it using k-fold cross-validation:
+We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set. 
+We did this for five (5) trials and we report their average. Since the combined treebank has little data, we opted to evaluate it using k-fold cross-validation:
 
 - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
 - **Dengue** (Livelo and Cheng, 2018): a multilabel text categorization task that contains dengue-related tweets across five labels: *absent*, *dengue*, *health*, and *mosquito*. We report the macro F1-score on the test set.
@@ -43,9 +41,9 @@ little data, we opted to evaluate it using k-fold cross-validation:
 
 | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (calamanCy Gold) | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
 |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
-| tl_calamancy_md-0.1.0  | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
-| tl_calamancy_lg-0.1.0  | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 60.32                               |
-| tl_calamancy_trf-0.1.0 | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.92                               |
+| tl_calamancy_md        | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
+| tl_calamancy_lg        | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 60.32                               |
+| tl_calamancy_trf       | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.92                               |
 
 
 ## 📋 project.yml
