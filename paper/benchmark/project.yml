@@ -739,6 +739,26 @@ commands:
       - training/multilingual/textcat-hatespeech-xlmr/model-best/
       - training/multilingual/textcat-hatespeech-mbert/model-best/
 
+  - name: "evaluate-hatespeech-multilingual"
+    help: "Evaluate multilingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat-hatespeech-xlmr/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/multilingual/textcat-hatespeech-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat-hatespeech-mbert/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/multilingual/textcat-hatespeech-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/multilingual/textcat-hatespeech-xlmr/model-best/
+      - training/multilingual/textcat-hatespeech-mbert/model-best/
+      - corpus/textcat-hatespeech/test.spacy
+
   - name: "train-dengue-multilingual"
     help: "Train multilingual models for the Dengue dataset"
     script:
@@ -746,7 +766,7 @@ commands:
         python -m spacy train
         configs/textcat_multilabel-dengue-trf-hf.cfg
         --nlp.lang ${vars.lang}
-        --output training/multilingual/textcat_multilingual-dengue-xlmr/
+        --output training/multilingual/textcat_multilabel-dengue-xlmr/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
         --components.transformer.model.name xlm-roberta-large
@@ -755,7 +775,7 @@ commands:
         python -m spacy train
         configs/textcat_multilabel-dengue-trf-hf.cfg
         --nlp.lang ${vars.lang}
-        --output training/multilingual/textcat_multilingual-dengue-mbert/
+        --output training/multilingual/textcat_multilabel-dengue-mbert/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
         --components.transformer.model.name bert-base-multilingual-uncased
@@ -764,8 +784,31 @@ commands:
       - corpus/textcat_multilabel-dengue/train.spacy
       - corpus/textcat_multilabel-dengue/dev.spacy
     outputs:
-      - training/multilingual/textcat_multilingual-dengue-xlmr/model-best/
-      - training/multilingual/textcat_multilingual-dengue-mbert/model-best/
+      - training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+      - training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+
+  - name: "evaluate-dengue-multilingual"
+    help: "Evaluate multilingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/multilingual/textcat_multilabel-dengue-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/multilingual/textcat_multilabel-dengue-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+      - training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+    outputs:
+      - metrics/multilingual/textcast_multilabel-dengue-xlmr.json
+      - metrics/multilingual/textcast_multilabel-dengue-mbert.json
 
   - name: "train-calamancy-multilingual"
     help: "Finetune multilingual models for the calamanCy gold test data"
