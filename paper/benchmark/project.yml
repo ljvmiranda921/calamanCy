@@ -111,6 +111,14 @@ workflows:
     - "evaluate-dengue-crosslingual"
     - "evaluate-calamancy-crosslingual"
     - "evaluate-ud-crosslingual"
+  multilingual:
+    - "train-hatespeech-multilingual"
+    - "evaluate-calamancy-multilingual"
+    - "train-dengue-multilingual"
+    - "evaluate-dengue-multilingual"
+    - "train-calamancy-multilingual"
+    - "evaluate-calamancy-multilingual"
+    - "evaluate-ud-multilingual"
 
 commands:
   - name: "install-models"

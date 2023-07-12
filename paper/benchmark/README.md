@@ -76,8 +76,15 @@ Commands are only re-run if their inputs have changed.
 | `evaluate-hatespeech-crosslingual` | Evaluate crosslingual models for the Hatespeech dataset |
 | `train-dengue-crosslingual` | Train crosslingual models for the Dengue dataset |
 | `evaluate-dengue-crosslingual` | Evaluate crosslingual models for the Dengue dataset |
-| `evaluate-calamancy-crosslingual` | Train crosslingual models for the calamanCy gold test data |
+| `evaluate-calamancy-crosslingual` | Evaluate crosslingual models for the calamanCy gold test data |
 | `evaluate-ud-crosslingual` | Evaluate parser and tagger on the combined Tagalog treebanks using crosslingual models |
+| `train-hatespeech-multilingual` | Train multilingual models for the Hatespeech dataset |
+| `evaluate-hatespeech-multilingual` | Evaluate multilingual models for the Hatespeech dataset |
+| `train-dengue-multilingual` | Train multilingual models for the Dengue dataset |
+| `evaluate-dengue-multilingual` | Evaluate multilingual models for the Dengue dataset |
+| `train-calamancy-multilingual` | Finetune multilingual models for the calamanCy gold train and dev data |
+| `evaluate-calamancy-multilingual` | Evaluate multilingual models for the calamanCy gold test data |
+| `evaluate-ud-multilingual` | Evaluate parser and tagger on the combined Tagalog treebanks using multilingual models |
 
 ### ⏭ Workflows
 
@@ -94,6 +101,7 @@ inputs have changed.
 | `ner-calamancy_gold` | `evaluate-calamancy` |
 | `parser-ud` | `evaluate-ud` |
 | `crosslingual` | `train-hatespeech-crosslingual` &rarr; `evaluate-hatespeech-crosslingual` &rarr; `train-dengue-crosslingual` &rarr; `evaluate-dengue-crosslingual` &rarr; `evaluate-calamancy-crosslingual` &rarr; `evaluate-ud-crosslingual` |
+| `multilingual` | `train-hatespeech-multilingual` &rarr; `evaluate-calamancy-multilingual` &rarr; `train-dengue-multilingual` &rarr; `evaluate-dengue-multilingual` &rarr; `train-calamancy-multilingual` &rarr; `evaluate-calamancy-multilingual` &rarr; `evaluate-ud-multilingual` |
 
 ### 🗂 Assets
 
