@@ -666,7 +666,6 @@ commands:
         --output metrics/crosslingual/ner-calamancy_gold-ro.json
         --gpu-id ${vars.gpu_id}
     deps:
-      - corpus/ner-calamancy_gold/dev.spacy
       - corpus/ner-calamancy_gold/test.spacy
     outputs:
       - metrics/crosslingual/ner-calamancy_gold-uk.json
@@ -807,11 +806,11 @@ commands:
       - training/multilingual/textcat_multilabel-dengue-mbert/model-best/
       - corpus/textcat_multilabel-dengue/test.spacy
     outputs:
-      - metrics/multilingual/textcast_multilabel-dengue-xlmr.json
-      - metrics/multilingual/textcast_multilabel-dengue-mbert.json
+      - metrics/multilingual/textcat_multilabel-dengue-xlmr.json
+      - metrics/multilingual/textcat_multilabel-dengue-mbert.json
 
   - name: "train-calamancy-multilingual"
-    help: "Finetune multilingual models for the calamanCy gold test data"
+    help: "Finetune multilingual models for the calamanCy gold train and dev data"
     script:
       - >-
         python -m spacy train
@@ -837,6 +836,29 @@ commands:
     outputs:
       - training/multilingual/ner-calamancy-xlmr/model-best/
       - training/multilingual/ner-calamancy-mbert/model-best/
+
+  - name: "evaluate-calamancy-multilingual"
+    help: "Evaluate multilingual models for the calamanCy gold test data"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/ner-calamancy-xlmr/model-best/
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/multilingual/ner-calamancy_gold-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/ner-calamancy-mbert/model-best/
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/multilingual/ner-calamancy_gold-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/test.spacy
+      - training/multilingual/ner-calamancy-xlmr/model-best/
+      - training/multilingual/ner-calamancy-mbert/model-best/
+    outputs:
+      - metrics/multilingual/ner-calamancy_gold-xlmr.json
+      - metrics/multilingual/ner-calamancy_gold-mbert.json
 
   - name: "evaluate-ud-multilingual"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks using multilingual models"
