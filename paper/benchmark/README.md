@@ -23,6 +23,12 @@ use. You can then run one of the [workflows](#-) below. They are organized by
 task and a dataset identifier (e.g., `textcat-hatespeech`,
 `textcat_multilabel-dengue`).
 
+> **Note**
+> Some commands may take some time to run. 
+> This is especially true for the transformer training and evaluation pipelines.
+> I highly recommend running these on at least a V100 GPU (available on Colab Pro+) for faster runtimes.
+
+
 ## Benchmarking results
 
 We benchmarked on the following datasets by training the pipeline on the train
@@ -33,7 +39,7 @@ little data, we opted to evaluate it using k-fold cross-validation:
 - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
 - **Dengue** (Livelo and Cheng, 2018): a multilabel text categorization task that contains dengue-related tweets across five labels: *absent*, *dengue*, *health*, and *mosquito*. We report the macro F1-score on the test set.
 - **calamanCy gold**: an annotated version of the TLUnified dataset (Cruz and Cheng, 2021). Labeled by three annotators across a four-month period with an IAA (Cohen's Kappa) of 0.78. We report the F1-score on the test set.
-- **Merged UD**: a merged version of the Ugnayan (Aquino and de Leon, 2020) and TRG  (Samson, 2018) treebanks. We shuffled the two treebanks after merging and evaluated via 10-fold cross validation. We report both UAS and LAs results.
+- **Merged UD**: a merged version of the Ugnayan (Aquino and de Leon, 2020) and TRG  (Samson, 2018) treebanks. We shuffled the two treebanks after merging and evaluated via 10-fold cross validation. We report both UAS and LAS results.
 
 | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (calamanCy Gold) | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
 |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|

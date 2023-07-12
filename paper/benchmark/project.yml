@@ -21,6 +21,12 @@ description: |
   task and a dataset identifier (e.g., `textcat-hatespeech`,
   `textcat_multilabel-dengue`).
 
+  > **Note**
+  > Some commands may take some time to run. 
+  > This is especially true for the transformer training and evaluation pipelines.
+  > I highly recommend running these on at least a V100 GPU (available on Colab Pro+) for faster runtimes.
+
+
   ## Benchmarking results
 
   We benchmarked on the following datasets by training the pipeline on the train
