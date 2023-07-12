@@ -558,6 +558,7 @@ commands:
       - training/crosslingual/textcat-hatespeech-uk/model-best/
       - training/crosslingual/textcat-hatespeech-ca/model-best/
       - training/crosslingual/textcat-hatespeech-ro/model-best/
+      - corpus/textcat-hatespeech/test.spacy
     outputs:
       - metrics/crosslingual/textcat-hatespeech-uk.json
       - metrics/crosslingual/textcat-hatespeech-ca.json
@@ -600,6 +601,37 @@ commands:
       - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
       - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
       - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
+
+  - name: "evaluate-dengue-crosslingual"
+    help: "Evaluate crosslingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-uk/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-ca/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-ro/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+    outputs:
+      - metrics/crosslingual/textcat_multilabel-dengue-uk.json
+      - metrics/crosslingual/textcat_multilabel-dengue-ca.json
+      - metrics/crosslingual/textcat_multilabel-dengue-ro.json
 
   - name: "evaluate-calamancy-crosslingual"
     help: "Train crosslingual models for the calamanCy gold test data"
