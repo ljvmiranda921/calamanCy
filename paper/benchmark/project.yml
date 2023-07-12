@@ -108,6 +108,9 @@ commands:
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/main/tl_calamancy_md-any-py3-none-any.whl
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/main/tl_calamancy_lg-any-py3-none-any.whl
       - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/main/tl_calamancy_trf-any-py3-none-any.whl
+      - python -m spacy download uk_core_news_trf
+      - python -m spacy download ca_core_news_trf
+      - python -m spacy download ro_core_news_lg
 
   - name: "process-datasets"
     help: "Process the datasets and convert them into spaCy format"
@@ -527,5 +530,43 @@ commands:
       - corpus/textcat-hatespeech/dev.spacy
     outputs:
       - training/crosslingual/textcat-hatespeech-uk/model-best/
-      - training/crosslingual/textcat-hatespeech-ro/model-best/
       - training/crosslingual/textcat-hatespeech-ca/model-best/
+      - training/crosslingual/textcat-hatespeech-ro/model-best/
+
+  - name: "train-dengue-crosslingual"
+    help: "Train crosslingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat_multilabel-dengue-uk/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source uk_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat_multilabel-dengue-ca/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source ca_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat_multilabel-dengue-ro/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source ro_core_news_lg
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
