@@ -645,7 +645,7 @@ commands:
       - metrics/crosslingual/textcat_multilabel-dengue-ro.json
 
   - name: "evaluate-calamancy-crosslingual"
-    help: "Train crosslingual models for the calamanCy gold test data"
+    help: "Evaluate crosslingual models for the calamanCy gold test data"
     script:
       - >-
         python -m spacy evaluate
@@ -736,8 +736,8 @@ commands:
       - corpus/textcat-hatespeech/train.spacy
       - corpus/textcat-hatespeech/dev.spacy
     outputs:
-      - training/multilingual/textcat-hatespeech-xlmr/
-      - training/multilingual/textcat-hatespeech-mbert/
+      - training/multilingual/textcat-hatespeech-xlmr/model-best/
+      - training/multilingual/textcat-hatespeech-mbert/model-best/
 
   - name: "train-dengue-multilingual"
     help: "Train multilingual models for the Dengue dataset"
@@ -764,5 +764,33 @@ commands:
       - corpus/textcat_multilabel-dengue/train.spacy
       - corpus/textcat_multilabel-dengue/dev.spacy
     outputs:
-      - training/multilingual/textcat_multilingual-dengue-xlmr/
-      - training/multilingual/textcat_multilingual-dengue-mbert/
+      - training/multilingual/textcat_multilingual-dengue-xlmr/model-best/
+      - training/multilingual/textcat_multilingual-dengue-mbert/model-best/
+
+  - name: "train-calamancy-multilingual"
+    help: "Finetune multilingual models for the calamanCy gold test data"
+    script:
+      - >-
+        python -m spacy train
+        configs/ner-calamancy-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/ner-calamancy-xlmr/
+        --paths.train corpus/ner-calamancy_gold/train.spacy
+        --paths.dev corpus/ner-calamancy_gold/dev.spacy
+        --components.transformer.model.name xlm-roberta-large
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/ner-calamancy-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/ner-calamancy-mbert/
+        --paths.train corpus/ner-calamancy_gold/train.spacy
+        --paths.dev corpus/ner-calamancy_gold/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/train.spacy
+      - corpus/ner-calamancy_gold/dev.spacy
+    outputs:
+      - training/multilingual/ner-calamancy-xlmr/model-best/
+      - training/multilingual/ner-calamancy-mbert/model-best/
