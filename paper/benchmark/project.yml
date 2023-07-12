@@ -491,3 +491,41 @@ commands:
       - metrics/parser-ud-md.json
       - metrics/parser-ud-lg.json
       - metrics/parser-ud-trf.json
+
+  - name: "train-hatespeech-crosslingual"
+    help: "Train crosslingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat-hatespeech-uk/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source uk_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat-hatespeech-ca/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source ca_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/crosslingual/textcat-hatespeech-ro/
+        --paths.vectors ro_core_news_lg 
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/crosslingual/textcat-hatespeech-uk/model-best/
+      - training/crosslingual/textcat-hatespeech-ro/model-best/
+      - training/crosslingual/textcat-hatespeech-ca/model-best/
