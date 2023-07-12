@@ -533,6 +533,36 @@ commands:
       - training/crosslingual/textcat-hatespeech-ca/model-best/
       - training/crosslingual/textcat-hatespeech-ro/model-best/
 
+  - name: "evaluate-hatespeech-crosslingual"
+    help: "Evaluate crosslingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-uk/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-ca/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-ro/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/crosslingual/textcat-hatespeech-uk/model-best/
+      - training/crosslingual/textcat-hatespeech-ca/model-best/
+      - training/crosslingual/textcat-hatespeech-ro/model-best/
+    outputs:
+      - metrics/crosslingual/textcat-hatespeech-uk.json
+      - metrics/crosslingual/textcat-hatespeech-ca.json
+      - metrics/crosslingual/textcat-hatespeech-ro.json
+
   - name: "train-dengue-crosslingual"
     help: "Train crosslingual models for the Dengue dataset"
     script:
