@@ -794,3 +794,32 @@ commands:
     outputs:
       - training/multilingual/ner-calamancy-xlmr/model-best/
       - training/multilingual/ner-calamancy-mbert/model-best/
+
+  - name: "evaluate-ud-multilingual"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks using multilingual models"
+    script:
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
+        --n-folds 10
+        output metrics/multilingual/parser-ud-xlmr.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --components.transformer.model.name xlm-roberta-large
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
+        --n-folds 10
+        output metrics/multilingual/parser-ud-mbert.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --verbose
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/parser-ud/
+    outputs:
+      - metrics/multilingual/parser-ud-xlmr.json
+      - metrics/multilingual/parser-ud-mbert.json
