@@ -143,7 +143,7 @@ So instead, we used a held-out test split from \texttt{calamanCy-gold} (\textit{
 However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
-Additionally, we also compared against a cross-lingual approach, i.e., finetuning a model from a language that is closely related to Tagalog.
+Additionally, we also tried a cross-lingual transfer learning approach, i.e., finetuning a model from a language that is closely related to Tagalog.
 To determine these source languages, we used the features found in the World Atlas for Language Structures (WALS) \citep{Haspelmath2005WALS} and measured their distances.
 This WALS-reliant measure from \citet{Agic2017CrossLingualPS} computes for the Hamming Distance $d_h$ between the source and target language vectors $\mathbf{v}_S$ and $\mathbf{v}_T$, normalized by the number of non-empty features between the two:
 
@@ -154,6 +154,9 @@ $$
 The closest languages are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Romanian (ro), and Catalan (ca).
 However, only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines.
 Thus, we will only compare against these three.
+
+Finally, we also compared against XLM-R \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO} because Tagalog is also part of these language models' training pool. 
+
 Table \ref{table:results} shows the F1-scores for the text categorization and NER tasks and the unlabeled (UAS) and labeled attachment scores (LAS) for the dependency parsing task.
 
 
