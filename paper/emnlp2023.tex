@@ -155,7 +155,8 @@ The closest languages are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Roma
 However, only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines.
 Thus, we will only compare against these three.
 
-Finally, we also compared against XLM-R \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO} because Tagalog is also part of these language models' training pool. 
+Finally, we also compared against finetuning on XLM-R \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO} to test if the presence of Tagalog data in their training pool is competitive enough for our benchmarks. 
+
 
 Table \ref{table:results} shows the F1-scores for the text categorization and NER tasks and the unlabeled (UAS) and labeled attachment scores (LAS) for the dependency parsing task.
 

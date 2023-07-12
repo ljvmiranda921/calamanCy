@@ -706,7 +706,63 @@ commands:
         --paths.trf_source ro_core_news_lg
         --verbose
         --gpu-id ${vars.gpu_id}
-    deps:
+    outputs:
       - metrics/crosslingual/parser-ud-uk.json
       - metrics/crosslingual/parser-ud-ca.json
       - metrics/crosslingual/parser-ud-ro.json
+
+  - name: "train-hatespeech-multilingual"
+    help: "Train multilingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat-hatespeech-xlmr/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --components.transformer.model.name xlm-roberta-large
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat-hatespeech-mbert/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased 
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/multilingual/textcat-hatespeech-xlmr/
+      - training/multilingual/textcat-hatespeech-mbert/
+
+  - name: "train-dengue-multilingual"
+    help: "Train multilingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat_multilingual-dengue-xlmr/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --components.transformer.model.name xlm-roberta-large
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat_multilingual-dengue-mbert/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/multilingual/textcat_multilingual-dengue-xlmr/
+      - training/multilingual/textcat_multilingual-dengue-mbert/
