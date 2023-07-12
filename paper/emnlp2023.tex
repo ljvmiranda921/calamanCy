@@ -41,7 +41,7 @@
 Tagalog is a low-resource language from the Austronesian family with over 76 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
 Despite its speaker population, few resources exist for the language \citep{Cruz2021ImprovingLL}. 
 For example, Universal Dependencies (UD) treebanks for Tagalog are tiny ($\ll$ 20k words) \citep{Samson2018TRG,Aquino2020ParsingIT}, 
-while domain-specific corpora are sparse \citep{Cabasag2016HatespeechIPLivelo2018IntelligentDI}. 
+while domain-specific corpora are sparse \citep{Cabasag2016HatespeechIP,Livelo2018IntelligentDI}. 
 In addition, Tagalog language models (LMs) \citep{Cruz2021ImprovingLL,Jiang2021PretrainedLM} are few while most multilingual LMs \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO} underrepresent the language.
 Thus, consolidating these disjointed resources in a coherent framework is still an open problem.
 The lack of such framework hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
@@ -87,7 +87,7 @@ After installing the library, users can access the models via:
 
 Here, the variable \texttt{nlp} is a spaCy processing pipeline.\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}}
 It contains trained components for POS tagging, dependency parsing, and NER.
-calamanCy offers three pipelines of varying capacity: two static word vector-based models (\texttt{md}, \texttt{lg}), and one transformer-based model (\texttt{trf}).
+calamanCy offers three pipelines of varying capacity: two static word vector-based models (md, lg), and one transformer-based model (trf).
 We will discuss how these pipelines were developed in the following section.
 
 \subsection{Pipeline development}
@@ -99,7 +99,7 @@ The three annotators labeled over the course of four months given three entity t
 The entity types were chosen to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
 We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ without the un-annotated tokens then averaged them for all three pairs.
 This process resulted to a Cohen's $\kappa$ score of 0.78. 
-To avoid confusing with the original TLUnified corpora, we will refer to this annotated NER dataset as \texttt{calamanCy-gold}.
+To avoid confusing with the original TLUnified corpora, we will refer to this annotated NER dataset as calamanCy-gold.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
 For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT} treebanks to leverage their small yet relevant examples.
 
@@ -120,7 +120,7 @@ Finally, the \textit{dimension} is determined via a performance-accuracy tradeof
 
 
 The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
-We trained the NER component using data from \texttt{calamanCy-gold}, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
+We trained the NER component using data from calamanCy-gold, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
 In the end, we came up with three language pipelines of varying sizes as seen in Table \ref{table:calamancy_pipelines}.\footnote[4]{
   The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}. 
 }
@@ -139,7 +139,7 @@ You can find the full training configuration in the Github repository: \url{http
 \paragraph*{Tasks and benchmark datasets} 
 We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
-So instead, we used a held-out test split from \texttt{calamanCy-gold} (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
+So instead, we used a held-out test split from calamanCy-gold (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
 However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
