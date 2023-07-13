@@ -132,6 +132,7 @@ In the end, we came up with three language pipelines of varying sizes as seen in
 \paragraph*{Architectures}
 
 We used spaCy's built-in architectures for each component in the calamanCy pipeline.
+The token-to-vector layer uses the multi-hash embedding trick \citep{Miranda2022MultiHE}.
 For the parser and named entity recognizer, we used a transition-based parser that maps text representations into a series of state transitions.
 For the text categorizer, we used an ensemble of a bag-of-words model and a feed-forward network.
 You can find the full training configuration in the Github repository: \url{https://github.com/ljvimiranda921/calamanCy/tree/master/models/v0.1.0}.
