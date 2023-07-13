@@ -715,13 +715,13 @@ commands:
         --verbose
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
         --n-folds 10
         --output metrics/crosslingual/parser-ud-ro.json
         --seed ${vars.seed}
         --lang ro
         --nlp.lang ro
-        --paths.trf_source ro_core_news_lg
+        --paths.vectors ro_core_news_lg
         --verbose
         --gpu-id ${vars.gpu_id}
     outputs:
