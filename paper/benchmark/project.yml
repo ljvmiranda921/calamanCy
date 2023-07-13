@@ -592,6 +592,15 @@ commands:
     script:
       - >-
         python -m spacy train
+        configs/textcat_multilabel-dengue.cfg
+        --nlp.lang ro
+        --output training/crosslingual/textcat_multilabel-dengue-ro/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.vectors ro_core_news_lg
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
         configs/textcat_multilabel-dengue-trf.cfg
         --nlp.lang uk 
         --output training/crosslingual/textcat_multilabel-dengue-uk/
@@ -607,15 +616,6 @@ commands:
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
         --paths.trf_source ca_core_news_trf
-        --gpu-id ${vars.gpu_id}
-      - >-
-        python -m spacy train
-        configs/textcat_multilabel-dengue.cfg
-        --nlp.lang ro
-        --output training/crosslingual/textcat_multilabel-dengue-ro/
-        --paths.train corpus/textcat_multilabel-dengue/train.spacy
-        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
-        --paths.vectors ro_core_news_lg
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat_multilabel-dengue/train.spacy
