@@ -33,7 +33,7 @@ def kfold(
     metrics: str = typer.Option(",".join(METRICS), "-m", "--metrics", help="Comma-separated list of metrics we want to track.", callback=lambda x: x.split(",")),
     seed: Optional[int] = typer.Option(None, "-s", "--seed", help="If set, shuffle the merged corpus using the given seed."),
     lang: str = typer.Option("tl", "-l", "--lang", help="Language code for reading the spaCy files."),
-    cache_dir: Optional[Path] = typer.Opion(None, "-c", "--cache-dir", "--cache", help="Optional path to save the spaCy documents at a given fold."),
+    cache_dir: Optional[Path] = typer.Option(None, "-c", "--cache-dir", "--cache", help="Optional path to save the spaCy documents at a given fold."),
     verbose: bool = typer.Option(False, "-v", "--verbose", help="Print out additional information."),
     use_gpu: int = typer.Option(-1, "--gpu-id", "-g", help="GPU ID or -1 for CPU"),
     # fmt: on
