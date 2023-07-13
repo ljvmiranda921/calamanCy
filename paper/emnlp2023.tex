@@ -99,7 +99,7 @@ The three annotators labeled over the course of four months given three entity t
 The entity types were chosen to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
 We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ without the un-annotated tokens then averaged them for all three pairs.
 This process resulted to a Cohen's $\kappa$ score of 0.78. 
-To avoid confusing with the original TLUnified corpora, we will refer to this annotated NER dataset as calamanCy-gold.
+To avoid confusing with the original TLUnified pretraining corpora, we will refer to this annotated NER dataset as TLUnified-NER.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
 For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT} treebanks to leverage their small yet relevant examples.
 
@@ -120,7 +120,7 @@ Finally, the \textit{dimension} is determined via a performance-accuracy tradeof
 
 
 The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
-We trained the NER component using data from calamanCy-gold, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
+We trained the NER component using data from TLUnified-NER, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
 In the end, we came up with three language pipelines of varying sizes as seen in Table \ref{table:calamancy_pipelines}.\footnote[4]{
   The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}. 
 }
@@ -140,7 +140,7 @@ You can find the full training configuration in the Github repository: \url{http
 \paragraph*{Tasks and benchmark datasets} 
 We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
-So instead, we used a held-out test split from calamanCy-gold (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
+So instead, we used a held-out test split from TLUnified-NER for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
 However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation as recommended by the Universal Dependencies data split guidelines.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
@@ -156,7 +156,7 @@ The closest languages are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Roma
 However, only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines.
 Thus, we will only compare against these three.
 
-Finally, we also compared against finetuning on XLM-R \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO} to test if the presence of Tagalog data in their training pool is competitive enough for our benchmarks. 
+Finally, we also compared against finetuning on XLM RoBERTa \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO} to test if the presence of Tagalog data in their training pool is competitive enough for our benchmarks. 
 
 
 Table \ref{table:results} shows the F1-scores for the text categorization and NER tasks and the unlabeled (UAS) and labeled attachment scores (LAS) for the dependency parsing task.

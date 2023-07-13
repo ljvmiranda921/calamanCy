@@ -146,7 +146,7 @@ commands:
       - unzip -o assets/dengue.zip -d assets/
       - mv assets/dengue/valid.csv assets/dengue/dev.csv
       - python -m scripts.process_dengue assets/dengue/ corpus/textcat_multilabel-dengue/ --include-pretraining
-      # ner: extract calamancy-gold dataset.
+      # ner: extract TLUnified-NER dataset.
       - mkdir -p corpus/ner-calamancy_gold/
       - tar -xzvf assets/calamancy_gold.tar.gz -C corpus/ner-calamancy_gold/
       # parser: convert treebank into spaCy format and then merge them
