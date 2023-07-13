@@ -133,17 +133,17 @@ In the end, we came up with three language pipelines of varying sizes as seen in
 
 We used spaCy's built-in architectures for each component in the calamanCy pipeline.
 For the parser and named entity recognizer, we used a transition-based parser that maps text representations into a series of state transitions.
-For the text categorizer, we used an ensemble model consisting of a bag-of-words model and a feed-forward network.
+For the text categorizer, we used an ensemble of a bag-of-words model and a feed-forward network.
 You can find the full training configuration in the Github repository: \url{https://github.com/ljvimiranda921/calamanCy/tree/master/models/v0.1.0}.
 
 \paragraph*{Tasks and benchmark datasets} 
 We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
 So instead, we used a held-out test split from calamanCy-gold (\textit{calamanCy-gold, Test}) for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
-However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation.
+However, the combined UD treebank is still small ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation as recommended by the Universal Dependencies data split guidelines.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
-Additionally, we also tried a cross-lingual transfer learning approach, i.e., finetuning a model from a language that is closely related to Tagalog.
+Additionally, we also tried a cross-lingual transfer learning approach, i.e., finetuning a model from a source language $S$ that is closely related to Tagalog.
 To determine these source languages, we used the features found in the World Atlas for Language Structures (WALS) \citep{Haspelmath2005WALS} and measured their distances.
 This WALS-reliant measure from \citet{Agic2017CrossLingualPS} computes for the Hamming Distance $d_h$ between the source and target language vectors $\mathbf{v}_S$ and $\mathbf{v}_T$, normalized by the number of non-empty features between the two:
 

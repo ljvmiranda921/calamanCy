@@ -49,7 +49,11 @@ directories:
   - "configs"
   - "corpus"
   - "training"
+  - "training/crosslingual"
+  - "training/multilingual"
   - "metrics"
+  - "metrics/crosslingual"
+  - "metrics/multilingual"
 
 vars:
   seed: 0
