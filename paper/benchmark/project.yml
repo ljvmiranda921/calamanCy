@@ -694,16 +694,16 @@ commands:
   - name: "evaluate-ud-crosslingual"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks using crosslingual models"
     script:
-      - >-
-        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
-        --n-folds 10
-        --output metrics/crosslingual/parser-ud-uk.json
-        --seed ${vars.seed}
-        --lang uk
-        --nlp.lang uk
-        --paths.trf_source uk_core_news_trf
-        --verbose
-        --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+      #   --n-folds 10
+      #   --output metrics/crosslingual/parser-ud-uk.json
+      #   --seed ${vars.seed}
+      #   --lang uk
+      #   --nlp.lang uk
+      #   --paths.trf_source uk_core_news_trf
+      #   --verbose
+      #   --gpu-id ${vars.gpu_id}
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
         --n-folds 10
