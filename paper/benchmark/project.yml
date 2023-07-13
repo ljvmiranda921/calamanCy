@@ -524,7 +524,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat-hatespeech-trf.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang uk 
         --output training/crosslingual/textcat-hatespeech-uk/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
@@ -533,7 +533,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat-hatespeech-trf.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang ca
         --output training/crosslingual/textcat-hatespeech-ca/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
@@ -542,7 +542,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat-hatespeech.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang ro
         --output training/crosslingual/textcat-hatespeech-ro/
         --paths.vectors ro_core_news_lg 
         --paths.train corpus/textcat-hatespeech/train.spacy
@@ -593,7 +593,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat_multilabel-dengue-trf.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang uk 
         --output training/crosslingual/textcat_multilabel-dengue-uk/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
@@ -602,7 +602,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat_multilabel-dengue-trf.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang ca
         --output training/crosslingual/textcat_multilabel-dengue-ca/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
@@ -611,7 +611,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat_multilabel-dengue-trf.cfg
-        --nlp.lang ${vars.lang}
+        --nlp.lang ro
         --output training/crosslingual/textcat_multilabel-dengue-ro/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
@@ -692,8 +692,8 @@ commands:
         --n-folds 10
         --output metrics/crosslingual/parser-ud-uk.json
         --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
+        --lang uk
+        --nlp.lang uk
         --paths.trf_source uk_core_news_trf
         --verbose
         --gpu-id ${vars.gpu_id}
@@ -702,8 +702,8 @@ commands:
         --n-folds 10
         --output metrics/crosslingual/parser-ud-ca.json
         --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
+        --lang ca
+        --nlp.lang ca
         --paths.trf_source ca_core_news_trf
         --verbose
         --gpu-id ${vars.gpu_id}
@@ -712,8 +712,8 @@ commands:
         --n-folds 10
         --output metrics/crosslingual/parser-ud-ro.json
         --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
+        --lang ro
+        --nlp.lang ro
         --paths.trf_source ro_core_news_lg
         --verbose
         --gpu-id ${vars.gpu_id}
