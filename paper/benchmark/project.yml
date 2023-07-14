@@ -1,4 +1,4 @@
-title: "Benchmarking project for calamanCy"
+title: "Reproducibility project for calamanCy"
 description: |
   This is a spaCy project that benchmarks calamanCy on a variety of tasks.
   You can use this project to reproduce the experiments in the write-up. 
