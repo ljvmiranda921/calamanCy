@@ -36,7 +36,7 @@ We did this for five (5) trials and we report their average. Since the combined 
 
 - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
 - **Dengue** (Livelo and Cheng, 2018): a multilabel text categorization task that contains dengue-related tweets across five labels: *absent*, *dengue*, *health*, and *mosquito*. We report the macro F1-score on the test set.
-- **calamanCy gold**: an annotated version of the TLUnified dataset (Cruz and Cheng, 2021). Labeled by three annotators across a four-month period with an IAA (Cohen's Kappa) of 0.78. We report the F1-score on the test set.
+- **TLUnified-NER**: an annotated version of the TLUnified dataset (Cruz and Cheng, 2021). Labeled by three annotators across a four-month period with an IAA (Cohen's Kappa) of 0.78. We report the F1-score on the test set.
 - **Merged UD**: a merged version of the Ugnayan (Aquino and de Leon, 2020) and TRG  (Samson, 2018) treebanks. We shuffled the two treebanks after merging and evaluated via 10-fold cross validation. We report both UAS and LAS results.
 
 | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
