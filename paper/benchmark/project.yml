@@ -739,7 +739,7 @@ commands:
         --output training/multilingual/textcat-hatespeech-xlmr/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
-        --components.transformer.model.name xlm-roberta-large
+        --components.transformer.model.name xlm-roberta-base
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy train
@@ -787,7 +787,7 @@ commands:
         --output training/multilingual/textcat_multilabel-dengue-xlmr/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
-        --components.transformer.model.name xlm-roberta-large
+        --components.transformer.model.name xlm-roberta-base
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy train
@@ -838,7 +838,7 @@ commands:
         --output training/multilingual/ner-calamancy-xlmr/
         --paths.train corpus/ner-calamancy_gold/train.spacy
         --paths.dev corpus/ner-calamancy_gold/dev.spacy
-        --components.transformer.model.name xlm-roberta-large
+        --components.transformer.model.name xlm-roberta-base
         --gpu-id ${vars.gpu_id}
       - >-
         python -m spacy train
@@ -889,7 +889,7 @@ commands:
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
-        --components.transformer.model.name xlm-roberta-large
+        --components.transformer.model.name xlm-roberta-base
         --verbose
         --gpu-id ${vars.gpu_id}
       - >-
