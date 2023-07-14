@@ -26,7 +26,7 @@ You can find the training configuration (i.e., hyperparameters, architectures, e
 > **Note**
 > Some commands may take some time to run. 
 > This is especially true for the transformer training and evaluation pipelines.
-> I highly recommend running these on at least a V100 GPU (available on Colab Pro+) for faster runtimes.
+> I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
 
 ## Benchmarking results
@@ -49,7 +49,7 @@ We also evaluated cross-lingual and multilingual approaches in our benchmarks:
 - **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines. 
   We came up with Ukranian (uk), Romanian (ro), and Catalan (ca). We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
 - **Multilingual**: we used XLM RoBERTa and an uncased version of mBERT as our base transformer models. We also finetuned each model for each task and did similar evaluations.
-  Note that finetuning on XLM RoBERTa (both base and large versions) may require a V100 GPU at most. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
+  Note that finetuning on XLM RoBERTa (both base and large versions) may require at least a V100 GPU. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
 
 
 The results can be found in the table below:
