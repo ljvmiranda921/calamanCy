@@ -121,9 +121,7 @@ Finally, the \textit{dimension} is determined via a performance-accuracy tradeof
 
 The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
 We trained the NER component using data from TLUnified-NER, while the dependency parser and POS tagger were trained using the combined TRG and Ugnayan treebanks.
-In the end, we came up with three language pipelines of varying sizes as seen in Table \ref{table:calamancy_pipelines}.\footnote[4]{
-  The naming convention resembles spaCy's model names: \texttt{\{language code\}\_\{source\}\_\{size\}}. 
-}
+In the end, we came up with three language pipelines of varying sizes as seen in Table \ref{table:calamancy_pipelines}.
 
 \section{Evaluation}
 
@@ -137,7 +135,7 @@ For the parser and named entity recognizer, we used a transition-based parser th
 For the text categorizer, we used an ensemble of a bag-of-words model and a feed-forward network.
 You can find the full training configuration in the Github repository: \url{https://github.com/ljvimiranda921/calamanCy/tree/master/models/v0.1.0}.
 
-\paragraph*{Tasks and benchmark datasets} 
+\paragraph*{Experimental set-up} 
 We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, there is no reasonably-sized benchmark for NER and dependency parsing.
 So instead, we used a held-out test split from TLUnified-NER for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
@@ -152,11 +150,11 @@ $$
 d_W(S,T) = \dfrac{d_h(\mathbf{v}_S,\mathbf{v}_T)}{f_{S,T}}
 $$
 
-The closest languages are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Romanian (ro), and Catalan (ca).
-However, only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines.
+The top five closest languages are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Romanian (ro), and Catalan (ca).
+Despite this result, Tagalog is not within the top five for each of these languages.
+In addition, only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines.
 Thus, we will only compare against these three.
-
-Finally, we also compared against the most common approach to build Tagalog pipelines, i.e., finetuning on XLM RoBERTa \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO}.
+Finally, we also compared against the most common approach to build Tagalog pipelines, i.e., finetuning on XLM RoBERTa \citep{Conneau2019UnsupervisedCR} or an uncased version of multilingual BERT \citep{Devlin2019BERTPO}.
 These two multilingual language models include Tagalog in their training pool.
 
 
