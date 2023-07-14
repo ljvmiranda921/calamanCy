@@ -1,6 +1,6 @@
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->
 
-# 🪐 spaCy Project: Reproducibility project for calamanCy
+# 🪐 spaCy Project: Reproducing calamanCy benchmarks
 
 This is a spaCy project that benchmarks calamanCy on a variety of tasks.
 You can use this project to reproduce the experiments in the write-up. 
