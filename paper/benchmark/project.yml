@@ -887,7 +887,7 @@ commands:
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
         --n-folds 10
-        output metrics/multilingual/parser-ud-xlmr.json
+        --output metrics/multilingual/parser-ud-xlmr.json
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
@@ -897,7 +897,7 @@ commands:
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
         --n-folds 10
-        output metrics/multilingual/parser-ud-mbert.json
+        --output metrics/multilingual/parser-ud-mbert.json
         --seed ${vars.seed}
         --lang ${vars.lang}
         --nlp.lang ${vars.lang}
