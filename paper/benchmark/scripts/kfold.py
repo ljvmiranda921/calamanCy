@@ -1,3 +1,11 @@
+"""Perform k-fold cross validation
+
+This script performs k-fold cross-validation and is useful for evaluationg the
+dependency parser. We need this because this is the recommended way to test
+a small treebank (according the the Universal Dependencies Data Split guidelines).
+"""
+
+
 import random
 import tempfile
 from pathlib import Path

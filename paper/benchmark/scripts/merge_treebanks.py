@@ -1,3 +1,10 @@
+"""Script for merging the Ugnayan and TRG treebanks
+
+I decided to merge these two treebanks because training on one over the other
+will just lead to less diversity on the dataset. However, the combined treebank
+is still tiny (around 1.3k tokens).
+"""
+
 import random
 from pathlib import Path
 from typing import List, Optional

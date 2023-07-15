@@ -1,3 +1,10 @@
+"""Split treebank into train, dev, and test partitions
+
+The spaCy library requires a validation set during training. This script
+attempt provides this utility.
+"""
+
+
 import random
 from pathlib import Path
 from typing import List, Optional
