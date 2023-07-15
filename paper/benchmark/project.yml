@@ -884,16 +884,16 @@ commands:
   - name: "evaluate-ud-multilingual"
     help: "Evaluate parser and tagger on the combined Tagalog treebanks using multilingual models"
     script:
-      - >-
-        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
-        --n-folds 10
-        --output metrics/multilingual/parser-ud-xlmr.json
-        --seed ${vars.seed}
-        --lang ${vars.lang}
-        --nlp.lang ${vars.lang}
-        --components.transformer.model.name xlm-roberta-base
-        --verbose
-        --gpu-id ${vars.gpu_id}
+      # - >-
+      #   python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
+      #   --n-folds 10
+      #   --output metrics/multilingual/parser-ud-xlmr.json
+      #   --seed ${vars.seed}
+      #   --lang ${vars.lang}
+      #   --nlp.lang ${vars.lang}
+      #   --components.transformer.model.name xlm-roberta-base
+      #   --verbose
+      #   --gpu-id ${vars.gpu_id}
       - >-
         python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
         --n-folds 10
