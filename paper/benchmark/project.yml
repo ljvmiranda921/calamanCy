@@ -26,6 +26,9 @@ description: |
   > This is especially true for the transformer training and evaluation pipelines.
   > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  You should be able to use them independently from one another. 
+
 
   ## Benchmarking results
 
