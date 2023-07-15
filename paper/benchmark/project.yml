@@ -95,6 +95,12 @@ assets:
   - dest: assets/calamancy_gold.tar.gz
     description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+  - dest: assets/wals/language.csv
+    description: "Language resource from The World Atlas of Language Structures (WALS). We're using the exact file from Agic (2017)"
+    url: "https://github.com/zeljkoagic/freasy/blob/master/resources/language.csv"
+  - dest: assets/wals/iso_mapping.txt
+    description: "Maps the WALS language codes (XXX) into two-letter (XX) ISO language codes"
+    url: "https://github.com/zeljkoagic/freasy/blob/master/resources/iso_mapping.txt"
 
 workflows:
   setup:
