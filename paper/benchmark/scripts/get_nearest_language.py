@@ -1,4 +1,4 @@
-"""Get nearest language given a language code using WALS
+"""Get nearest language given a language code using a WALS-reliant metric
 
 This script attempts to give you the nearest language for a given target using
 the typological features found in WALS. A lot of these methods are based from
