@@ -4,3 +4,4 @@ pathy[gcs]
 calamancy==0.1.0
 typer
 wasabi
+scipy
