@@ -18,6 +18,7 @@
 \usepackage{subfiles}                         % file management
 \usepackage{longtable}                        % multi-column tables
 \usepackage{amsmath}                          % math symbols and equations
+\usepackage{graphicx}                         % inserting images
 
 
 \title{calamanCy: A Tagalog Natural Language Processing Toolkit}
@@ -97,8 +98,8 @@ To construct the NER corpus, we curated a portion of TLUnified \citep{Cruz2021Im
 Including the author, we recruited two more annotators who have at least a Bachelors degree and whose native language is Tagalog.
 The three annotators labeled over the course of four months given three entity types as seen in Table \ref{table:entity_types}.
 The entity types were chosen to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
-We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ without the un-annotated tokens then averaged them for all three pairs.
-This process resulted to a Cohen's $\kappa$ score of 0.78. 
+We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ on all tokens then averaged them for all three pairs.
+This process resulted to a Cohen's $\kappa$ score of 0.81. 
 To avoid confusing with the original TLUnified pretraining corpora, we will refer to this annotated NER dataset as TLUnified-NER.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
 For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT} treebanks to leverage their small yet relevant examples.
@@ -169,22 +170,45 @@ As a low-resource language, consolidating resources into a unified framework is 
 In the future, we plan to create a more fine-grained NER benchmark corpus and extend calamanCy to other tasks (e.g., question-answering, commonsense reasoning, etc.).
 Finally, the project is hosted on Github (\url{https://github.com/ljvmiranda921/calamanCy}) and we are happy to receive community feedback and contributions.
 
+\section*{Appendix}
+
+\subsection*{Reproducibility}
+
+All the experiments and models in this paper are available publicly. 
+You can head over to \url{https://github.com/ljvmiranda921/calamanCy} for all related software.
+Note that the XLM-RoBERTa and multilingual BERT experiments may at least require a V100 GPU.
+
+To reproduce the calamanCy models (tl\_calamancy\_md, etc.), head over to \texttt{models/v0.1.0}.
+To reproduce the benchmarking experiments, head over to the \texttt{paper/benchmark} directory.
+If you are interested in the training configuration (e.g., hyperparameters, architectures used, etc.), you can check the \texttt{CFG} files in the respective project's \texttt{configs/} directory.
+
+\subsection*{Building the TLUnified-NER corpora}
+
+The TLUnified-NER dataset is a named entity recognition corpora containing the \textit{Person (PER)}, \textit{Organization (ORG)}, and \textit{Location  (LOC)} entities.
+It includes news articles and other texts in Tagalog from 2009 to 2020.
+It was based on the TLUnified pretraining corpora by \cite{Cruz2021ImprovingLL}.
+The author, together with two more annotators, annotated TLUnified in the course of four months.
+We followed the process recommended by \citet{Reiter2017HT} which includes resolving disagreements and updating the annotation guidelines.
+
+To compute for the inter-annotator agreement (IAA) score, we followed \citet{Brandsen2020CreatingAD}'s approach.
+We computed for the Cohen's $\kappa$ for (1) all tokens, and (2) only annotated tokens.  
+In addition, we also measured the (3) pairwise F1 score without the `O' label.
+Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
 
 
 
+\subfile{tables/iaa}
 
-% \section*{Appendix}
-
-% \subsection*{Choosing source languages for Tagalog}
-
-% Then maybe talk about contributions at the end
-% outline contributions
-% 1. NLp framework based on spaCy
-% 2. Benchmarks and evaluations
-% 3. Gold-standard NER annotations
-
-
-
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{images/iaa}
+\caption{
+  Inter-annotator agreement measurement after each annotation round.
+  Each mark represents the end of a round. 
+  For each round, the annotators discuss disagreements, update the annotation guidelines, and evaluate the current set of annotations.
+}
+\label{fig:iaa}
+\end{figure}
 
 % Entries for the entire Anthology, followed by custom entries
 \bibliography{custom}
