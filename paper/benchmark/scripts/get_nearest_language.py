@@ -36,7 +36,7 @@ def get_nearest_language(
     iso2to3, iso3to2 = _read_iso_mappings(iso_mapping)
 
     target_names = iso2to3.get(lang)
-    search_space = list(iso2to3.keys()) if not source_langs else source_langs.split()
+    search_space = list(iso2to3.keys()) if not source_langs else source_langs.split(",")
     closest_source = None
     min_distance = sys.float_info.max
     source_distrib = []
