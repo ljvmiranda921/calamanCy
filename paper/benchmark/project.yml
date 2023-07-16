@@ -1,0 +1,923 @@
+title: "Reproducing calamanCy benchmarks"
+description: |
+  This is a spaCy project that benchmarks calamanCy on a variety of tasks.
+  You can use this project to reproduce the experiments in the write-up. 
+  First, you need to install the required dependencies:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  Now run the set-up commands:
+
+  ```
+  python -m spacy project assets
+  python -m spacy project run setup
+  ```
+
+  This step downloads all the necessary datasets and models for benchmarking use. 
+  You can then run one of the [workflows](#-) below. 
+  They are organized by task and a dataset identifier (e.g., `textcat-hatespeech`, `textcat_multilabel-dengue`).
+  You can find the training configuration (i.e., hyperparameters, architectures, etc.) in the `configs/` directory.
+
+  > **Note**
+  > Some commands may take some time to run. 
+  > This is especially true for the transformer training and evaluation pipelines.
+  > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
+
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  You should be able to use them independently from one another. 
+
+
+  ## Benchmarking results
+
+  We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set. 
+  We did this for five (5) trials and we report their average. Since the combined treebank has little data, we opted to evaluate it using k-fold cross-validation:
+
+  - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
+  - **Dengue** (Livelo and Cheng, 2018): a multilabel text categorization task that contains dengue-related tweets across five labels: *absent*, *dengue*, *health*, and *mosquito*. We report the macro F1-score on the test set.
+  - **TLUnified-NER**: an annotated version of the TLUnified dataset (Cruz and Cheng, 2021). Labeled by three annotators across a four-month period with an IAA (Cohen's Kappa) of 0.78. We report the F1-score on the test set.
+  - **Merged UD**: a merged version of the Ugnayan (Aquino and de Leon, 2020) and TRG  (Samson, 2018) treebanks. We shuffled the two treebanks after merging and evaluated via 10-fold cross validation. We report both UAS and LAS results.
+
+  | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+  |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+  | tl_calamancy_md        | 74.40 (0.05)                                            | 65.32 (0.04)                                             | 87.67 (0.03)                                        | 76.47                               | 54.40                               |
+  | tl_calamancy_lg        | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 70.32                               |
+  | tl_calamancy_trf       | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.90                               |
+
+  We also evaluated cross-lingual and multilingual approaches in our benchmarks: 
+  - **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines. 
+    We came up with Indonesian (id), Vietnamese (vi), Ukranian (uk), Romanian (ro), and Catalan (ca). However, only uk, ca, ro have spaCy pipelines. We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
+
+  | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+  |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+  | uk_core_news_trf       | 75.24 (0.05)                                            | 65.57 (0.01)                                             | 51.11 (0.02)                                        | 54.77                               | 82.86                               |
+  | ro_core_news_lg        | 69.01 (0.01)                                            | 59.10 (0.01)                                             | 02.01 (0.00)                                        | 84.65                               | 82.80                               |
+  | ca_core_news_trf       | 70.01 (0.02)                                            | 59.42 (0.03)                                             | 14.58 (0.02)                                        | 91.17                               | 83.09                               |
+
+  - **Multilingual**: we used XLM RoBERTa and an uncased version of mBERT as our base transformer models. We also finetuned each model for each task and did similar evaluations.
+    Note that finetuning on XLM RoBERTa (both base and large versions) may require at least a V100 GPU. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
+
+  | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+  |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+  | xlm-roberta-base       | 77.57 (0.01)                                            | 67.20 (0.01)                                             | 88.03 (0.03)                                        | 88.34                               | 76.07                               |
+  | bert-base-multilingual | 76.40 (0.02)                                            | 71.07 (0.04)                                             | 87.40 (0.02)                                        | 90.79                               | 78.52                               |
+
+directories:
+  - "assets"
+  - "assets/treebank/"
+  - "configs"
+  - "corpus"
+  - "training"
+  - "training/crosslingual"
+  - "training/multilingual"
+  - "metrics"
+  - "metrics/crosslingual"
+  - "metrics/multilingual"
+
+vars:
+  seed: 0
+  gpu_id: 0
+  lang: "tl"
+  remote_gcs_bucket: "ljvmiranda"
+
+remotes:
+  gcs: "gs://${vars.remote_gcs_bucket}/calamanCy/benchmark_cache/"
+
+assets:
+  - dest: "assets/treebank/UD_Tagalog-Ugnayan/"
+    description: "Treebank data for UD_Tagalog-Ugnayan. Originally sourced from *Parsing in the absence of related languages: Evaluating low-resource dependency parsers in Tagalog* by Aquino and de Leon (2020)."
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-Ugnayan"
+      branch: "master"
+      path: ""
+  - dest: "assets/treebank/UD_Tagalog-TRG/"
+    description: "Treebank data for UD_Tagalog-TRG. Originally sourced from the thesis, *A treebank prototype for Tagalog*, at the University of Tübingen by Samson (2018)."
+    git:
+      repo: "https://github.com/UniversalDependencies/UD_Tagalog-TRG"
+      branch: "master"
+      path: ""
+  - dest: "assets/hatespeech.zip"
+    description: "Contains 10k tweets with 4.2k testing and validation data labeled as hate speech or non-hate speech (text categorization). Based on *Hate speech in Philippine election-related tweets: Automatic detection and classification using natural language processing* by Cabasag et al. (2019)"
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/hatenonhate/hatespeech_raw.zip"
+  - dest: "assets/dengue.zip"
+    description: "Contains tweets on dengue labeled with five different categories. Tweets can be categorized to multiple categories at the same time (multilabel text categorization). Based on *Monitoring dengue using Twitter and deep learning techniques* by Livelo and Cheng (2018)."
+    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/dengue/dengue_raw.zip"
+  - dest: assets/calamancy_gold.tar.gz
+    description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+
+workflows:
+  setup:
+    - "install-models"
+    - "process-datasets"
+  textcat-hatespeech:
+    - "pretrain-hatespeech"
+    - "train-hatespeech"
+    - "train-hatespeech-trf"
+    - "evaluate-hatespeech"
+  textcat_multilabel-dengue:
+    - "pretrain-dengue"
+    - "train-dengue"
+    - "train-dengue-trf"
+    - "evaluate-dengue"
+  ner-calamancy_gold:
+    # No training here because the training data is already
+    # part of the original pipeline.
+    - "evaluate-calamancy"
+  parser-ud:
+    # Using 10-fold cross-validation as recommended by the UD framework
+    - "evaluate-ud"
+  crosslingual:
+    - "train-hatespeech-crosslingual"
+    - "evaluate-hatespeech-crosslingual"
+    - "train-dengue-crosslingual"
+    - "evaluate-dengue-crosslingual"
+    - "evaluate-calamancy-crosslingual"
+    - "evaluate-ud-crosslingual"
+  multilingual:
+    - "train-hatespeech-multilingual"
+    - "evaluate-calamancy-multilingual"
+    - "train-dengue-multilingual"
+    - "evaluate-dengue-multilingual"
+    - "train-calamancy-multilingual"
+    - "evaluate-calamancy-multilingual"
+    - "evaluate-ud-multilingual"
+
+commands:
+  - name: "install-models"
+    help: "Install models in the spaCy workspace"
+    script:
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/main/tl_calamancy_md-any-py3-none-any.whl
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/main/tl_calamancy_lg-any-py3-none-any.whl
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/main/tl_calamancy_trf-any-py3-none-any.whl
+      - python -m spacy download uk_core_news_trf
+      - python -m spacy download ca_core_news_trf
+      - python -m spacy download ro_core_news_lg
+
+  - name: "process-datasets"
+    help: "Process the datasets and convert them into spaCy format"
+    script:
+      # textcat: extract and process Hatespeech dataset
+      - unzip -o assets/hatespeech.zip -d assets/
+      - mv assets/hatespeech/valid.csv assets/hatespeech/dev.csv
+      - python -m scripts.process_hatespeech assets/hatespeech/ corpus/textcat-hatespeech/ --include-pretraining
+      # textcat_multilabel: extract and process Dengue dataset
+      - unzip -o assets/dengue.zip -d assets/
+      - mv assets/dengue/valid.csv assets/dengue/dev.csv
+      - python -m scripts.process_dengue assets/dengue/ corpus/textcat_multilabel-dengue/ --include-pretraining
+      # ner: extract TLUnified-NER dataset.
+      - mkdir -p corpus/ner-calamancy_gold/
+      - tar -xzvf assets/calamancy_gold.tar.gz -C corpus/ner-calamancy_gold/
+      # parser: convert treebank into spaCy format and then merge them
+      - mkdir -p corpus/parser-ud/
+      - python -m spacy convert assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu assets/treebank --converter conllu --n-sents 1 --merge-subtokens
+      - python -m spacy convert assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu assets/treebank --converter conllu --n-sents 1 --merge-subtokens
+      - python -m scripts.merge_treebanks assets/treebank/tl_trg-ud-test.spacy assets/treebank/tl_ugnayan-ud-test.spacy assets/treebank/ud_merged.spacy --seed ${vars.seed}
+      - python -m scripts.split_treebank assets/treebank/ud_merged.spacy corpus/parser-ud/ --lang ${vars.lang} --train-size 0.9 --seed ${vars.seed}
+    deps:
+      - assets/hatespeech.zip
+      - assets/dengue.zip
+      - assets/calamancy_gold.tar.gz
+      - assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu
+      - assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu
+    outputs:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+      - corpus/textcat-hatespeech/test.spacy
+      - corpus/textcat-hatespeech/pretraining.jsonl
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+      - corpus/textcat_multilabel-dengue/test.spacy
+      - corpus/textcat_multilabel-dengue/pretraining.jsonl
+      - corpus/ner-calamancy_gold/train.spacy
+      - corpus/ner-calamancy_gold/dev.spacy
+      - corpus/ner-calamancy_gold/test.spacy
+      - corpus/parser-ud/train.spacy
+      - corpus/parser-ud/dev.spacy
+
+  - name: "pretrain-hatespeech"
+    help: "Pretrain on Hatespeech training data to initialize vectors"
+    script:
+      - >-
+        python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_md/
+        --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
+        --pretraining.max_epochs 20
+        --pretraining.n_save_every 5
+        --paths.vectors tl_calamancy_md
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy pretrain configs/textcat-hatespeech.cfg pretraining/hatespeech_lg/
+        --paths.raw_text corpus/textcat-hatespeech/pretraining.jsonl
+        --pretraining.max_epochs 20
+        --pretraining.n_save_every 5
+        --paths.vectors tl_calamancy_lg
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/pretraining.jsonl
+    outputs:
+      - pretraining/hatespeech_md/model-last.bin
+      - pretraining/hatespeech_lg/model-last.bin
+
+  - name: "train-hatespeech"
+    help: "Train binary textcat on Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-md/
+        --paths.vectors tl_calamancy_md
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --initialize.init_tok2vec pretraining/hatespeech_md/model-last.bin
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-lg/
+        --paths.vectors tl_calamancy_lg
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --initialize.init_tok2vec pretraining/hatespeech_lg/model-last.bin
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+      - pretraining/hatespeech_md/model-last.bin
+      - pretraining/hatespeech_lg/model-last.bin
+    outputs:
+      - training/textcat-hatespeech-md/model-best/
+      - training/textcat-hatespeech-lg/model-best/
+
+  - name: "train-hatespeech-trf"
+    help: "Train binary textcat on Hatespeech dataset using transformers"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat-hatespeech-trf/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source tl_calamancy_trf
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/textcat-hatespeech-trf/model-best/
+
+  - name: "evaluate-hatespeech"
+    help: "Evaluate binary textcat on Hatespeech test data"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-md/model-best/ 
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-md-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-md/model-best/ 
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-md-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-lg/model-best/ 
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-lg-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat-hatespeech-lg/model-best/ 
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-lg-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/textcat-hatespeech-trf/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/textcat-hatespeech-trf-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/textcat-hatespeech-trf/model-best/
+        corpus/textcat-hatespeech/dev.spacy
+        --output metrics/textcat-hatespeech-trf-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/textcat-hatespeech-md/model-best/
+      - training/textcat-hatespeech-lg/model-best/
+      - training/textcat-hatespeech-trf/model-best/
+      - corpus/textcat-hatespeech/test.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - metrics/textcat-hatespeech-md-test.json
+      - metrics/textcat-hatespeech-md-dev.json
+      - metrics/textcat-hatespeech-lg-test.json
+      - metrics/textcat-hatespeech-lg-dev.json
+      - metrics/textcat-hatespeech-trf-test.json
+      - metrics/textcat-hatespeech-trf-dev.json
+
+  - name: "pretrain-dengue"
+    help: "Pretrain on Dengue training data to initialize vectors"
+    script:
+      - >-
+        python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_md/
+        --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
+        --pretraining.max_epochs 20
+        --pretraining.n_save_every 5
+        --paths.vectors tl_calamancy_md
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy pretrain configs/textcat_multilabel-dengue.cfg pretraining/dengue_lg/
+        --paths.raw_text corpus/textcat_multilabel-dengue/pretraining.jsonl
+        --pretraining.max_epochs 20
+        --pretraining.n_save_every 5
+        --paths.vectors tl_calamancy_lg
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/pretraining.jsonl
+    outputs:
+      - pretraining/dengue_md/model-last.bin
+      - pretraining/dengue_lg/model-last.bin
+
+  - name: "train-dengue"
+    help: "Train multilabel textcat on Dengue dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat_multilabel-dengue-md/
+        --paths.vectors tl_calamancy_md
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --initialize.init_tok2vec pretraining/dengue_md/model-last.bin
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat_multilabel-dengue-lg/
+        --paths.vectors tl_calamancy_lg
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --initialize.init_tok2vec pretraining/dengue_lg/model-last.bin
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+      - pretraining/dengue_md/model-last.bin
+      - pretraining/dengue_lg/model-last.bin
+    outputs:
+      - training/textcat_multilabel-dengue-md/model-best/
+      - training/textcat_multilabel-dengue-lg/model-best/
+
+  - name: "train-dengue-trf"
+    help: "Train multilabel textcat on Dengue dataset using transformers"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/textcat_multilabel-dengue-trf/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source tl_calamancy_trf
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/textcat_multilabel-dengue-trf/model-best/
+
+  - name: "evaluate-dengue"
+    help: "Evaluate multilabel textcat on Dengue test data"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-md/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/textcat_multilabel-dengue-md-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-md/model-best/ 
+        corpus/textcat_multilabel-dengue/dev.spacy
+        --output metrics/textcat_multilabel-dengue-md-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-lg/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/textcat_multilabel-dengue-lg-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-lg/model-best/ 
+        corpus/textcat_multilabel-dengue/dev.spacy
+        --output metrics/textcat_multilabel-dengue-lg-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-trf/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/textcat_multilabel-dengue-trf-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/textcat_multilabel-dengue-trf/model-best/ 
+        corpus/textcat_multilabel-dengue/dev.spacy
+        --output metrics/textcat_multilabel-dengue-trf-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/textcat_multilabel-dengue-md/model-best/
+      - training/textcat_multilabel-dengue-lg/model-best/
+      - training/textcat_multilabel-dengue-trf/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - metrics/textcat_multilabel-dengue-md-test.json
+      - metrics/textcat_multilabel-dengue-md-dev.json
+      - metrics/textcat_multilabel-dengue-lg-test.json
+      - metrics/textcat_multilabel-dengue-lg-dev.json
+      - metrics/textcat_multilabel-dengue-trf-test.json
+      - metrics/textcat_multilabel-dengue-trf-dev.json
+
+  - name: "evaluate-calamancy"
+    help: "Evaluate ner on calamanCy gold dev and test data"
+    script:
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-md-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_md
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-md-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_lg
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-lg-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_lg
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-lg-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/ner-calamancy_gold-trf-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_trf
+        corpus/ner-calamancy_gold/dev.spacy
+        --output metrics/ner-calamancy_gold-trf-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/dev.spacy
+      - corpus/ner-calamancy_gold/test.spacy
+    outputs:
+      - metrics/ner-calamancy_gold-md-dev.json
+      - metrics/ner-calamancy_gold-md-test.json
+      - metrics/ner-calamancy_gold-lg-dev.json
+      - metrics/ner-calamancy_gold-lg-test.json
+      - metrics/ner-calamancy_gold-trf-dev.json
+      - metrics/ner-calamancy_gold-trf-test.json
+
+  - name: "evaluate-ud"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks"
+    script:
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+        --n-folds 10
+        --output metrics/parser-ud-md.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.vectors tl_calamancy_md
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+        --n-folds 10
+        --output metrics/parser-ud-lg.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.vectors tl_calamancy_lg
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/parser-ud-trf.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --paths.trf_source tl_calamancy_trf
+        --verbose
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/parser-ud/
+    outputs:
+      - metrics/parser-ud-md.json
+      - metrics/parser-ud-lg.json
+      - metrics/parser-ud-trf.json
+
+  - name: "train-hatespeech-crosslingual"
+    help: "Train crosslingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang uk 
+        --output training/crosslingual/textcat-hatespeech-uk/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source uk_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf.cfg
+        --nlp.lang ca
+        --output training/crosslingual/textcat-hatespeech-ca/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --paths.trf_source ca_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech.cfg
+        --nlp.lang ro
+        --output training/crosslingual/textcat-hatespeech-ro/
+        --paths.vectors ro_core_news_lg 
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/crosslingual/textcat-hatespeech-uk/model-best/
+      - training/crosslingual/textcat-hatespeech-ca/model-best/
+      - training/crosslingual/textcat-hatespeech-ro/model-best/
+
+  - name: "evaluate-hatespeech-crosslingual"
+    help: "Evaluate crosslingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-uk/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-ca/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/crosslingual/textcat-hatespeech-ro/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/crosslingual/textcat-hatespeech-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/crosslingual/textcat-hatespeech-uk/model-best/
+      - training/crosslingual/textcat-hatespeech-ca/model-best/
+      - training/crosslingual/textcat-hatespeech-ro/model-best/
+      - corpus/textcat-hatespeech/test.spacy
+    outputs:
+      - metrics/crosslingual/textcat-hatespeech-uk.json
+      - metrics/crosslingual/textcat-hatespeech-ca.json
+      - metrics/crosslingual/textcat-hatespeech-ro.json
+
+  - name: "train-dengue-crosslingual"
+    help: "Train crosslingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue.cfg
+        --nlp.lang ro
+        --output training/crosslingual/textcat_multilabel-dengue-ro/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.vectors ro_core_news_lg
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang uk 
+        --output training/crosslingual/textcat_multilabel-dengue-uk/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source uk_core_news_trf
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf.cfg
+        --nlp.lang ca
+        --output training/crosslingual/textcat_multilabel-dengue-ca/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --paths.trf_source ca_core_news_trf
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
+
+  - name: "evaluate-dengue-crosslingual"
+    help: "Evaluate crosslingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-uk/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-ca/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        training/crosslingual/textcat_multilabel-dengue-ro/model-best/ 
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/crosslingual/textcat_multilabel-dengue-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/crosslingual/textcat_multilabel-dengue-uk/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ca/model-best/
+      - training/crosslingual/textcat_multilabel-dengue-ro/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+    outputs:
+      - metrics/crosslingual/textcat_multilabel-dengue-uk.json
+      - metrics/crosslingual/textcat_multilabel-dengue-ca.json
+      - metrics/crosslingual/textcat_multilabel-dengue-ro.json
+
+  - name: "evaluate-calamancy-crosslingual"
+    help: "Evaluate crosslingual models for the calamanCy gold test data"
+    script:
+      - >-
+        python -m spacy evaluate
+        uk_core_news_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-uk.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        ca_core_news_trf
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-ca.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        ro_core_news_lg
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/crosslingual/ner-calamancy_gold-ro.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/test.spacy
+    outputs:
+      - metrics/crosslingual/ner-calamancy_gold-uk.json
+      - metrics/crosslingual/ner-calamancy_gold-ca.json
+      - metrics/crosslingual/ner-calamancy_gold-ro.json
+
+  - name: "evaluate-ud-crosslingual"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks using crosslingual models"
+    script:
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-uk.json
+        --seed ${vars.seed}
+        --lang uk
+        --nlp.lang uk
+        --paths.trf_source uk_core_news_trf
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-ca.json
+        --seed ${vars.seed}
+        --lang ca
+        --nlp.lang ca
+        --paths.trf_source ca_core_news_trf
+        --verbose
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud.cfg
+        --n-folds 10
+        --output metrics/crosslingual/parser-ud-ro.json
+        --seed ${vars.seed}
+        --lang ro
+        --nlp.lang ro
+        --paths.vectors ro_core_news_lg
+        --verbose
+        --gpu-id ${vars.gpu_id}
+    outputs:
+      - metrics/crosslingual/parser-ud-uk.json
+      - metrics/crosslingual/parser-ud-ca.json
+      - metrics/crosslingual/parser-ud-ro.json
+
+  - name: "train-hatespeech-multilingual"
+    help: "Train multilingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat-hatespeech-xlmr/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --components.transformer.model.name xlm-roberta-base
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat-hatespeech-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat-hatespeech-mbert/
+        --paths.train corpus/textcat-hatespeech/train.spacy
+        --paths.dev corpus/textcat-hatespeech/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased 
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat-hatespeech/train.spacy
+      - corpus/textcat-hatespeech/dev.spacy
+    outputs:
+      - training/multilingual/textcat-hatespeech-xlmr/model-best/
+      - training/multilingual/textcat-hatespeech-mbert/model-best/
+
+  - name: "evaluate-hatespeech-multilingual"
+    help: "Evaluate multilingual models for the Hatespeech dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat-hatespeech-xlmr/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/multilingual/textcat-hatespeech-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat-hatespeech-mbert/model-best/
+        corpus/textcat-hatespeech/test.spacy
+        --output metrics/multilingual/textcat-hatespeech-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/multilingual/textcat-hatespeech-xlmr/model-best/
+      - training/multilingual/textcat-hatespeech-mbert/model-best/
+      - corpus/textcat-hatespeech/test.spacy
+
+  - name: "train-dengue-multilingual"
+    help: "Train multilingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat_multilabel-dengue-xlmr/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --components.transformer.model.name xlm-roberta-base
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/textcat_multilabel-dengue-trf-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/textcat_multilabel-dengue-mbert/
+        --paths.train corpus/textcat_multilabel-dengue/train.spacy
+        --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/textcat_multilabel-dengue/train.spacy
+      - corpus/textcat_multilabel-dengue/dev.spacy
+    outputs:
+      - training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+      - training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+
+  - name: "evaluate-dengue-multilingual"
+    help: "Evaluate multilingual models for the Dengue dataset"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/multilingual/textcat_multilabel-dengue-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+        corpus/textcat_multilabel-dengue/test.spacy
+        --output metrics/multilingual/textcat_multilabel-dengue-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - training/multilingual/textcat_multilabel-dengue-xlmr/model-best/
+      - training/multilingual/textcat_multilabel-dengue-mbert/model-best/
+      - corpus/textcat_multilabel-dengue/test.spacy
+    outputs:
+      - metrics/multilingual/textcat_multilabel-dengue-xlmr.json
+      - metrics/multilingual/textcat_multilabel-dengue-mbert.json
+
+  - name: "train-calamancy-multilingual"
+    help: "Finetune multilingual models for the calamanCy gold train and dev data"
+    script:
+      - >-
+        python -m spacy train
+        configs/ner-calamancy-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/ner-calamancy-xlmr/
+        --paths.train corpus/ner-calamancy_gold/train.spacy
+        --paths.dev corpus/ner-calamancy_gold/dev.spacy
+        --components.transformer.model.name xlm-roberta-base
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy train
+        configs/ner-calamancy-hf.cfg
+        --nlp.lang ${vars.lang}
+        --output training/multilingual/ner-calamancy-mbert/
+        --paths.train corpus/ner-calamancy_gold/train.spacy
+        --paths.dev corpus/ner-calamancy_gold/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/train.spacy
+      - corpus/ner-calamancy_gold/dev.spacy
+    outputs:
+      - training/multilingual/ner-calamancy-xlmr/model-best/
+      - training/multilingual/ner-calamancy-mbert/model-best/
+
+  - name: "evaluate-calamancy-multilingual"
+    help: "Evaluate multilingual models for the calamanCy gold test data"
+    script:
+      - >-
+        python -m spacy evaluate
+        training/multilingual/ner-calamancy-xlmr/model-best/
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/multilingual/ner-calamancy_gold-xlmr.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/multilingual/ner-calamancy-mbert/model-best/
+        corpus/ner-calamancy_gold/test.spacy
+        --output metrics/multilingual/ner-calamancy_gold-mbert.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/ner-calamancy_gold/test.spacy
+      - training/multilingual/ner-calamancy-xlmr/model-best/
+      - training/multilingual/ner-calamancy-mbert/model-best/
+    outputs:
+      - metrics/multilingual/ner-calamancy_gold-xlmr.json
+      - metrics/multilingual/ner-calamancy_gold-mbert.json
+
+  - name: "evaluate-ud-multilingual"
+    help: "Evaluate parser and tagger on the combined Tagalog treebanks using multilingual models"
+    script:
+      # - >-
+      #   python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
+      #   --n-folds 10
+      #   --output metrics/multilingual/parser-ud-xlmr.json
+      #   --seed ${vars.seed}
+      #   --lang ${vars.lang}
+      #   --nlp.lang ${vars.lang}
+      #   --components.transformer.model.name xlm-roberta-base
+      #   --verbose
+      #   --gpu-id ${vars.gpu_id}
+      - >-
+        python -m scripts.kfold corpus/parser-ud/ configs/parser-ud-trf-hf.cfg
+        --n-folds 10
+        --output metrics/multilingual/parser-ud-mbert.json
+        --seed ${vars.seed}
+        --lang ${vars.lang}
+        --nlp.lang ${vars.lang}
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --verbose
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/parser-ud/
+    outputs:
+      - metrics/multilingual/parser-ud-xlmr.json
+      - metrics/multilingual/parser-ud-mbert.json

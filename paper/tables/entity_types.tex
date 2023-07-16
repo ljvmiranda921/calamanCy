@@ -1,0 +1,16 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table*}[t]
+\begin{tabular}{@{}p{2cm}p{9cm}p{4cm}@{}}
+\toprule
+Entity             & Description                                                                                                                    & Examples                                       \\ \midrule
+Person (PER)       & Person entities limited to humans. It may be a single individual or group.                                                     & Juan de la Cruz, Jose Rizal, Quijano de Manila \\
+Organization (ORG) & Organization entities limited to corporations, agencies, and other groups of people defined by an organizational structure.    & Meralco, DPWH, United Nations                  \\
+Location (LOC)     & Location entities are geographical regions, areas, and landmasses. Geo-political entities are also included within this group. & Pilipinas, Manila, CALABARZON, Ilog Pasig        \\ \bottomrule
+\end{tabular}
+\caption{
+Entity types used for annotating TLUnified-NER (derived from the TLUnified pretraining corpus of \citealp{Cruz2021ImprovingLL}).
+}
+\label{table:entity_types}
+\end{table*}
+\end{document}
