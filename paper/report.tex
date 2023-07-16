@@ -148,6 +148,7 @@ Only Ukrainian, Romanian, and Catalan have equivalent spaCy pipelines, so we wil
 Finally, we also compared against the most common approach to build Tagalog pipelines, i.e., finetuning on XLM RoBERTa \citep{Conneau2019UnsupervisedCR} or an uncased version of multilingual BERT \citep{Devlin2019BERTPO}.
 These multilingual LMs contain Tagalog in their training pool and are common alternatives for building Tagalog NLP applications.
 
+\section{Discussion}
 
 Table \ref{table:results} shows the F1-scores for the text categorization and NER tasks and the unlabeled (UAS) and labeled attachment scores (LAS) for the dependency parsing task.
 It is notable that the calamanCy pipelines are competitive across all core NLP tasks while maintaining a smaller compute footprint.
@@ -155,9 +156,18 @@ As shown in both the text categorization and NER results, users with low compute
 For users who prioritize accuracy, the transformer-based calamanCy pipeline is the best option.
 However, we were surprised that most of the alternative approaches perform better in dependency parsing.
 We attribute this performance to the added strength of multilingual and cross-lingual information, which we don't have when training solely on a smaller treebank.
+We plan to improve dependency parsing performance by building a larger treebank within the Universal Dependencies framework.
 
+\section{Conclusion}
 
-\section{Discussion and Conclusion}
+In this paper, we introduced calamanCy, a natural language processing toolkit for Tagalog.
+We have two main contributions: (1) an open-source toolkit containing general-purpose multitask pipeliens with out-of-the-box support for common NLP tasks, and
+(2) structured benchmarks that compares against alternative approaches such as cross-lingual or multilingual finetuning. 
+
+We hope that calamanCy is a step forward to improving the state of Tagalog NLP. 
+As a low-resource language, consolidating resources into a unified framework is crucial to advance research and improve collaboration.
+In the future, we plan to create a more fine-grained NER benchmark corpus and extend calamanCy to other tasks (e.g., question-answering, commonsense reasoning, etc.).
+Finally, the project is hosted on Github (\url{https://github.com/ljvmiranda921/calamanCy}) and we are happy to receive community feedback and contributions.
 
 
 
