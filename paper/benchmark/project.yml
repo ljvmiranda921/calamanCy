@@ -48,10 +48,21 @@ description: |
 
   We also evaluated cross-lingual and multilingual approaches in our benchmarks: 
   - **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines. 
-    We came up with Ukranian (uk), Romanian (ro), and Catalan (ca). We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
+    We came up with Indonesian (id), Vietnamese (vi), Ukranian (uk), Romanian (ro), and Catalan (ca). However, only uk, ca, ro have spaCy pipelines. We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
+
+  | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+  |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+  | uk_core_news_trf       | 75.24 (0.05)                                            | 65.57 (0.01)                                             | 51.11 (0.02)                                        | 54.77                               | 82.86                               |
+  | ro_core_news_lg        | 69.01 (0.01)                                            | 59.10 (0.01)                                             | 02.01 (0.00)                                        | 84.65                               | 82.80                               |
+  | ca_core_news_trf       | 70.01 (0.02)                                            | 59.42 (0.03)                                             | 14.58 (0.02)                                        | 91.17                               | 83.09                               |
+
   - **Multilingual**: we used XLM RoBERTa and an uncased version of mBERT as our base transformer models. We also finetuned each model for each task and did similar evaluations.
     Note that finetuning on XLM RoBERTa (both base and large versions) may require at least a V100 GPU. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
 
+  | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
+  |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
+  | xlm-roberta-base       | 77.57 (0.01)                                            | 67.20 (0.01)                                             | 88.03 (0.03)                                        | 88.34                               | 76.07                               |
+  | bert-base-multilingual | 76.40 (0.02)                                            | 71.07 (0.04)                                             | 87.40 (0.02)                                        | 90.79                               | 78.52                               |
 
   The results can be found in the table below:
 
