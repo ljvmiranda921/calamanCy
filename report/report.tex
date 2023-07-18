@@ -48,7 +48,7 @@ Thus, consolidating these disjointed resources in a coherent framework is still 
 The lack of such framework hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
 
 To address this problem, we introduce calamanCy,\footnote[1]{
-  The name ``calamanCy'' came from \textit{kalamansi}, a citrus fruit native to the Philippines.}
+  ``calamanCy'' derives its name from \textit{kalamansi}, a citrus fruit native to the Philippines.}
 an open-source toolkit for Tagalog NLP. 
 It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks such as dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). 
 calamanCy also provides models of different sizes to fit any performance or accuracy requirements.
@@ -134,13 +134,12 @@ We used spaCy's built-in architectures for each component in the calamanCy pipel
 The token-to-vector layer uses the multi-hash embedding trick \citep{Miranda2022MultiHE}.
 For the parser and named entity recognizer, we used a transition-based parser that maps text representations into a series of state transitions.
 For the text categorizer, we used an ensemble of a bag-of-words model and a feed-forward network.
-Readers can find the complete training configuration in the GitHub repository: \url{https://github.com/ljvimiranda921/calamanCy/tree/master/models/v0.1.0}.
 
 \paragraph*{Experimental set-up} 
 We evaluated the calamanCy pipelines on various Tagalog benchmarks as seen in Table \ref{table:benchmark_datasets}.
 Unlike the \textit{Hatespeech} and \textit{Dengue} text categorization datasets, NER and dependency parsing has no reasonably sized benchmark.
 So instead, we used a held-out test split from TLUnified-NER for the former and then merged the two UD treebanks (\textit{Merged UD}) for the latter. 
-However, the combined UD treebank is still tiny ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation as the Universal Dependencies data split guidelines recommended.\footnote[4]{\url{https://universaldependencies.org/release_checklist.html\#data-split}}
+However, the combined UD treebank is still tiny ($\ll 20k$ words), so we evaluated it using 10-fold cross-validation as the Universal Dependencies data split guidelines recommended \citep{Nivre2020UniversalDV}.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
 We also tested a cross-lingual transfer learning approach, i.e., finetuning a model from a source language closely related to Tagalog.
@@ -162,17 +161,26 @@ We plan to improve dependency parsing performance by building a larger treebank 
 \section{Conclusion}
 
 In this paper, we introduced calamanCy, a natural language processing toolkit for Tagalog.
-We have two main contributions: (1) an open-source toolkit containing general-purpose multitask pipelines with out-of-the-box support for common NLP tasks, and
+Our work has two main contributions: (1) an open-source toolkit containing general-purpose multitask pipelines with out-of-the-box support for common NLP tasks, and
 (2) structured benchmarks that compare against alternative approaches, such as cross-lingual or multilingual finetuning. 
 
 We hope that calamanCy is a step forward to improving the state of Tagalog NLP. 
 As a low-resource language, consolidating resources into a unified framework is crucial to advance research and improve collaboration.
-We plan to create a more fine-grained NER benchmark corpus and extend calamanCy to other tasks.
+We plan to create a more fine-grained NER benchmark corpus and extend calamanCy to other tasks such as question-answering, commonsense reasoning, and machine translation.
 Finally, the project is hosted on GitHub (\url{https://github.com/ljvmiranda921/calamanCy}) and we are happy to receive community feedback and contributions.
 
-\section*{Appendix}
+\newpage
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{custom}
+\bibliographystyle{acl_natbib}
 
-\subsection*{Reproducibility}
+\appendix
+
+\section{Appendix}
+
+\subsection{Reproducibility}
+
+\subfile{tables/iaa}
 
 All the experiments and models in this paper are available publicly. 
 Readers can head over to \url{https://github.com/ljvmiranda921/calamanCy} for all related software.
@@ -182,7 +190,7 @@ To reproduce the calamanCy models, head over to \texttt{models/v0.1.0}.
 To reproduce the benchmarking experiments, head over to the \texttt{report/benchmark} directory.
 Readers who are interested in the training set-up (e.g., hyperparameters, architectures used, etc.) can check the configuration (\texttt{.cfg}) files in the respective project's \texttt{configs/} directory.
 
-\subsection*{Building the TLUnified-NER corpus}
+\subsection{Building the TLUnified-NER corpus}
 
 The TLUnified-NER dataset is a named entity recognition corpus containing the \textit{Person (PER)}, \textit{Organization (ORG)}, and \textit{Location  (LOC)} entities.
 It includes news articles and other texts in Tagalog from 2009 to 2020.
@@ -195,10 +203,6 @@ We computed Cohen's $\kappa$ for (1) all tokens, and (2) only annotated tokens.
 In addition, we also measured the (3) pairwise F1 score without the `O' label \citep{Deleger2012BG}.
 Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
 
-
-
-\subfile{tables/iaa}
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.5\textwidth]{images/iaa}
@@ -209,10 +213,5 @@ Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} show
 }
 \label{fig:iaa}
 \end{figure}
-
-% Entries for the entire Anthology, followed by custom entries
-\bibliography{custom}
-\bibliographystyle{acl_natbib}
-
 
 \end{document}
