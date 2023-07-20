@@ -65,7 +65,7 @@ For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021Lau
 These tools employ spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
 Using spaCy as a foundation is optimal, given its popularity and tight integration with other frameworks such as HuggingFace \citep{Wolf2019HuggingFacesTS}.
 However, no tool has existed for Tagalog until now.
-In this paper, we will showcase how calamanCy provides similar capabilities to DaCy and HuSpaCy using Tagalog resources.
+calamanCy will fulfill the same role as the toolkits mentioned above for Tagalog.
 
 \paragraph*{Evaluations on Tagalog NLP Tasks} 
 Structured evaluations for core NLP tasks, such as dependency parsing, POS tagging, and NER, are sparse.
@@ -112,12 +112,12 @@ For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG
 
 \paragraph*{Model training}
 
-We considered three design dimensions when training the calamanCy pipelines: (1) the presence of pretraining, (2) the word representation, and (3) the representation or dimension size.
-\textit{Pretraining} involves learning vectors from raw text to inform model initialization better.
+We considered three design dimensions when training the calamanCy pipelines: (1) the presence of pretraining, (2) the word representation, and its (3) size or dimension.
+Model \textit{pretraining} involves learning vectors from raw text to inform its initialization better.
 This process is done using a variant of the cloze task \citep{Devlin2019BERTPO}.
 Here, the pretraining objective asks the model to predict the number of leading and trailing UTF-8 bytes for the words.
-\textit{Word representations} may either involve training static word embeddings using floret,\footnote[3]{\url{https://github.com/explosion/floret}} an efficient version of fastText \citep{Bojanowski2016EnrichingWV}, or using context-sensitive vectors from a transformer \citep{Vaswani2017AttentionIA}.
-Finally, the \textit{dimension} is our way to tune the tradeoff between performance and accuracy.
+A model's \textit{word representation} may involve training static word embeddings using floret,\footnote[3]{\url{https://github.com/explosion/floret}} an efficient version of fastText \citep{Bojanowski2016EnrichingWV}, or using context-sensitive vectors from a transformer \citep{Vaswani2017AttentionIA}.
+Finally, a model's \textit{dimension} is our way to tune the tradeoff between performance and accuracy.
 
 The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
 We trained the NER component using TLUnified-NER and the dependency parser and POS tagger using the combined TRG and Ugnayan treebanks.
