@@ -98,7 +98,8 @@ To construct the NER corpus, we curated a portion of TLUnified \citep{Cruz2021Im
 Including the author, we recruited two more annotators with at least a bachelor's degree and whose native language is Tagalog.
 The three annotators labeled for four months, given three entity types as seen in Table \ref{table:entity_types}.
 We chose the entity types to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
-We measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ on all tokens and then averaged them for all three pairs.
+We excluded the \texttt{MISC} label to reduce uncertainty and confusion when labeling.
+Then, we measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ on all tokens and then averaged them for all three pairs.
 This process resulted in a Cohen's $\kappa$ score of 0.81. 
 To avoid confusion with the original TLUnified pretraining corpora, we will refer to this annotated NER dataset as TLUnified-NER.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
