@@ -65,7 +65,7 @@ In addition, scispaCy \citep{Neumann2019ScispaCyFA} and medspaCy \citep{Eyre2021
 % Such toolkits include DaCy for Danish \citep{Enevoldsen2021DaCyAU} and HuSpaCy for Hungarian \citep{Orosz2022HuSpaCyAI}.
 % For domain-specific data, there is medspaCy for clinical text \citep{Eyre2021LaunchingIC} and scispaCy for scientific documents \citep{Neumann2019ScispaCyFA}.
 These tools employ spaCy \citep{Honnibal2020Spacy}, an industrial-strength open-source software for natural language processing.
-Using spaCy as a foundation is optimal, given its popularity and tight integration with other frameworks like HuggingFace transformers \citep{Wolf2019HuggingFacesTS}.
+Using spaCy as a foundation is optimal, given its popularity and tight integration with other frameworks like HuggingFace's transformers \citep{Wolf2019HuggingFacesTS}.
 However, no tool has existed for Tagalog until now.
 We aim to fill this development gap and serve the needs of Tagalog NLP through calamanCy.
 
@@ -73,8 +73,8 @@ We aim to fill this development gap and serve the needs of Tagalog NLP through c
 Structured evaluations for core NLP tasks, such as dependency parsing, POS tagging, and NER, are sparse.
 However, we have access to a reasonable amount of data to conduct comprehensive benchmarks.
 For example, TLUnified \citep{Cruz2021ImprovingLL} is a pretraining corpus that combines news reports \citep{Cruz2020ExploitingNA}, a preprocessed version of CommonCrawl \citep{OrtizSuarez2019AsynchronousPF}, and several other datasets.
-However, it was evaluated on domain-specific applications that may not easily transfer to more general tasks.
-In addition, Tagalog has two Universal Dependencies (UD) treebanks, Tagalog Reference Grammar (TRG) \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT}, both with POS tags and relational structures.
+However, it was evaluated on domain-specific corpora that may not easily transfer to more general tasks.
+In addition, Tagalog has two Universal Dependencies (UD) treebanks, Tagalog Reference Grammar (TRG) \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT}, both with POS tags and relational structures for parsing grammar.
 This paper will fill the evaluation gap by providing structured benchmarks on these core tasks.
 
 \section{Implementation}
@@ -85,10 +85,11 @@ After installing the library, users can access the models via:
 \begin{verbatim}
   import calamancy as cl
   nlp = cl.load("tl_calamancy_md-0.1.0")
+  doc = nlp("Ako si Juan de la Cruz.")
 \end{verbatim}
 
-Here, the variable \texttt{nlp} is a spaCy processing pipeline.\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}}
-It contains trained components for POS tagging, dependency parsing, and NER.
+Here, the variable \texttt{nlp} is a spaCy processing pipeline\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}} that contains trained components for POS tagging, dependency parsing, and NER.
+Applying this pipeline to a text will produce a \texttt{Doc} object with various linguistic features. 
 calamanCy offers three pipelines of varying capacity: two static word vector-based models (md, lg), and one transformer-based model (trf).
 We will discuss how we developed these pipelines in the following section.
 
@@ -116,13 +117,13 @@ For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG
 \paragraph*{Model training}
 
 We considered three design dimensions when training the calamanCy pipelines: (1) the presence of pretraining, (2) the word representation, and its (3) size or dimension.
-Model \textit{pretraining} involves learning vectors from raw text to inform its initialization better.
+Model \textit{pretraining} involves learning vectors from raw text to inform model initialization.
 Here, the pretraining objective asks the model to predict some number of leading and trailing UTF-8 bytes for the words\textemdash a variant of the cloze task \citep{Devlin2019BERTPO}.
 A model's \textit{word representation} may involve training static word embeddings using floret,\footnote[3]{\url{https://github.com/explosion/floret}} an efficient version of fastText \citep{Bojanowski2016EnrichingWV}, or using context-sensitive vectors from a transformer \citep{Vaswani2017AttentionIA}.
 Finally, a model's \textit{dimension} is our way to tune the tradeoff between performance and accuracy.
 
 The general process involves pretraining a filtered version of TLUnified, constructing static word embeddings if necessary, and training the downstream components.
-We used TLUnified-NER to train the NER component and trained the dependency parser and POS tagger using the combined treebanks.
+We used TLUnified-NER to train the NER component, and then trained the dependency parser and POS tagger using the combined treebanks.
 Ultimately, we devised three language pipelines as seen in Table \ref{table:calamancy_pipelines}.
 
 \section{Evaluation}
@@ -140,12 +141,12 @@ As for the text categorizer, we utilized an ensemble of a bag-of-words model and
 We assessed the calamanCy pipelines on various Tagalog benchmarks as detailed in Table \ref{table:benchmark_datasets}.
 We also tested on text categorization, an unseen task, for robustness.
 For NER evaluation, we used a held-out test split from TLUnified-NER.
-However, for dependency parsing and POS tagging, the combined treebank is still small ($\ll$ 20k tokens), so we followed the Universal Dependencies data split guidelines and performed 10-fold cross-validation \citep{Nivre2020UniversalDV}.
+However, the combined treebank is still small ($\ll$ 20k tokens) for POS tagging and dependency parsing, so we followed the Universal Dependencies data split guidelines and performed 10-fold cross-validation \citep{Nivre2020UniversalDV}.
 For all the other datasets, we computed their performance across five trials and then reported the average and standard deviation.
 
 We also tested a cross-lingual transfer learning approach, i.e., finetuning a model from a source language closely related to Tagalog.
 According to \citet{Aquino2020ParsingIT}, the closest languages to Tagalog are Indonesian (id), Ukrainian (uk), Vietnamese (vi), Romanian (ro), and Catalan (ca).
-They used a metric \citep{Agic2017CrossLingualPS} based on the World Atlas for Language Structures \citep{Haspelmath2005WALS}.
+They obtained these results via a distance metric \citep{Agic2017CrossLingualPS} based on the World Atlas for Language Structures \citep{Haspelmath2005WALS}.
 However, only uk, ro, and ca have equivalent spaCy pipelines, so we only compared against those three.
 Finally, we also compared against multilingual language models
 by finetuning on XLM RoBERTa \citep{Conneau2019UnsupervisedCR} and an uncased version of multilingual BERT \citep{Devlin2019BERTPO}.
@@ -199,17 +200,6 @@ Readers who are interested in the training set-up (e.g., hyperparameters, archit
 
 \subfile{tables/iaa}
 
-The TLUnified-NER dataset is a named entity recognition corpus containing the \textit{Person (PER)}, \textit{Organization (ORG)}, and \textit{Location  (LOC)} entities.
-It includes news articles and other texts in Tagalog from 2009 to 2020.
-It was based on the TLUnified pretraining corpora by \cite{Cruz2021ImprovingLL}.
-The author, together with two more annotators, annotated TLUnified in the course of four months.
-We followed the process recommended by \citet{Reiter2017HT}, which included resolving disagreements and updating the annotation guidelines.
-
-To compute the inter-annotator agreement (IAA) score, we followed \citet{Brandsen2020CreatingAD}'s approach.
-We computed Cohen's $\kappa$ for (1) all tokens, and (2) only annotated tokens.  
-In addition, we also measured the (3) pairwise F1 score without the `O' label \citep{Deleger2012BG}.
-Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.5\textwidth]{images/iaa}
@@ -220,5 +210,16 @@ Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} show
 }
 \label{fig:iaa}
 \end{figure}
+
+The TLUnified-NER dataset is a named entity recognition corpus containing the \textit{Person (PER)}, \textit{Organization (ORG)}, and \textit{Location  (LOC)} entities.
+It includes news articles and other texts in Tagalog from 2009 to 2020.
+It was based on the TLUnified pretraining corpora by \cite{Cruz2021ImprovingLL}.
+The author, together with two more annotators, annotated TLUnified in the course of four months.
+We employed an iterative approach as recommended by \citet{Reiter2017HT}, which included resolving disagreements and updating the annotation guidelines.
+To get the inter-annotator agreement (IAA) score, we took \citet{Brandsen2020CreatingAD}'s work on the Archaeology dataset as inspiration.
+We computed Cohen's $\kappa$ for all tokens, and only annotated tokens.  
+In addition, we also measured the (3) pairwise F1 score without the `O' label \citep{Deleger2012BG}.
+Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
+
 
 \end{document}
