@@ -57,7 +57,7 @@ description: |
   | ca_core_news_trf       | 70.01 (0.02)                                            | 59.42 (0.03)                                             | 14.58 (0.02)                                        | 91.17                               | 83.09                               |
 
   - **Multilingual**: we used XLM RoBERTa and an uncased version of mBERT as our base transformer models. We also finetuned each model for each task and did similar evaluations.
-    Note that finetuning on XLM RoBERTa (both base and large versions) may require at least a V100 GPU. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
+    Note that finetuning on XLM RoBERTa (both base and large versions) may require at least a T4 or V100 GPU. I've seen more consistent and stable training with an A100 GPU. Same can be said for mBERT.
 
   | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
   |------------------------|---------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------|-------------------------------------|-------------------------------------|
