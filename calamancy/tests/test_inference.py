@@ -19,5 +19,5 @@ def calamancy_md():
 def test_api_is_working(task, text, calamancy_md):
     """Functional test to check if API contract is followed"""
     fn = task(model=calamancy_md)
-    preds = list(fn.predict(text))
+    preds = list(fn(text))
     assert len(preds) == len(text.split(" "))

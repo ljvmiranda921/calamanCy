@@ -17,7 +17,7 @@ class EntityRecognizer:
         """
         self.nlp = load(model)
 
-    def predict(self, text: str) -> Iterable[Tuple[str, str]]:
+    def __call__(self, text: str) -> Iterable[Tuple[str, str]]:
         """Return the predicted entities in IOB format for a single text.
 
         texts (str): the text to get the entities from.
@@ -39,7 +39,7 @@ class Tagger:
         """
         self.nlp = load(model)
 
-    def predict(self, text: str) -> Iterable[Tuple[str, str, str]]:
+    def __call__(self, text: str) -> Iterable[Tuple[str, str, str]]:
         """Return the coarse-grained and fine-grained parts-of-speech (POS) tag.
 
         texts (str): the text to get the POS tags from.
@@ -58,7 +58,7 @@ class Parser:
         """
         self.nlp = load(model)
 
-    def predict(self, text: str) -> Iterable[Tuple[str, str]]:
+    def __call__(self, text: str) -> Iterable[Tuple[str, str]]:
         """Return the syntactic dependency relation for a given token.
 
         text (str): the text to get the dependency relations from.
