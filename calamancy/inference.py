@@ -39,7 +39,7 @@ class Tagger:
         """
         self.nlp = load(model)
 
-    def __call__(self, text: str) -> Iterable[Tuple[str, str, str]]:
+    def __call__(self, text: str) -> Iterable[Tuple[str, Tuple[str, str]]]:
         """Return the coarse-grained and fine-grained parts-of-speech (POS) tag.
 
         texts (str): the text to get the POS tags from.
@@ -47,7 +47,7 @@ class Tagger:
         """
         doc = self.nlp(text)
         for token in doc:
-            yield (token.text, token.pos_, token.tag_)
+            yield (token.text, (token.pos_, token.tag_))
 
 
 class Parser:
