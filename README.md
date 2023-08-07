@@ -2,8 +2,8 @@
 
 # calamanCy: NLP pipelines for Tagalog
 
-![example workflow](https://github.com/ljvmiranda921/calamancy/actions/workflows/test.yml/badge.svg)
-![PyPI](https://img.shields.io/pypi/v/calamancy?labelColor=%23272c32&color=%2333cc56&logo=pypi&logoColor=white)
+[![example workflow](https://github.com/ljvmiranda921/calamancy/actions/workflows/test.yml/badge.svg)](https://github.com/ljvmiranda921/calamanCy/actions/workflows/test.yml)
+[![PyPI](https://img.shields.io/pypi/v/calamancy?labelColor=%23272c32&color=%2333cc56&logo=pypi&logoColor=white)](https://pypi.org/project/calamanCy/)
 
 
 
