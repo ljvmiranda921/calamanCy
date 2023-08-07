@@ -1,0 +1,19 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table*}[t]
+\centering
+\begin{tabular}{@{}lrrrrrrrr@{}}
+\toprule
+Dataset     & Examples & Tokens &  PER  & ORG  & LOC  &  Length  & SD    & BD       \\ \midrule
+Training    & 6252     & 198579 &  6418 & 3121 & 3296 &  1.49    & 2.66  & 1.26     \\
+Development & 782      & 25069  &  793  & 392  & 409  &  1.51    & 2.77  & 1.37     \\
+Test        & 782      & 25100  &  818  & 423  & 438  &  1.48    & 2.77  & 1.34     \\ \bottomrule
+\end{tabular}
+\caption{
+    Dataset statistics for \tlunified{}.
+    It shows the number of examples, number of tokens, and span-level statistics.
+    SD stands for span distinctiveness whereas BD is boundary distinctiveness \cite{Papay2020DissectingSI}.
+}
+\label{table:dset_stats}
+\end{table*}
+\end{document}
