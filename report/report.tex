@@ -174,7 +174,16 @@ As a low-resource language, consolidating resources into a unified framework is 
 In the future, we plan to create a more fine-grained NER benchmark corpus and extend calamanCy to natural language understanding (NLU) tasks.
 Finally, the project is hosted on GitHub (\url{https://github.com/ljvmiranda921/calamanCy}) and we are happy to receive community feedback and contributions.
 
-\newpage
+\section*{Limitations}
+
+The TLUnified-NER corpus utilized for training the NER component of calamanCy comprises of new articles from early 2000s to the present.
+In addition the Universal Dependencies (UD) corpora for the POS tagger and dependency parser components are relatively modest in size, containing fewer than 10k tokens.
+Hence, the performance for these tasks during test-time could potentially be constrained by these factors.
+
+Finally, reproducing the transformer pipelines may require a T4 or V100 GPU. 
+The biggest bottleneck for reproduction is pretraining on the whole TLUnified corpus.
+In a 64vCPU machine with 256GB of RAM, the pretraining process can take three full days for 20 epochs.
+
 % Entries for the entire Anthology, followed by custom entries
 \bibliography{custom}
 \bibliographystyle{acl_natbib}
