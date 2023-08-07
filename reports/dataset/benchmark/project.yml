@@ -1,0 +1,233 @@
+title: "Reproducing TLUnified-NER benchmarks"
+description: |
+  This is a spaCy project that benchmarks TLUnified-NER on a variety of pipelines.
+  You can use this project to reproduce the experiments in the write-up. 
+  First, you need to install the required dependencies:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  Now run the set-up commands:
+
+  ```
+  python -m spacy project assets
+  python -m spacy project run setup
+  ```
+
+  > **Note**
+  > Some commands may take some time to run. 
+  > This is especially true for the transformer training and evaluation pipelines.
+  > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
+
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  You should be able to use them independently from one another.
+
+directories:
+  - "assets"
+  - "configs"
+  - "corpus"
+  - "training"
+  - "metrics"
+
+vars:
+  seed: 0
+  gpu_id: 0
+  lang: "tl"
+  remote_gcs_bucket: "ljvmiranda"
+
+remotes:
+  gcs: "gs://${vars.remote_gcs_bucket}/calamanCy/benchmark_cache/"
+
+assets:
+  - dest: assets/tlunified_ner.tar.gz
+    description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+
+workflows:
+  setup:
+    - "install-models"
+    - "process-datasets"
+  benchmark:
+    - "baseline"
+    - "static-vectors"
+    - "trf-monolingual"
+    - "trf-multilingual"
+
+commands:
+  - name: "install-models"
+    help: "Install models in the spaCy workspace"
+    script:
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/main/tl_calamancy_lg-any-py3-none-any.whl
+      - pip install https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/main/tl_calamancy_trf-any-py3-none-any.whl
+
+  - name: "process-datasets"
+    help: "Process the datasets and convert them into spaCy format"
+    script:
+      - tar -xzvf assets/tlunified_ner.tar.gz -C corpus
+    deps:
+      - assets/tlunified_ner.tar.gz
+    outputs:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
+
+  - name: "analyze"
+    help: "Get dataset statistics for TLUnified-NER"
+    script:
+      - python -m scripts.convert_to_spans corpus/train.spacy corpus/train_sc.spacy
+      - python -m scripts.convert_to_spans corpus/dev.spacy corpus/dev_sc.spacy
+      - python -m scripts.convert_to_spans corpus/test.spacy corpus/test_sc.spacy
+      - >-
+        python -m spacy debug data configs/default.cfg 
+        --paths.train corpus/train_sc.spacy 
+        --paths.dev corpus/dev_sc.spacy
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
+
+  - name: "plot"
+    help: "Create plots for the report"
+    script:
+      - python -m scripts.plot_iaa ../figures/iaa.pdf
+      - python -m scripts.plot_confusion_matrix corpus/dev.spacy training/baseline/model-best/ ../figures/confusion.pdf --gpu-id ${vars.gpu_id} --normalize
+    deps:
+      - training/baseline/model-best/
+
+  - name: "baseline"
+    help: "Train a transition-based parser without any embeddings or static vectors"
+    script:
+      - mkdir -p training/xlm-roberta/
+      - >-
+        python -m spacy train
+        configs/default.cfg
+        --nlp.lang ${vars.lang}
+        --output training/baseline/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/baseline/model-best/
+        corpus/test.spacy
+        --output metrics/baseline-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/baseline/model-best/
+        corpus/dev.spacy
+        --output metrics/baseline-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
+    outputs:
+      - training/baseline/model-best/
+      - metrics/baseline-dev.json
+      - metrics/baseline-test.json
+
+  - name: "static-vectors"
+    help: "Use the trained calamanCy pipeline to evaluate the dev and test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_lg
+        corpus/test.spacy
+        --output metrics/static-vectors-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_lg
+        corpus/dev.spacy
+        --output metrics/static-vectors-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/test.spacy
+      - corpus/dev.spacy
+    outputs:
+      - metrics/static-vectors-test.json
+      - metrics/static-vectors-dev.json
+
+  - name: "trf-monolingual"
+    help: "Use the trained transformer-based calamanCy pipeline to evaluate the dev and test set"
+    script:
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_trf
+        corpus/test.spacy
+        --output metrics/trf-monolingual-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate 
+        tl_calamancy_trf
+        corpus/dev.spacy
+        --output metrics/trf-monolingual-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/test.spacy
+      - corpus/dev.spacy
+    outputs:
+      - metrics/trf-monolingual-test.json
+      - metrics/trf-monolingual-dev.json
+
+  - name: "trf-multilingual"
+    help: "Train and evaluate multilingual model and evaluate the dev and test sets"
+    script:
+      - mkdir -p training/xlm-roberta/
+      - >-
+        python -m spacy train
+        configs/transformer.cfg
+        --nlp.lang ${vars.lang}
+        --output training/xlm-roberta/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --components.transformer.model.name xlm-roberta-base
+        --gpu-id ${vars.gpu_id}
+      - mkdir -p training/mbert/
+      - >-
+        python -m spacy train
+        configs/transformer.cfg
+        --nlp.lang ${vars.lang}
+        --output training/mbert/
+        --paths.train corpus/train.spacy
+        --paths.dev corpus/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/xlm-roberta/model-best/
+        corpus/test.spacy
+        --output metrics/trf-multilingual-xlm-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/xlm-roberta/model-best/
+        corpus/dev.spacy
+        --output metrics/trf-multilingual-xlm-dev.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/mbert/model-best/
+        corpus/test.spacy
+        --output metrics/trf-multilingual-mbert-test.json
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/mbert/model-best/
+        corpus/dev.spacy
+        --output metrics/trf-multilingual-mbert-dev.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/train.spacy
+      - corpus/dev.spacy
+      - corpus/test.spacy
+    outputs:
+      - training/xlm-roberta/model-best/
+      - training/mbert/model-best/
+      - metrics/trf-multilingual-xlm-test.json
+      - metrics/trf-multilingual-xlm-dev.json
+      - metrics/trf-multilingual-mbert-test.json
+      - metrics/trf-multilingual-mbert-dev.json

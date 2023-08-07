@@ -1,0 +1,21 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table*}[t]
+\centering
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Word Embeddings & Person & Organization &  Location  & Overall       \\ \midrule
+Baseline (no additional embeddings)          & 87.85$\pm$0.01 & 74.80$\pm$0.02 & 81.03$\pm$0.01 & 84.57$\pm$0.02 \\ 
+fastText  \cite{Bojanowski2016EnrichingWV}   & 91.20$\pm$0.02 & 85.39$\pm$0.03 & 88.38$\pm$0.01 & 88.90$\pm$0.01 \\ 
+RoBERTa Tagalog \cite{Cruz2021ImprovingLL}   & 92.18$\pm$0.01 & 87.30$\pm$0.00 & 90.01$\pm$0.02 & 90.34$\pm$0.02 \\
+XLM-RoBERTa \cite{Conneau2019UnsupervisedCR} & 91.95$\pm$0.04 & 84.84$\pm$0.02 & 88.92$\pm$0.01 & 88.03$\pm$0.03\\
+Multilingual BERT \cite{Devlin2019BERTPO}    & 90.78$\pm$0.03 & 85.08$\pm$0.01 & 88.45$\pm$0.03 & 87.40$\pm$0.02 \\
+\bottomrule
+\end{tabular}
+\caption{
+    Benchmark results on \tlunified{} across different word embeddings using spaCy's transition-based parser \cite{Honnibal2020Spacy}.
+    Reported results are F1-scores on the test set across three trials.
+}
+\label{table:results_baseline}
+\end{table*}
+\end{document}

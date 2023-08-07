@@ -197,6 +197,18 @@ commands:
       - corpus/parser-ud/train.spacy
       - corpus/parser-ud/dev.spacy
 
+  - name: "analyze-calamancy"
+    help: "Get dataset statistics for the span labeling task"
+    script:
+      - python -m scripts.convert_to_spans corpus/ner-calamancy_gold/train.spacy corpus/ner-calamancy_gold/train_sc.spacy
+      - python -m scripts.convert_to_spans corpus/ner-calamancy_gold/dev.spacy corpus/ner-calamancy_gold/dev_sc.spacy
+      - python -m scripts.convert_to_spans corpus/ner-calamancy_gold/test.spacy corpus/ner-calamancy_gold/test_sc.spacy
+      - python -m spacy debug data configs/ner-calamancy.cfg --paths.train corpus/ner-calamancy_gold/test_sc.spacy --paths.dev corpus/ner-calamancy_gold/dev_sc.spacy
+    outputs:
+      - corpus/ner-calamancy_gold/train_sc.spacy
+      - corpus/ner-calamancy_gold/dev_sc.spacy
+      - corpus/ner-calamancy_gold/test_sc.spacy
+
   - name: "pretrain-hatespeech"
     help: "Pretrain on Hatespeech training data to initialize vectors"
     script:
