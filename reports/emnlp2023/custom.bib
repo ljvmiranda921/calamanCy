@@ -19,53 +19,117 @@
 
 
 @inproceedings{Pires2019HowMI,
-  title     = {{How Multilingual is Multilingual BERT?}},
-  author    = {Telmo Pires and Eva Schlinger and Dan Garrette},
-  booktitle = {Annual Meeting of the Association for Computational Linguistics},
-  year      = {2019}
+  title     = {How Multilingual is Multilingual {BERT}?},
+  author    = {Pires, Telmo  and
+               Schlinger, Eva  and
+               Garrette, Dan},
+  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics},
+  month     = jul,
+  year      = {2019},
+  address   = {Florence, Italy},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/P19-1493},
+  doi       = {10.18653/v1/P19-1493},
+  pages     = {4996--5001},
+  abstract  = {In this paper, we show that Multilingual BERT (M-BERT), released by Devlin et al. (2018) as a single language model pre-trained from monolingual corpora in 104 languages, is surprisingly good at zero-shot cross-lingual model transfer, in which task-specific annotations in one language are used to fine-tune the model for evaluation in another language. To understand why, we present a large number of probing experiments, showing that transfer is possible even to languages in different scripts, that transfer works best between typologically similar languages, that monolingual corpora can train models for code-switching, and that the model can find translation pairs. From these results, we can conclude that M-BERT does create multilingual representations, but that these representations exhibit systematic deficiencies affecting certain language pairs.}
 }
 
-@article{Devlin2019BERTPO,
-  title   = {{BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding}},
-  author  = {Jacob Devlin and Ming-Wei Chang and Kenton Lee and Kristina Toutanova},
-  journal = {ArXiv},
-  year    = {2019},
-  volume  = {abs/1810.04805}
+@inproceedings{Devlin2019BERTPO,
+  title     = {{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  author    = {Devlin, Jacob  and
+               Chang, Ming-Wei  and
+               Lee, Kenton  and
+               Toutanova, Kristina},
+  booktitle = {Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)},
+  month     = jun,
+  year      = {2019},
+  address   = {Minneapolis, Minnesota},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/N19-1423},
+  doi       = {10.18653/v1/N19-1423},
+  pages     = {4171--4186},
+  abstract  = {We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models (Peters et al., 2018a; Radford et al., 2018), BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications. BERT is conceptually simple and empirically powerful. It obtains new state-of-the-art results on eleven natural language processing tasks, including pushing the GLUE score to 80.5 (7.7 point absolute improvement), MultiNLI accuracy to 86.7{\%} (4.6{\%} absolute improvement), SQuAD v1.1 question answering Test F1 to 93.2 (1.5 point absolute improvement) and SQuAD v2.0 Test F1 to 83.1 (5.1 point absolute improvement).}
 }
 
 @inproceedings{Conneau2019UnsupervisedCR,
-  title     = {{Unsupervised Cross-lingual Representation Learning at Scale}},
-  author    = {Alexis Conneau and Kartikay Khandelwal and Naman Goyal and Vishrav Chaudhary and Guillaume Wenzek and Francisco Guzm{\'a}n and Edouard Grave and Myle Ott and Luke Zettlemoyer and Veselin Stoyanov},
-  booktitle = {Annual Meeting of the Association for Computational Linguistics},
-  year      = {2019}
+  title     = {Unsupervised Cross-lingual Representation Learning at Scale},
+  author    = {Conneau, Alexis  and
+               Khandelwal, Kartikay  and
+               Goyal, Naman  and
+               Chaudhary, Vishrav  and
+               Wenzek, Guillaume  and
+               Guzm{\'a}n, Francisco  and
+               Grave, Edouard  and
+               Ott, Myle  and
+               Zettlemoyer, Luke  and
+               Stoyanov, Veselin},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  month     = jul,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2020.acl-main.747},
+  doi       = {10.18653/v1/2020.acl-main.747},
+  pages     = {8440--8451},
+  abstract  = {This paper shows that pretraining multilingual language models at scale leads to significant performance gains for a wide range of cross-lingual transfer tasks. We train a Transformer-based masked language model on one hundred languages, using more than two terabytes of filtered CommonCrawl data. Our model, dubbed XLM-R, significantly outperforms multilingual BERT (mBERT) on a variety of cross-lingual benchmarks, including +14.6{\%} average accuracy on XNLI, +13{\%} average F1 score on MLQA, and +2.4{\%} F1 score on NER. XLM-R performs particularly well on low-resource languages, improving 15.7{\%} in XNLI accuracy for Swahili and 11.4{\%} for Urdu over previous XLM models. We also present a detailed empirical analysis of the key factors that are required to achieve these gains, including the trade-offs between (1) positive transfer and capacity dilution and (2) the performance of high and low resource languages at scale. Finally, we show, for the first time, the possibility of multilingual modeling without sacrificing per-language performance; XLM-R is very competitive with strong monolingual models on the GLUE and XNLI benchmarks. We will make our code and models publicly available.}
 }
 
 @inproceedings{Cruz2021ImprovingLL,
-  title     = {{Improving Large-scale Language Models and Resources for Filipino}},
-  author    = {Jan Christian Blaise Cruz and Charibeth Ko Cheng},
-  booktitle = {International Conference on Language Resources and Evaluation},
-  year      = {2021}
+  title     = {Improving Large-scale Language Models and Resources for {F}ilipino},
+  author    = {Cruz, Jan Christian Blaise  and
+               Cheng, Charibeth},
+  booktitle = {Proceedings of the Thirteenth Language Resources and Evaluation Conference},
+  month     = jun,
+  year      = {2022},
+  address   = {Marseille, France},
+  publisher = {European Language Resources Association},
+  url       = {https://aclanthology.org/2022.lrec-1.703},
+  pages     = {6548--6555},
+  abstract  = {In this paper, we improve on existing language resources for the low-resource Filipino language in two ways. First, we outline the construction of the TLUnified dataset, a large-scale pretraining corpus that serves as an improvement over smaller existing pretraining datasets for the language in terms of scale and topic variety. Second, we pretrain new Transformer language models following the RoBERTa pretraining technique to supplant existing models trained with small corpora. Our new RoBERTa models show significant improvements over existing Filipino models in three benchmark datasets with an average gain of 4.47{\%} test accuracy across three classification tasks with varying difficulty.}
 }
 
 @inproceedings{Aquino2020ParsingIT,
-  title     = {{Parsing in the absence of related languages: Evaluating low-resource dependency parsers on Tagalog}},
-  author    = {Angelina A. Aquino and Franz A. de Leon},
-  booktitle = {Universal Dependencies Workshop},
-  year      = {2020}
+  title     = {Parsing in the absence of related languages: Evaluating low-resource dependency parsers on {T}agalog},
+  author    = {Aquino, Angelina  and
+               de Leon, Franz},
+  booktitle = {Proceedings of the Fourth Workshop on Universal Dependencies (UDW 2020)},
+  month     = dec,
+  year      = {2020},
+  address   = {Barcelona, Spain (Online)},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2020.udw-1.2},
+  pages     = {8--15},
+  abstract  = {Cross-lingual and multilingual methods have been widely suggested as options for dependency parsing of low-resource languages; however, these typically require the use of annotated data in related high-resource languages. In this paper, we evaluate the performance of these methods versus monolingual parsing of Tagalog, an Austronesian language which shares little typological similarity with any existing high-resource languages. We show that a monolingual model developed on minimal target language data consistently outperforms all cross-lingual and multilingual models when no closely-related sources exist for a low-resource language.}
 }
 
 @inproceedings{Kondratyuk201975L1,
-  title     = {{75 Languages, 1 Model: Parsing Universal Dependencies Universally}},
-  author    = {D. Kondratyuk},
-  booktitle = {Conference on Empirical Methods in Natural Language Processing},
-  year      = {2019}
+  title     = {75 Languages, 1 Model: Parsing {U}niversal {D}ependencies Universally},
+  author    = {Kondratyuk, Dan  and
+               Straka, Milan},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+  month     = nov,
+  year      = {2019},
+  address   = {Hong Kong, China},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/D19-1279},
+  doi       = {10.18653/v1/D19-1279},
+  pages     = {2779--2795},
+  abstract  = {We present UDify, a multilingual multi-task model capable of accurately predicting universal part-of-speech, morphological features, lemmas, and dependency trees simultaneously for all 124 Universal Dependencies treebanks across 75 languages. By leveraging a multilingual BERT self-attention model pretrained on 104 languages, we found that fine-tuning it on all datasets concatenated together with simple softmax classifiers for each UD task can meet or exceed state-of-the-art UPOS, UFeats, Lemmas, (and especially) UAS, and LAS scores, without requiring any recurrent or language-specific components. We evaluate UDify for multilingual learning, showing that low-resource languages benefit the most from cross-linguistic annotations. We also evaluate for zero-shot learning, with results suggesting that multilingual training provides strong UD predictions even for languages that neither UDify nor BERT have ever been trained on.}
 }
 
 @inproceedings{Dehouck2019PhylogenicMD,
-  title     = {{Phylogenic Multi-Lingual Dependency Parsing}},
-  author    = {Mathieu Dehouck and P. Denis},
-  booktitle = {North American Chapter of the Association for Computational Linguistics},
-  year      = {2019}
+  title     = {Phylogenic Multi-Lingual Dependency Parsing},
+  author    = {Dehouck, Mathieu  and
+               Denis, Pascal},
+  booktitle = {Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)},
+  month     = jun,
+  year      = {2019},
+  address   = {Minneapolis, Minnesota},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/N19-1017},
+  doi       = {10.18653/v1/N19-1017},
+  pages     = {192--203},
+  abstract  = {Languages evolve and diverge over time. Their evolutionary history is often depicted in the shape of a phylogenetic tree. Assuming parsing models are representations of their languages grammars, their evolution should follow a structure similar to that of the phylogenetic tree. In this paper, drawing inspiration from multi-task learning, we make use of the phylogenetic tree to guide the learning of multi-lingual dependency parsers leveraging languages structural similarities. Experiments on data from the Universal Dependency project show that phylogenetic training is beneficial to low resourced languages and to well furnished languages families. As a side product of phylogenetic training, our model is able to perform zero-shot parsing of previously unseen languages.}
 }
 
 @article{Enriquez2023DeterminingLF,
@@ -123,21 +187,58 @@
   pages   = {438-447}
 }
 
-@article{Neumann2019ScispaCyFA,
-  title   = {{ScispaCy: Fast and Robust Models for Biomedical Natural Language Processing}},
-  author  = {Mark Neumann and Daniel King and Iz Beltagy and Waleed Ammar},
-  journal = {ArXiv},
-  year    = {2019},
-  volume  = {abs/1902.07669}
+@inproceedings{Neumann2019ScispaCyFA,
+  title     = {{S}cispa{C}y: Fast and Robust Models for Biomedical Natural Language Processing},
+  author    = {Neumann, Mark  and
+               King, Daniel  and
+               Beltagy, Iz  and
+               Ammar, Waleed},
+  booktitle = {Proceedings of the 18th BioNLP Workshop and Shared Task},
+  month     = aug,
+  year      = {2019},
+  address   = {Florence, Italy},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/W19-5034},
+  doi       = {10.18653/v1/W19-5034},
+  pages     = {319--327},
+  abstract  = {Despite recent advances in natural language processing, many statistical models for processing text perform extremely poorly under domain shift. Processing biomedical and clinical text is a critically important application area of natural language processing, for which there are few robust, practical, publicly available models. This paper describes scispaCy, a new Python library and models for practical biomedical/scientific text processing, which heavily leverages the spaCy library. We detail the performance of two packages of models released in scispaCy and demonstrate their robustness on several tasks and datasets. Models and code are available at \url{https://allenai.github.io/scispacy/}.}
 }
 
-@article{Wolf2019HuggingFacesTS,
-  title   = {{HuggingFace's Transformers: State-of-the-art Natural Language Processing}},
-  author  = {Thomas Wolf and Lysandre Debut and Victor Sanh and Julien Chaumond and Clement Delangue and Anthony Moi and Pierric Cistac and Tim Rault and R{\'e}mi Louf and Morgan Funtowicz and Jamie Brew},
-  journal = {ArXiv},
-  year    = {2019},
-  volume  = {abs/1910.03771}
+@inproceedings{Wolf2019HuggingFacesTS,
+  title     = {Transformers: State-of-the-Art Natural Language Processing},
+  author    = {Wolf, Thomas  and
+               Debut, Lysandre  and
+               Sanh, Victor  and
+               Chaumond, Julien  and
+               Delangue, Clement  and
+               Moi, Anthony  and
+               Cistac, Pierric  and
+               Rault, Tim  and
+               Louf, Remi  and
+               Funtowicz, Morgan  and
+               Davison, Joe  and
+               Shleifer, Sam  and
+               von Platen, Patrick  and
+               Ma, Clara  and
+               Jernite, Yacine  and
+               Plu, Julien  and
+               Xu, Canwen  and
+               Le Scao, Teven  and
+               Gugger, Sylvain  and
+               Drame, Mariama  and
+               Lhoest, Quentin  and
+               Rush, Alexander},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+  month     = oct,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2020.emnlp-demos.6},
+  doi       = {10.18653/v1/2020.emnlp-demos.6},
+  pages     = {38--45},
+  abstract  = {Recent progress in natural language processing has been driven by advances in both model architecture and model pretraining. Transformer architectures have facilitated building higher-capacity models and pretraining has made it possible to effectively utilize this capacity for a wide variety of tasks. Transformers is an open-source library with the goal of opening up these advances to the wider machine learning community. The library consists of carefully engineered state-of-the art Transformer architectures under a unified API. Backing this library is a curated collection of pretrained models made by and available for the community. Transformers is designed to be extensible by researchers, simple for practitioners, and fast and robust in industrial deployments. The library is available at \url{https://github.com/huggingface/transformers}.}
 }
+
 
 @inproceedings{Cruz2020ExploitingNA,
   title     = {{Exploiting News Article Structure for Automatic Corpus Generation of Entailment Datasets}},
@@ -153,20 +254,22 @@
   year      = {2019}
 }
 
-@article{Sang2003IntroductionTT,
-  title   = {{Introduction to the CoNLL-2003 Shared Task: Language-Independent Named Entity Recognition}},
-  author  = {Erik Tjong Kim Sang and Fien De Meulder},
-  journal = {ArXiv},
-  year    = {2003},
-  volume  = {cs.CL/0306050}
+@inproceedings{Sang2003IntroductionTT,
+  title     = {Introduction to the {C}o{NLL}-2003 Shared Task: Language-Independent Named Entity Recognition},
+  author    = {Tjong Kim Sang, Erik F.  and
+               De Meulder, Fien},
+  booktitle = {Proceedings of the Seventh Conference on Natural Language Learning at {HLT}-{NAACL} 2003},
+  year      = {2003},
+  url       = {https://aclanthology.org/W03-0419},
+  pages     = {142--147}
 }
 
-@article{Sang2002IntroductionTT,
-  title   = {{Introduction to the CoNLL-2002 Shared Task: Language-Independent Named Entity Recognition}},
-  author  = {Erik Tjong Kim Sang},
-  journal = {ArXiv},
-  year    = {2002},
-  volume  = {cs.CL/0209010}
+@inproceedings{Sang2002IntroductionTT,
+  title     = {Introduction to the {C}o{NLL}-2002 Shared Task: Language-Independent Named Entity Recognition},
+  author    = {Tjong Kim Sang, Erik F.},
+  booktitle = {{COLING}-02: The 6th Conference on Natural Language Learning 2002 ({C}o{NLL}-2002)},
+  year      = {2002},
+  url       = {https://aclanthology.org/W02-2024}
 }
 
 @article{Delger2012BuildingGS,
@@ -179,12 +282,20 @@
 }
 
 @article{Bojanowski2016EnrichingWV,
-  title   = {{Enriching Word Vectors with Subword Information}},
-  author  = {Piotr Bojanowski and Edouard Grave and Armand Joulin and Tomas Mikolov},
-  journal = {Transactions of the Association for Computational Linguistics},
-  year    = {2016},
-  volume  = {5},
-  pages   = {135-146}
+  title     = {Enriching Word Vectors with Subword Information},
+  author    = {Bojanowski, Piotr  and
+               Grave, Edouard  and
+               Joulin, Armand  and
+               Mikolov, Tomas},
+  journal   = {Transactions of the Association for Computational Linguistics},
+  volume    = {5},
+  year      = {2017},
+  address   = {Cambridge, MA},
+  publisher = {MIT Press},
+  url       = {https://aclanthology.org/Q17-1010},
+  doi       = {10.1162/tacl_a_00051},
+  pages     = {135--146},
+  abstract  = {Continuous word representations, trained on large unlabeled corpora are useful for many natural language processing tasks. Popular models that learn such representations ignore the morphology of words, by assigning a distinct vector to each word. This is a limitation, especially for languages with large vocabularies and many rare words. In this paper, we propose a new approach based on the skipgram model, where each word is represented as a bag of character n-grams. A vector representation is associated to each character n-gram; words being represented as the sum of these representations. Our method is fast, allowing to train models on large corpora quickly and allows us to compute word representations for words that did not appear in the training data. We evaluate our word representations on nine different languages, both on word similarity and analogy tasks. By comparing to recently proposed morphological word representations, we show that our vectors achieve state-of-the-art performance on these tasks.}
 }
 
 @inproceedings{Vaswani2017AttentionIA,
@@ -211,13 +322,16 @@
 }
 
 @inproceedings{Agic2017CrossLingualPS,
-  title     = {{Cross-Lingual Parser Selection for Low-Resource Languages}},
-  author    = {Agi\'{c}, \v{Z}eljko},
-  booktitle = {Proceedings of the NoDaLiDa 2017 Workshop on Universal Dependencies},
-  pages     = {1-10},
-  year      = {2017}
+  title     = {Cross-Lingual Parser Selection for Low-Resource Languages},
+  author    = {Agi{\'c}, {\v{Z}}eljko},
+  booktitle = {Proceedings of the {N}o{D}a{L}i{D}a 2017 Workshop on Universal Dependencies ({UDW} 2017)},
+  month     = may,
+  year      = {2017},
+  address   = {Gothenburg, Sweden},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/W17-0401},
+  pages     = {1--10}
 }
-
 
 @inproceedings{Haspelmath2005WALS,
   title     = {{The World Atlas of Language Structures}},
@@ -235,10 +349,21 @@
 }
 
 @inproceedings{Brandsen2020CreatingAD,
-  title     = {{Creating a Dataset for Named Entity Recognition in the Archaeology Domain}},
-  author    = {Alex Brandsen and Suzan Verberne and Milco Wansleeben and Karsten Lambers},
-  booktitle = {International Conference on Language Resources and Evaluation},
-  year      = {2020}
+  title     = {Creating a Dataset for Named Entity Recognition in the Archaeology Domain},
+  author    = {Brandsen, Alex  and
+               Verberne, Suzan  and
+               Wansleeben, Milco  and
+               Lambers, Karsten},
+  booktitle = {Proceedings of the Twelfth Language Resources and Evaluation Conference},
+  month     = may,
+  year      = {2020},
+  address   = {Marseille, France},
+  publisher = {European Language Resources Association},
+  url       = {https://aclanthology.org/2020.lrec-1.562},
+  pages     = {4573--4577},
+  abstract  = {In this paper, we present the development of a training dataset for Dutch Named Entity Recognition (NER) in the archaeology domain. This dataset was created as there is a dire need for semantic search within archaeology, in order to allow archaeologists to find structured information in collections of Dutch excavation reports, currently totalling around 60,000 (658 million words) and growing rapidly. To guide this search task, NER is needed. We created rigorous annotation guidelines in an iterative process, then instructed five archaeology students to annotate a number of documents. The resulting dataset contains {\textasciitilde}31k annotations between six entity types (artefact, time period, place, context, species {\&} material). The inter-annotator agreement is 0.95, and when we used this data for machine learning, we observed an increase in F1 score from 0.51 to 0.70 in comparison to a machine learning model trained on a dataset created in prior work. This indicates that the data is of high quality, and can confidently be used to train NER classifiers.},
+  language  = {English},
+  isbn      = {979-10-95546-34-4}
 }
 
 @inproceedings{Deleger2012BG,
@@ -258,10 +383,20 @@
 }
 
 @inproceedings{Lauscher2020FromZT,
-  title     = {From Zero to Hero: On the Limitations of Zero-Shot Language Transfer with Multilingual Transformers},
-  author    = {Anne Lauscher and Vinit Ravishankar and Ivan Vulic and Goran Glavas},
-  booktitle = {Conference on Empirical Methods in Natural Language Processing},
-  year      = {2020}
+  title     = {From Zero to Hero: {O}n the Limitations of Zero-Shot Language Transfer with Multilingual {T}ransformers},
+  author    = {Lauscher, Anne  and
+               Ravishankar, Vinit  and
+               Vuli{\'c}, Ivan  and
+               Glava{\v{s}}, Goran},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  month     = nov,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2020.emnlp-main.363},
+  doi       = {10.18653/v1/2020.emnlp-main.363},
+  pages     = {4483--4499},
+  abstract  = {Massively multilingual transformers (MMTs) pretrained via language modeling (e.g., mBERT, XLM-R) have become a default paradigm for zero-shot language transfer in NLP, offering unmatched transfer performance. Current evaluations, however, verify their efficacy in transfers (a) to languages with sufficiently large pretraining corpora, and (b) between close languages. In this work, we analyze the limitations of downstream language transfer with MMTs, showing that, much like cross-lingual word embeddings, they are substantially less effective in resource-lean scenarios and for distant languages. Our experiments, encompassing three lower-level tasks (POS tagging, dependency parsing, NER) and two high-level tasks (NLI, QA), empirically correlate transfer performance with linguistic proximity between source and target languages, but also with the size of target language corpora used in MMT pretraining. Most importantly, we demonstrate that the inexpensive few-shot transfer (i.e., additional fine-tuning on a few target-language instances) is surprisingly effective across the board, warranting more research efforts reaching beyond the limiting zero-shot conditions.}
 }
 
 @article{Ruder2019ASO,
