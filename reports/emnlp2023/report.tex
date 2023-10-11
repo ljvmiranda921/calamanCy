@@ -168,7 +168,6 @@ Only then can they switch to a transformer-based pipeline to get accuracy gains.
 In this paper, we introduced calamanCy, a natural language processing toolkit for Tagalog.
 Our work has two main contributions: (1) an open-source toolkit containing general-purpose multitask pipelines with out-of-the-box support for common NLP tasks, and
 (2) comprehensive benchmarks that compare against alternative approaches, such as cross-lingual or multilingual finetuning. 
-
 We hope that calamanCy is a step forward to improving the state of Tagalog NLP. 
 As a low-resource language, consolidating resources into a unified framework is crucial to advance research and improve collaboration.
 In the future, we plan to create a more fine-grained NER benchmark corpus and extend calamanCy to natural language understanding (NLU) tasks.
@@ -205,7 +204,6 @@ Readers who are interested in the training set-up (e.g., hyperparameters, archit
 
 \subsection{Building the TLUnified-NER corpus}
 
-\subfile{tables/iaa}
 
 \begin{figure}[t]
 \centering
@@ -223,10 +221,13 @@ It includes news articles and other texts in Tagalog from 2009 to 2020.
 It was based on the TLUnified pretraining corpora by \cite{Cruz2021ImprovingLL}.
 The author, together with two more annotators, annotated TLUnified in the course of four months.
 We employed an iterative approach as recommended by \citet{Reiter2017HT}, which included resolving disagreements and updating the annotation guidelines.
+
 To get the inter-annotator agreement (IAA) score, we took \citet{Brandsen2020CreatingAD}'s work on the Archaeology dataset as inspiration.
 We computed Cohen's $\kappa$ for all tokens, and only annotated tokens.  
 In addition, we also measured the (3) pairwise F1 score without the `O' label \citep{Deleger2012BG}.
 Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
+
+\subfile{tables/iaa}
 
 
 \end{document}
