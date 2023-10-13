@@ -5,8 +5,8 @@
 \documentclass[11pt]{article}
 
 % Remove the "review" option to generate the final version.
-\usepackage[review]{ACL2023}
-% \usepackage{ACL2023}
+% \usepackage[review]{ACL2023}
+\usepackage{ACL2023}
 
 % Standard package includes
 \usepackage{times}
@@ -19,6 +19,8 @@
 \usepackage{longtable}                        % multi-column tables
 \usepackage{amsmath}                          % math symbols and equations
 \usepackage{graphicx}                         % inserting images
+\usepackage{enumitem}                         % more control on items
+\usepackage{xcolor}                           % color control when editing
 
 % For proper rendering and hyphenation of words containing Latin characters (including in bib files)
 \usepackage[T1]{fontenc}
@@ -64,7 +66,7 @@ Tagalog (\texttt{tl}) is one of the major languages in the Philippines with over
 It constitutes the bulk of Filipino, the country's official language, by sharing its lexical items and grammatical structure.
 Despite this fact, there are little to no resources for Tagalog \cite{Cruz2021ImprovingLL}, hampering the development of reliable language technologies.
 
-In this paper, we present \tlunified{},\footnote[1]{The dataset is accessible at \url{https://osf.io/da37u/?view_only=e134831fe07749918c9188b5b4715f1f}} a Tagalog dataset for Named Entity Recognition (NER).
+In this paper, we present \tlunified{},\footnote[1]{The dataset is accessible at \url{https://huggingface.co/datasets/ljvmiranda921/tlunified-ner}} a Tagalog dataset for Named Entity Recognition (NER).
 The texts were obtained from TLUnified \cite{Cruz2021ImprovingLL}, a pretraining corpora containing news reports and other types of text.
 We focused on NER because of its foundational role in several NLP tasks \citep{Sang2003IntroductionTT,Lample2016NeuralAF}, especially in problems that require the extraction of structured information. 
 \tlunified{} consists of $\sim$7.8k documents across three entity types (\textit{Person}, \textit{Organization}, \textit{Location}), modeled closely to the CoNLL Shared Tasks \cite{Sang2002IntroductionTT,Sang2003IntroductionTT}.
@@ -111,6 +113,7 @@ It contains articles from different news sites online that ran a published print
 The topics range from politics, weather, and popular science among others.
 
 \section{Annotation Setup}
+\label{sec:annotation_setup}
 
 We used Prodigy as our annotation tool.\footnote[2]{\url{https://prodigy.ai}}
 We set up a web server on the Google Cloud Platform and routed the examples through Prodigy's built-in task router.
@@ -147,7 +150,7 @@ If the F1-score improved within the last 25\% of the training data, then it is a
 We developed the annotation guidelines in an iterative fashion. 
 The Automatic Content Extraction (ACE 2004/05) annotation document \cite{Doddington2004TheAC} heavily inspired our initial draft.
 We co-developed the guidelines after each annotation round to improve clarity and reduce disagreements.
-These guidelines are accessible on GitHub: \url{https://anonymous.4open.science/r/tagalog-ner-B902/datasets/tl_XXXX-1_gold_corpus/guidelines/README.md}
+These guidelines are accessible on GitHub: \url{https://github.com/ljvmiranda921/calamanCy/tree/master/datasets/tl_calamancy_gold_corpus/guidelines}
 
 \section{Corpus Statistics and Evaluation}
 
@@ -180,6 +183,7 @@ Because of our annotation process, we were able to label the same batch of docum
 
 
 \subsection{Benchmark results}
+\label{subsec:benchmark}
 
 
 \subfile{tables/results_baseline}
@@ -209,6 +213,7 @@ Table \ref{table:results_baseline} reports the F1-score on the test set across t
 \centering
 \end{figure}
 
+
 \subsection{Error analysis}
 
 From our benchmark results, we noticed that most models are having trouble predicting the \textit{Location} or \textit{Organization} tags.
@@ -216,12 +221,49 @@ Figure \ref{fig:confusion} shows the confusion matrix of the Baseline model on t
 
 Most of the mistakes came from incorrectly tagging a token with the outside `O' label.
 However, we also noticed instances where the model confuses between the lexical and semantic tag of an entity.
-For example, in the span, \textit{``..panukala ng Ombudsman...''} (``...proposed by the Ombudsman...''), the token \texttt{Ombudsman} might be a Person or Organization depending on the context.
-Using context-sensitive vectors helped mitigate this issue.
+For example, in the span, \textit{``\ldots panukala ng Ombudsman\ldots ''} (``\ldots proposed by the Ombudsman\ldots ''), the token \texttt{Ombudsman} might be a Person or Organization depending on the context.
+We hypothesize that including context-sensitive training, which the baseline model lacks, can help mitigate this issue.
 
-Given the IAA and benchmark results, we posit that \tlunified{} is a learnable task.
-We encourage researchers to utilize context-sensitive vectors when training models from this corpora.
+To test this hypothesis, we experimented on two training configurations.
+First, we trained a POS tagger together with our transition-based NER with shared weights.
+This process may help provide extra information to the transition-based parser so it can disambiguate between entities.
+Second, we finetuned context-sensitive vectors from RoBERTa Tagalog \citep{Cruz2021ImprovingLL} for NER.
+Table \ref{table:errors} shows the relative error reduction between LOC and ORG entities.
+Given these results, we encourage researchers to utilize context-sensitive vectors such as RoBERTa Tagalog (or other BERT variants) when training models from this corpora.
 
+\subfile{tables/results_errors}
+
+\subfile{tables/results_wikiann}
+
+
+
+\subsection{Comparison to WikiANN}
+
+The WikiANN dataset \citep{Pan2017CrosslingualNT} is another resource for Tagalog NER.
+However, we found many annotation errors in the dataset, from misclassifications to fragmented sentences.
+We investigated how \tlunified{} fares against WikiANN's silver-standard annotations.
+
+
+We finetuned several models similar to Section \ref{subsec:benchmark} on the Tagalog portion of WikiANN's training set and tested it on \tlunified{}'s test set (and vice-versa).
+In order to properly evaluate on WikiANN, we reannotated the test dataset using the same annotation guidelines described in Section \ref{sec:annotation_setup}.
+
+\subfile{tables/results_gold}
+
+Our results in Table \ref{table:results_wikiann} suggest that models built from the \tlunified{} corpus are more performant than with WikiANN.
+Additionally, the gap between WikiANN's silver-standard annotations and our corrections is large, as shown in Table \ref{table:results_gold}.
+We then posit that the gold-standard nature of \tlunified{} led to better performance than WikiANN, which predominantly consists of text fragments and low-quality annotations.
+
+\subsection{Experiments on large language models}
+
+Large language models (LLMs) have been shown to exhibit multilingual capabilities\textemdash incidental or not \citep{Briakou2023SearchingFN}.
+We investigated this property by performing a zero-shot prompting approach on \tlunified{}'s test set across a variety of commercial and open-source LLMs.
+Table \ref{table:results_llm} reports the F1-score across three trials.
+
+\subfile{tables/results_llm}
+
+Our results suggest that supervised learning reliably outperforms zero-shot prompting for \tlunified{} given our prompt (see Appendix \ref{appendix:prompt}).
+However, we acknowledge that these results are not a definitive comparison between two methods as prompt engineering is unstable with high variance \citep{Webson2022DoPB,Zhao2021CalibrateBU}.
+In the future, we plan to explore different prompting techniques such as PromptNER \citep{Ashok2023PromptNER} and chain-of-thought \citep{Wei2023CoT} to uncover the language models' full capabilities.
 
 \section{Conclusion}
 
@@ -229,11 +271,9 @@ In this paper, we introduced \tlunified{}, a Named Entity Recognition dataset fo
 Unlike other Tagalog NER datasets, \tlunified{} is publicly-accessible and gold standard.
 Our iterative annotation process, together with our inter-annotator agreement, shows that the corpus is of high quality.
 In addition, our benchmarking results suggest that the task is learnable even with a simple baseline method.
-
 We hope that \tlunified{} fills the resource gap present in Tagalog NLP today.
 In the future, we plan to create a more fine-grained (and perhaps, overlapping) NER tag set similar to the ACE project and expand on other major Philippine languages.
-Finally, the dataset is available online (\url{https://osf.io/da37u/?view_only=e134831fe07749918c9188b5b4715f1f}) and we encourage researchers to improve upon our benchmark results.
-
+Finally, the dataset is available online (\url{https://huggingface.co/datasets/ljvmiranda921/tlunified-ner}) and we encourage researchers to improve upon our benchmark results.
 
 \section*{Limitations}
 
@@ -242,9 +282,56 @@ Although the texts demonstrate the standard usage of Tagalog, its domain is limi
 In addition, we only trained a transition-based parser model for our NER classifier.
 In the future, we plan to extend these benchmarks and include CRFs or other tools such as Stanford Stanza.
 
+\section*{Acknowledgements}
+
+We would like to express our gratitute to all those who contributed to the completion of this resource.
+We extend our appreciation to the anonymous reviewers for their constructive comments, which greatly improved the quality of this paper. 
 
 \bibliography{custom}
 \bibliographystyle{acl_natbib}
+
+\appendix
+
+\section{Appendix}
+
+\subsection{Zero-shot prompt template}
+\label{appendix:prompt}
+
+{
+\itshape
+You are an expert Named Entity Recognition 
+(NER) system. Your task is to accept Text as 
+input and extract named entities for the set 
+of predefined entity labels. From the Text 
+input provided, extract named entities for 
+each label in the following format:
+
+\begin{itemize}[noitemsep,topsep=0pt]
+\item PER: <comma delimited list of strings>
+\item ORG: <comma delimited list of strings>
+\item LOC: <comma delimited list of strings>
+\end{itemize}
+
+Below are definitions of each label to help 
+aid you in what kinds of named entities to 
+extract for each label. Assume these 
+definitions are written by an expert and 
+follow them closely.
+
+\begin{itemize}[noitemsep,topsep=0pt]
+\item PER: PERSON
+\item ORG: ORGANIZATION
+\item LOC: LOCATION OR GEOPOLITICAL ENTITY
+\end{itemize}
+
+Text: \{\{~text~\}\}
+}
+
+\subsection{Reproducibility}
+
+All the experiments and models in this paper are available publicly. 
+Readers can head over to \url{https://github.com/ljvmiranda921/calamanCy/reports/aacl} for all related code and assets.
+Note that the XLM-RoBERTa and multilingual BERT experiments may at least require a T4 or V100 GPU.
 
 
 \end{document}

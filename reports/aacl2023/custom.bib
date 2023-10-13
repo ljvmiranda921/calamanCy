@@ -1,12 +1,22 @@
 % Use this file for citations not found in the ACL Anthology (contained in "anthology.bib").
-
 @inproceedings{Goodfellow2013MaxoutN,
   title     = {Maxout Networks},
-  author    = {Ian J. Goodfellow and David Warde-Farley and Mehdi Mirza and Aaron C. Courville and Yoshua Bengio},
-  booktitle = {International Conference on Machine Learning},
+  author    = {Goodfellow, Ian and Warde-Farley, David and Mirza, Mehdi and Courville, Aaron and Bengio, Yoshua},
+  booktitle = {Proceedings of the 30th International Conference on Machine Learning},
+  pages     = {1319--1327},
   year      = {2013},
-  url       = {https://api.semanticscholar.org/CorpusID:10600578}
+  editor    = {Dasgupta, Sanjoy and McAllester, David},
+  volume    = {28},
+  number    = {3},
+  series    = {Proceedings of Machine Learning Research},
+  address   = {Atlanta, Georgia, USA},
+  month     = {17--19 Jun},
+  publisher = {PMLR},
+  pdf       = {http://proceedings.mlr.press/v28/goodfellow13.pdf},
+  url       = {https://proceedings.mlr.press/v28/goodfellow13.html},
+  abstract  = {We consider the problem of designing models to leverage a recently introduced approximate model averaging technique called dropout. We define a simple new model called maxout (so named because its output is the max of a set of inputs, and because it is a natural companion to dropout) designed to both facilitate optimization by dropout and improve the accuracy of dropout's fast approximate model averaging technique. We empirically verify that the model successfully accomplishes both of these tasks. We use maxout and dropout to demonstrate state of the art classification performance on four benchmark datasets: MNIST, CIFAR-10, CIFAR-100, and SVHN.}
 }
+
 
 @inproceedings{Lample2016NeuralAF,
   title     = {Neural Architectures for Named Entity Recognition},
@@ -25,15 +35,6 @@
   pages     = {260--270}
 }
 
-@article{OpenAI2023GPT4TR,
-  title   = {{GPT-4 Technical Report}},
-  author  = {OpenAI},
-  journal = {ArXiv},
-  year    = {2023},
-  volume  = {abs/2303.08774},
-  url     = {https://api.semanticscholar.org/CorpusID:257532815}
-}
-
 @inproceedings{Kroeger1992PhraseSA,
   title  = {{Phrase Structure and Grammatical Relations in Tagalog}},
   author = {Paul R. Kroeger},
@@ -49,7 +50,7 @@
   urldate = {2023-06-30}
 }
 
-@article{falcon40b,
+@article{Falcon40b,
   title  = {{Falcon-40B}: an open large language model with state-of-the-art performance},
   author = {Almazrouei, Ebtesam and Alobeidli, Hamza and Alshamsi, Abdulaziz and Cappelli, Alessandro and Cojocaru, Ruxandra and Debbah, Merouane and Goffinet, Etienne and Heslow, Daniel and Launay, Julien and Malartic, Quentin and Noune, Badreddine and Pannier, Baptiste and Penedo, Guilherme},
   year   = {2023}
@@ -57,7 +58,7 @@
 
 @software{openlm2023openllama,
   author = {Geng, Xinyang and Liu, Hao},
-  title  = {OpenLLaMA: An Open Reproduction of LLaMA},
+  title  = {{OpenLLaMA: An Open Reproduction of LLaMA}},
   month  = May,
   year   = 2023,
   url    = {https://github.com/openlm-research/open_llama}
@@ -475,4 +476,122 @@
   year    = {2019},
   volume  = {65},
   pages   = {569-631}
+}
+
+
+@inproceedings{Briakou2023SearchingFN,
+  title     = {Searching for Needles in a Haystack: On the Role of Incidental Bilingualism in {P}a{LM}{'}s Translation Capability},
+  author    = {Briakou, Eleftheria  and
+               Cherry, Colin  and
+               Foster, George},
+  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  month     = jul,
+  year      = {2023},
+  address   = {Toronto, Canada},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2023.acl-long.524},
+  doi       = {10.18653/v1/2023.acl-long.524},
+  pages     = {9432--9452},
+  abstract  = {Large, multilingual language models exhibit surprisingly good zero- or few-shot machine translation capabilities, despite having never seen the intentionally-included translation examples provided to typical neural translation systems. We investigate the role of incidental bilingualism{---}the unintentional consumption of bilingual signals, including translation examples{---}in explaining the translation capabilities of large language models, taking the Pathways Language Model (PaLM) as a case study. We introduce a mixed-method approach to measure and understand incidental bilingualism at scale. We show that PaLM is exposed to over 30 million translation pairs across at least 44 languages. Furthermore, the amount of incidental bilingual content is highly correlated with the amount of monolingual in-language content for non-English languages. We relate incidental bilingual content to zero-shot prompts and show that it can be used to mine new prompts to improve PaLM{'}s out-of-English zero-shot translation quality. Finally, in a series of small-scale ablations, we show that its presence has a substantial impact on translation capabilities, although this impact diminishes with model scale.}
+}
+
+
+@inproceedings{Wang2022WhatLM,
+  title     = {What Language Model Architecture and Pretraining Objective Works Best for Zero-Shot Generalization?},
+  author    = {Wang, Thomas and Roberts, Adam and Hesslow, Daniel and Scao, Teven Le and Chung, Hyung Won and Beltagy, Iz and Launay, Julien and Raffel, Colin},
+  booktitle = {Proceedings of the 39th International Conference on Machine Learning},
+  pages     = {22964--22984},
+  year      = {2022},
+  editor    = {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},
+  volume    = {162},
+  series    = {Proceedings of Machine Learning Research},
+  month     = {17--23 Jul},
+  publisher = {PMLR},
+  pdf       = {https://proceedings.mlr.press/v162/wang22u/wang22u.pdf},
+  url       = {https://proceedings.mlr.press/v162/wang22u.html},
+  abstract  = {Large pretrained Transformer language models have been shown to exhibit zero-shot generalization, i.e. they can perform a wide variety of tasks that they were not explicitly trained on. However, the architectures and pretraining objectives used across state-of-the-art models differ significantly, and there has been limited systematic comparison of these factors. In this work, we present a large-scale evaluation of modeling choices and their impact on zero-shot generalization. In particular, we focus on text-to-text models and experiment with three model architectures (causal/non-causal decoder-only and encoder-decoder), trained with two different pretraining objectives (autoregressive and masked language modeling), and evaluated with and without multitask prompted finetuning. We train models with over 5 billion parameters for more than 168 billion tokens, thereby increasing the likelihood that our conclusions will transfer to even larger scales. Our experiments show that causal decoder-only models trained on an autoregressive language modeling objective exhibit the strongest zero-shot generalization after purely self-supervised pretraining. However, models with non-causal visibility on their input trained with a masked language modeling objective followed by multitask finetuning perform the best among our experiments. We therefore consider the adaptation of pretrained models across architectures and objectives. Code and checkpoints are available at https://github.com/bigscience- workshop/architecture-objective.}
+}
+
+@misc{OpenAI2023GPT4,
+  title         = {{GPT-4 Technical Report}},
+  author        = {OpenAI},
+  year          = {2023},
+  eprint        = {2303.08774},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+
+@misc{Anthropic2023Claude,
+  title  = {Model Card and Evaluations for Claude Models},
+  author = {Anthropic},
+  year   = {2023},
+  url    = {https://www-files.anthropic.com/production/images/Model-Card-Claude-2.pdf}
+}
+
+
+@misc{Command2023Cohere,
+  title  = {{Command Model: The AI-Powered Solution for the Enterprise}},
+  author = {Cohere},
+  year   = {2023},
+  url    = {https://cohere.com/models/command}
+}
+
+
+@misc{StableLM2023,
+  title  = {{StableLM-Alpha v2}},
+  author = {Stability-AI},
+  year   = {2023},
+  url    = {https://github.com/Stability-AI/StableLM#stablelm-alpha-v2}
+}
+
+@misc{Ashok2023PromptNER,
+  title         = {PromptNER: Prompting For Named Entity Recognition},
+  author        = {Dhananjay Ashok and Zachary C. Lipton},
+  year          = {2023},
+  eprint        = {2305.15444},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@misc{Wei2023CoT,
+  title         = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
+  author        = {Jason Wei and Xuezhi Wang and Dale Schuurmans and Maarten Bosma and Brian Ichter and Fei Xia and Ed Chi and Quoc Le and Denny Zhou},
+  year          = {2023},
+  eprint        = {2201.11903},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@inproceedings{Webson2022DoPB,
+  title     = {Do Prompt-Based Models Really Understand the Meaning of Their Prompts?},
+  author    = {Webson, Albert  and
+               Pavlick, Ellie},
+  booktitle = {Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies},
+  month     = jul,
+  year      = {2022},
+  address   = {Seattle, United States},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2022.naacl-main.167},
+  doi       = {10.18653/v1/2022.naacl-main.167},
+  pages     = {2300--2344},
+  abstract  = {Recently, a boom of papers has shown extraordinary progress in zero-shot and few-shot learning with various prompt-based models. It is commonly argued that prompts help models to learn faster in the same way that humans learn faster when provided with task instructions expressed in natural language. In this study, we experiment with over 30 prompts manually written for natural language inference (NLI). We find that models can learn just as fast with many prompts that are intentionally irrelevant or even pathologically misleading as they do with instructively {``}good{''} prompts. Further, such patterns hold even for models as large as 175 billion parameters (Brown et al., 2020) as well as the recently proposed instruction-tuned models which are trained on hundreds of prompts (Sanh et al., 2021). That is, instruction-tuned models often produce good predictions with irrelevant and misleading prompts even at zero shots. In sum, notwithstanding prompt-based models{'} impressive improvement, we find evidence of serious limitations that question the degree to which such improvement is derived from models understanding task instructions in ways analogous to humans{'} use of task instructions.}
+}
+
+
+
+@inproceedings{Zhao2021CalibrateBU,
+  title     = {Calibrate Before Use: Improving Few-shot Performance of Language Models},
+  author    = {Zhao, Zihao and Wallace, Eric and Feng, Shi and Klein, Dan and Singh, Sameer},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning},
+  pages     = {12697--12706},
+  year      = {2021},
+  editor    = {Meila, Marina and Zhang, Tong},
+  volume    = {139},
+  series    = {Proceedings of Machine Learning Research},
+  month     = {18--24 Jul},
+  publisher = {PMLR},
+  pdf       = {http://proceedings.mlr.press/v139/zhao21c/zhao21c.pdf},
+  url       = {https://proceedings.mlr.press/v139/zhao21c.html},
+  abstract  = {GPT-3 can perform numerous tasks when provided a natural language prompt that contains a few training examples. We show that this type of few-shot learning can be unstable: the choice of prompt format, training examples, and even the order of the examples can cause accuracy to vary from near chance to near state-of-the-art. We demonstrate that this instability arises from the bias of language models towards predicting certain answers, e.g., those that are placed near the end of the prompt or are common in the pre-training data. To mitigate this, we first estimate the model’s bias towards each answer by asking for its prediction when given a training prompt and a content-free test input such as "N/A". We then fit calibration parameters that cause the prediction for this input to be uniform across answers. On a diverse set of tasks, this contextual calibration procedure substantially improves GPT-3 and GPT-2’s accuracy (up to 30.0% absolute) across different choices of the prompt, while also making learning considerably more stable.}
 }

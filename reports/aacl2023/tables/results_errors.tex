@@ -1,0 +1,22 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table}[t]
+\centering
+{
+% \color{red}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+                         & \multicolumn{2}{c}{Rel. error reduction} \\ \cmidrule{2-3}
+Embeddings set-up        & ORG        & LOC      \\ \midrule
+Shared                   & +5\%       & +3\%     \\ 
+Context-sensitive        & +12\%      & +18\%    \\
+\bottomrule
+\end{tabular}
+}
+\caption{
+    Relative error reduction (with respect to the Baseline) for classifying ORG and LOC entities.
+    Reported results are F1-scores on the development set.
+}
+\label{table:errors}
+\end{table}
+\end{document}

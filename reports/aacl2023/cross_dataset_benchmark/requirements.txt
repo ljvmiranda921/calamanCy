@@ -7,3 +7,5 @@ calamancy==0.1.0
 typer
 wasabi
 scipy
+datasets
+tqdm
