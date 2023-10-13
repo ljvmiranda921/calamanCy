@@ -35,6 +35,9 @@ vars:
   seed: 0
   gpu_id: 0
   lang: "tl"
+  batch_size: 8
+  model_family: spacy.GPT-4.v1
+  model_name: gpt-4
   remote_gcs_bucket: "ljvmiranda"
 
 remotes:
@@ -54,6 +57,7 @@ workflows:
     - "static-vectors"
     - "trf-monolingual"
     - "trf-multilingual"
+    - "llm"
 
 commands:
   - name: "install-models"
@@ -231,3 +235,16 @@ commands:
       - metrics/trf-multilingual-xlm-dev.json
       - metrics/trf-multilingual-mbert-test.json
       - metrics/trf-multilingual-mbert-dev.json
+
+  - name: "llm"
+    help: "Run an LLM pipeline on an NER task"
+    script:
+      - mkdir -p cache/llm-${vars.model_name}/ner/
+      - python -m spacy assemble configs/llm.cfg pipelines/${vars.model_name}-ner/ --model.family ${vars.model_family} --model.name ${vars.model_name} --model.cache_dir cache/llm-${vars.model_name}/ner/ --nlp.batch_size ${vars.batch_size}
+      - mkdir -p metrics/${vars.model_name}/ner/
+      - python -m spacy benchmark accuracy pipelines/${vars.model_name}-ner/ corpus/test.spacy --output metrics/llm-${vars.model_name}/results.json
+    deps:
+      - corpus/test.spacy
+    outputs:
+      - cache/${vars.model_name}/ner/
+      - metrics/llm-${vars.model_name}/results.json

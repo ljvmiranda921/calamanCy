@@ -1,0 +1,24 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Model & F1-score \\ \midrule
+GPT-4 \citep{OpenAI2023GPT4}                & 65.89$\pm$0.44 \\ 
+GPT-3.5-turbo                               & 53.05$\pm$0.42 \\ 
+Claude v1 \citep{Anthropic2023Claude}       & 58.88$\pm$0.03 \\
+Command \citep{Command2023Cohere}           & 25.48$\pm$0.11 \\
+Dolly v2* \citep{DatabricksBlog2023DollyV2} & 13.07$\pm$0.14 \\
+Falcon* \citep{Falcon40b}                   & 8.65$\pm$0.04  \\
+StableLM v2* \citep{StableLM2023}           & 0.25$\pm$0.03  \\
+OpenLLaMa* \citep{openlm2023openllama}      & 15.09$\pm$0.48 \\
+\bottomrule
+\end{tabular}
+\caption{
+    Benchmark results on \tlunified{} across a variety of open-source and commercial LLMs.
+    We used the 7B-parameter variants for models denoted with an asterisk ($\ast$) due to budget constraints.
+}
+\label{table:results_llm}
+\end{table}
+\end{document}
