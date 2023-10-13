@@ -1,0 +1,224 @@
+title: "Cross-dataset benchmarks"
+description: |
+  This is a spaCy project for additional cross-dataset experiments for the paper.
+  I decided to separate them from the other `benchmarks/` directory for easier organization.
+  You can use this project to reproduce the experiments in the write-up. 
+  First, you need to install the required dependencies:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  Now run the set-up commands:
+
+  ```
+  python -m spacy project assets
+  python -m spacy project run setup
+  ```
+
+  > **Note**
+  > Some commands may take some time to run. 
+  > This is especially true for the transformer training and evaluation pipelines.
+  > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
+
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  You should be able to use them independently from one another.
+
+  Let's say we want to train a model from WikiANN and evaluate it to TLUnified, we simply need to run the following command:
+
+  ```
+  python -m spacy project run all . --vars.train_dev wikiann --vars.test tlunified 
+  # If vice-versa (note that we should use the corrected version):
+  python -m spacy project run all . --vars.train_dev tlunified --vars.test wikiann_corrected
+  ```
+
+  This should train all models from a transition-based parser NER (baseline) to mono/multilingual LMs.
+  It is also possible to train a specific model by passing the correct command (e.g., `baseline`, `static-vectors`, etc.)
+  You can find the results in the `metrics/` directory.
+
+directories:
+  - "assets"
+  - "configs"
+  - "corpus"
+  - "training"
+  - "metrics"
+
+vars:
+  seed: 0
+  gpu_id: 0
+  lang: "tl"
+  remote_gcs_bucket: "ljvmiranda"
+  train_dev: wikiann
+  test: tlunified
+
+remotes:
+  gcs: "gs://${vars.remote_gcs_bucket}/calamanCy/benchmark_cache/"
+
+assets:
+  - dest: assets/tlunified_ner.tar.gz
+    description: "Contains the annotated TLUnified corpora in spaCy format with PER, ORG, LOC as entity labels (named entity recognition). Annotated by three annotators with IAA (Cohen's Kappa) of 0.78. Corpora was based from *Improving Large-scale Language Models and Resources for Filipino* by Cruz and Cheng (2021)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+  - dest: "assets/fasttext.tl.gz"
+    description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
+    url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
+
+workflows:
+  setup:
+    - "process-datasets"
+  all:
+    - "baseline"
+    - "static-vectors"
+    - "trf-monolingual"
+    - "trf-multilingual"
+
+commands:
+  - name: "process-datasets"
+    help: "Process the datasets and convert them into spaCy format"
+    script:
+      - mkdir -p corpus/tlunified/
+      - tar -xzvf assets/tlunified_ner.tar.gz -C corpus/tlunified/
+      - mkdir -p corpus/wikiann/
+      - python -m scripts.download_wikiann corpus/wikiann/
+    deps:
+      - assets/tlunified_ner.tar.gz
+    outputs:
+      - corpus/tlunified/train.spacy
+      - corpus/tlunified/dev.spacy
+      - corpus/tlunified/test.spacy
+      - corpus/wikiann/train.spacy
+      - corpus/wikiann/dev.spacy
+      - corpus/wikiann/test.spacy
+
+  - name: "baseline"
+    help: "Train a transition-based parser without any embeddings or static vectors"
+    script:
+      - mkdir -p training/baseline-${vars.train_dev}/
+      - >-
+        python -m spacy train
+        configs/default.cfg
+        --nlp.lang ${vars.lang}
+        --output training/baseline-${vars.train_dev}/
+        --paths.train corpus/${vars.train_dev}/train.spacy
+        --paths.dev corpus/${vars.train_dev}/dev.spacy
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/baseline-${vars.train_dev}/model-best/
+        corpus/${vars.test}/test.spacy
+        --output metrics/baseline-${vars.train_dev}.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/${vars.train_dev}/train.spacy
+      - corpus/${vars.train_dev}/dev.spacy
+      - corpus/${vars.test}/test.spacy
+    outputs:
+      - training/baseline-${vars.train_dev}/model-best/
+      - metrics/baseline-${vars.train_dev}.json
+
+  - name: "static-vectors"
+    help: "Use fastText vectors to initialize an NER model"
+    script:
+      # Initialize the fastText vectors
+      - gzip -d -f assets/fasttext.tl.gz
+      - mkdir -p vectors/fasttext-tl
+      - python -m spacy init vectors tl assets/fasttext.tl vectors/fasttext-tl
+      - mkdir -p training/static-vectors-${vars.train_dev}/
+      - >-
+        python -m spacy train
+        configs/default.cfg
+        --nlp.lang ${vars.lang}
+        --output training/static-vectors-${vars.train_dev}/
+        --paths.train corpus/${vars.train_dev}/train.spacy
+        --paths.dev corpus/${vars.train_dev}/dev.spacy
+        --paths.vectors vectors/fasttext-tl
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/static-vectors-${vars.train_dev}/model-best/
+        corpus/${vars.test}/test.spacy
+        --output metrics/static-vectors-${vars.train_dev}.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - assets/fasttext.tl.gz
+      - corpus/${vars.train_dev}/train.spacy
+      - corpus/${vars.train_dev}/dev.spacy
+      - corpus/${vars.test}/test.spacy
+    outputs:
+      - vectors/fasttext-tl
+      - training/static-vectors-${vars.train_dev}/model-best/
+      - metrics/static-vectors-${vars.train_dev}.json
+
+  - name: "trf-monolingual"
+    help: "Train and evaluate monolingual transformer model."
+    script:
+      - mkdir -p training/trf-mono-${vars.train_dev}/
+      - >-
+        python -m spacy train
+        configs/transformer.cfg
+        --nlp.lang ${vars.lang}
+        --output training/trf-mono-${vars.train_dev}/
+        --components.transformer.model.name jcblaise/roberta-tagalog-base
+        --paths.train corpus/${vars.train_dev}/train.spacy
+        --paths.dev corpus/${vars.train_dev}/dev.spacy
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/trf-mono-${vars.train_dev}/model-best/
+        corpus/${vars.test}/test.spacy
+        --output metrics/trf-mono-${vars.train_dev}.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/${vars.train_dev}/train.spacy
+      - corpus/${vars.train_dev}/dev.spacy
+      - corpus/${vars.test}/test.spacy
+    outputs:
+      - training/trf-mono-${vars.train_dev}/
+      - metrics/trf-mono-${vars.train_dev}.json
+
+  - name: "trf-multilingual"
+    help: "Train and evaluate multilingual transformer model"
+    script:
+      # XLM-RoBERTa
+      - mkdir -p training/trf-multi-xlm-${vars.train_dev}/
+      - >-
+        python -m spacy train
+        configs/transformer.cfg
+        --nlp.lang ${vars.lang}
+        --output training/trf-multi-xlm-${vars.train_dev}/
+        --paths.train corpus/${vars.train_dev}/train.spacy
+        --paths.dev corpus/${vars.train_dev}/dev.spacy
+        --components.transformer.model.name xlm-roberta-base
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/trf-multi-xlm-${vars.train_dev}/model-best/
+        corpus/${vars.test}/test.spacy
+        --output metrics/trf-multi-xlm-${vars.train_dev}.json
+        --gpu-id ${vars.gpu_id}
+      # Multilingual BERT
+      - mkdir -p training/trf-multi-mbert-${vars.train_dev}/
+      - >-
+        python -m spacy train
+        configs/transformer.cfg
+        --nlp.lang ${vars.lang}
+        --output training/trf-multi-mbert-${vars.train_dev}/
+        --paths.train corpus/${vars.train_dev}/train.spacy
+        --paths.dev corpus/${vars.train_dev}/dev.spacy
+        --components.transformer.model.name bert-base-multilingual-uncased
+        --gpu-id ${vars.gpu_id}
+      - >-
+        python -m spacy evaluate
+        training/trf-multi-mbert-${vars.train_dev}/model-best/
+        corpus/${vars.test}/test.spacy
+        --output metrics/trf-multi-mbert-${vars.train_dev}.json
+        --gpu-id ${vars.gpu_id}
+    deps:
+      - corpus/${vars.train_dev}/train.spacy
+      - corpus/${vars.train_dev}/dev.spacy
+      - corpus/${vars.test}/test.spacy
+    outputs:
+      - training/trf-multi-xlm-${vars.train_dev}/model-best/
+      - training/trf-multi-mbert-${vars.train_dev}/model-best/
+      - metrics/trf-multi-xlm-${vars.train_dev}.json
+      - metrics/trf-multi-mbert-${vars.train_dev}.json

@@ -1,0 +1,22 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\begin{table}[t]
+\centering
+{
+% \color{red}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Entity label       & F1-score  \\ \midrule
+Person (PER)       & 67.95     \\ 
+Organization (ORG) & 00.59     \\ 
+Location (LOC)     & 35.17     \\
+\bottomrule
+\end{tabular}
+
+}
+\caption{
+    Comparing the overlap between the original (silver-standard) WikiANN annotations against our reannotated version.
+}
+\label{table:results_gold}
+\end{table}
+\end{document}
