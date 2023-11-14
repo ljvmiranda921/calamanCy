@@ -196,8 +196,37 @@ Perform syntactic dependency parsing. It uses the annotations from the
 | **YIELDS** | `Iterable[Tuple[str, str]]` | the token and its dependency relation.   |
 
 
-## 📝️ Reporting Issues
+## 📝 Reporting Issues
 
 If you have questions regarding the usage of `calamanCy`, bug reports, or just
 want to give us feedback after giving it a spin, please use the [Issue
 tracker](https://github.com/ljvmiranda921/calamancy/issues). Thank you!
+
+
+## 📜 Citation
+
+If you are citing the open-source software, please use:
+
+```
+@misc{miranda2023calamancy,
+    title={{calamanCy: A Tagalog Natural Language Processing Toolkit}}, 
+    author={Lester James V. Miranda},
+    year={2023},
+    eprint={2311.07171},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+```
+
+If you are citing the [NER dataset](https://huggingface.co/ljvmiranda921), please use:
+
+```
+@misc{miranda2023developing,
+    title={{Developing a Named Entity Recognition Dataset for Tagalog}}, 
+    author={Lester James V. Miranda},
+    year={2023},
+    eprint={2311.07161},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+```
