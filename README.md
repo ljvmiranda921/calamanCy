@@ -148,7 +148,7 @@ Load a calamanCy model as a [spaCy language pipeline](https://spacy.io/usage/pro
 Below are lightweight utility classes for users who are not familiar with spaCy's
 primitives. They are only useful for inference and not for training. If you wish
 to train on top of these calamanCy models (e.g., text categorization,
-task-specific NER, etc.), we advice you to follow the standard [spaCy training
+task-specific NER, etc.), we advise you to follow the standard [spaCy training
 workflow](https://spacy.io/usage/training).
 
 General usage: first, you need to instantiate a class with the name of a model.
