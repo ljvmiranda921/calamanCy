@@ -8,6 +8,8 @@ import spacy
 from spacy.util import get_installed_models
 from wasabi import msg
 
+GIT_REF = "main"
+
 
 def _get_models_url() -> Dict[str, str]:
     """Get a mapping of each calamanCy pipeline (versioned) and their download links
@@ -16,9 +18,9 @@ def _get_models_url() -> Dict[str, str]:
     tracked and the download functions below work as expected.
     """
     return {
-        "tl_calamancy_md-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_md-any-py3-none-any.whl",
-        "tl_calamancy_lg-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_lg-any-py3-none-any.whl",
-        "tl_calamancy_trf-0.1.0": "https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/55ef01a244f3ca77676de6ba5a2beea0ba3e0021/tl_calamancy_trf-any-py3-none-any.whl",
+        "tl_calamancy_md-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/{GIT_REF}/tl_calamancy_md-any-py3-none-any.whl",
+        "tl_calamancy_lg-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/{GIT_REF}/tl_calamancy_lg-any-py3-none-any.whl",
+        "tl_calamancy_trf-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/{GIT_REF}/tl_calamancy_trf-any-py3-none-any.whl",
     }
 
 
