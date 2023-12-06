@@ -208,13 +208,22 @@ tracker](https://github.com/ljvmiranda921/calamancy/issues). Thank you!
 If you are citing the open-source software, please use:
 
 ```
-@misc{miranda2023calamancy,
-    title={{calamanCy: A Tagalog Natural Language Processing Toolkit}}, 
-    author={Lester James V. Miranda},
-    year={2023},
-    eprint={2311.07171},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+@inproceedings{miranda-2023-calamancy,
+    title = "calaman{C}y: A {T}agalog Natural Language Processing Toolkit",
+    author = "Miranda, Lester James",
+    editor = "Tan, Liling  and
+      Milajevs, Dmitrijs  and
+      Chauhan, Geeticka  and
+      Gwinnup, Jeremy  and
+      Rippeth, Elijah",
+    booktitle = "Proceedings of the 3rd Workshop for Natural Language Processing Open Source Software (NLP-OSS 2023)",
+    month = dec,
+    year = "2023",
+    address = "Singapore, Singapore",
+    publisher = "Empirical Methods in Natural Language Processing",
+    url = "https://aclanthology.org/2023.nlposs-1.1",
+    pages = "1--7",
+    abstract = "We introduce calamanCy, an open-source toolkit for constructing natural language processing (NLP) pipelines for Tagalog. It is built on top of spaCy, enabling easy experimentation and integration with other frameworks. calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering general-purpose multitask models with out-of-the-box support for dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). calamanCy aims to accelerate the progress of Tagalog NLP by consolidating disjointed resources in a unified framework.The calamanCy toolkit is available on GitHub: https://github.com/ljvmiranda921/calamanCy.",
 }
 ```
 
