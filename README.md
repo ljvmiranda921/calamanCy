@@ -207,7 +207,7 @@ tracker](https://github.com/ljvmiranda921/calamancy/issues). Thank you!
 
 If you are citing the open-source software, please use:
 
-```
+```bib
 @inproceedings{miranda-2023-calamancy,
     title = "calaman{C}y: A {T}agalog Natural Language Processing Toolkit",
     author = "Miranda, Lester James",
@@ -229,13 +229,22 @@ If you are citing the open-source software, please use:
 
 If you are citing the [NER dataset](https://huggingface.co/ljvmiranda921), please use:
 
-```
-@misc{miranda2023developing,
-    title={{Developing a Named Entity Recognition Dataset for Tagalog}}, 
-    author={Lester James V. Miranda},
-    year={2023},
-    eprint={2311.07161},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+```bib
+@inproceedings{miranda-2023-developing,
+    title = "Developing a Named Entity Recognition Dataset for {T}agalog",
+    author = "Miranda, Lester James",
+    editor = "Wijaya, Derry  and
+      Aji, Alham Fikri  and
+      Vania, Clara  and
+      Winata, Genta Indra  and
+      Purwarianti, Ayu",
+    booktitle = "Proceedings of the First Workshop in South East Asian Language Processing",
+    month = nov,
+    year = "2023",
+    address = "Nusa Dua, Bali, Indonesia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.sealp-1.2",
+    doi = "10.18653/v1/2023.sealp-1.2",
+    pages = "13--20",
 }
 ```
