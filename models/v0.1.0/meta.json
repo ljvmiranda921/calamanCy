@@ -2,10 +2,10 @@
     "name": "tl_calamancy",
     "lang": "tl",
     "version": "0.1.0",
-    "spacy_version": ">=3.5.0",
+    "spacy_version": ">=3.5.0,<4.0.0",
     "parent_package": "spacy",
     "requirements": [
-        "spacy-transformers>=1.2.0"
+        "spacy-transformers>=1.2.5,<1.3.0"
     ],
     "description": "calamanCy: Tagalog NLP pipelines in spaCy",
     "author": "Lester James V. Miranda",

@@ -28,7 +28,8 @@ requires-python = ">=3.7"
 dependencies = [
     "spacy>=3.5.0",
     "wasabi>=0.9.1",
-    "typer>=0.4.2"
+    "typer>=0.4.2",
+    "spacy-transformers>=1.2.5,<1.3.0"
 ]
 
 [project.optional-dependencies]
