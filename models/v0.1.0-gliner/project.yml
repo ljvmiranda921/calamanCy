@@ -44,8 +44,27 @@ vars:
 
 directories:
   - "checkpoints"
-  - "model"
+  - "models"
 
 env:
   HF_TOKEN: HF_TOKEN
   TOKENIZERS_PARALLELISM: TOKENIZERS_PARALLELISM
+
+commands:
+  - name: "finetune-gliner"
+    help: "Finetune the GliNER model using TLUnified-NER"
+    script:
+      - mkdir -p models/gliner_${vars.size}
+      - mkdir -p checkpoints/ckpt_gliner_${vars.size}
+      - >-
+        python train.py 
+          gliner-community/gliner_${vars.size}-2.5
+          mdoels/gliner_${vars.size}
+          --checkpoint-dir checkpoints/ckpt_gliner_${vars.size}
+          --push-to-hub ljvmiranda921/tl_gliner_${vars.size}
+          --num-steps ${vars.num_steps}
+          --batch-size ${vars.batch_size}
+          --dataset ljvmiranda921/tlunified-ner
+    outputs:
+      - models/gliner_${vars.size}
+      - checkpoints/ckpt_gliner_${vars.size}
