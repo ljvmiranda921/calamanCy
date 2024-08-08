@@ -1,11 +1,13 @@
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Optional, Dict, Iterable
 
 import torch
 import typer
 import spacy
 from wasabi import msg
 from spacy.tokens import Doc
+from spacy.training import Example
+from spacy.scorer import Scorer
 from datasets import load_dataset, Dataset
 
 
@@ -25,7 +27,7 @@ def main(
 
     msg.info("Processing test dataset")
     ds = load_dataset(dataset, dataset_config, split="test")
-    gold_docs = convert_to_spacy_docs(ds)
+    ref_docs = convert_to_spacy_docs(ds)
 
     msg.info("Loading GliNER model")
     nlp = spacy.blank("tl")
@@ -40,14 +42,22 @@ def main(
             "map_location": "cuda" if torch.cuda.is_available() else "cpu",
         },
     )
-    pred_docs = nlp(docs)
+    msg.text("Getting predictions")
+    pred_docs = nlp.pipe(ref_docs)
+
+    # Get the scores
+    examples = [
+        Example(reference=ref, predicted=pred) for ref, pred in zip(ref_docs, pred_docs)
+    ]
+    scores = Scorer.score_spans(examples, "ents")
+    breakpoint()
 
 
 def process_labels(label_map: str) -> Dict[str, str]:
     return {m.split("::")[0]: m.split("::")[1] for m in label_map.split(",")}
 
 
-def convert_to_spacy_docs(ds: "Dataset") -> List[Doc]:
+def convert_to_spacy_docs(ds: "Dataset") -> Iterable[Doc]:
     pass
 
 
