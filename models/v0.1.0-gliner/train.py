@@ -6,8 +6,8 @@ import torch
 import typer
 from datasets import load_dataset
 from gliner import GLiNER
-from gliner.training import Trainer, TrainingArguments
 from gliner.data_processing.collator import DataCollator
+from gliner.training import Trainer, TrainingArguments
 from wasabi import msg
 
 
