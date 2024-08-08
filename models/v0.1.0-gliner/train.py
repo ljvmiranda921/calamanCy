@@ -109,7 +109,6 @@ def main(
         use_cpu=False,
         report_to="none",
         load_best_model_at_end=True,
-        hub_model_id="",
     )
 
     trainer = Trainer(
