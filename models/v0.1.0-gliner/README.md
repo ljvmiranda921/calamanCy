@@ -4,7 +4,7 @@
 
 This is a spaCy project that trains and evaluates new v0.1.0-gliner models.
 [GliNER](https://github.com/urchade/GLiNER) (Generalist and Lightweight Model for Named Entity Recognition) is a powerful model capable of identifying any entity type using a BERT-like encoder.
-In this project, we finetune the GliNER model with the TLUnified-NER training dataset.
+In this project, we finetune the GliNER model using the TLUnified-NER dataset.
 
 To replicate training, first you need to install the required dependencies:
 
@@ -32,7 +32,7 @@ To perform evals, run the `eval-gliner` workflow while passing the size:
 python -m spacy project run eval-gliner . --vars.size small
 ```
 
-This will evaluate on TLUnified-NER's test set ([Miranda, 2023](https://aclanthology.org/2023.sealp-1.2.pdf) and the Tagalog subsets of
+This will evaluate on TLUnified-NER's test set ([Miranda, 2023](https://aclanthology.org/2023.sealp-1.2.pdf)) and the Tagalog subsets of
 Universal NER ([Mayhew et al., 2024](https://aclanthology.org/2024.naacl-long.243/)).
 
 The evaluation results are shown in the table below:
