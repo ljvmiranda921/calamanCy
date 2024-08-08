@@ -31,6 +31,7 @@ def main(
     # Load and Format the dataset
     msg.info(f"Formatting the {dataset} dataset")
     ds = load_dataset(dataset)
+    breakpoint()
     # TODO
     train_dataset = []
     eval_dataset = []

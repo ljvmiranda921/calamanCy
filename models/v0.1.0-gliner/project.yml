@@ -59,7 +59,7 @@ commands:
       - >-
         python train.py 
           gliner-community/gliner_${vars.size}-2.5
-          mdoels/gliner_${vars.size}
+          models/gliner_${vars.size}
           --checkpoint-dir checkpoints/ckpt_gliner_${vars.size}
           --push-to-hub ljvmiranda921/tl_gliner_${vars.size}
           --num-steps ${vars.num_steps}
