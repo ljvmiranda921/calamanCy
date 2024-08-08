@@ -7,7 +7,7 @@ description: |
 
   To replicate training, first you need to install the required dependencies:
 
-  ```
+  ```sh
   pip install -r requirements.txt
   ```
 
@@ -15,7 +15,7 @@ description: |
 
   To train a GliNER model, run the `finetune-*` workflow like so:
 
-  ```
+  ```sh
   python -m spacy project run finetune-gliner-sm
   python -m spacy project run finetune-gliner-md
   python -m spacy project run finetune-gliner-lg
@@ -29,10 +29,12 @@ description: |
 
   To perform evals, run the `eval-*` workflows:
 
-  ```
+  ```sh
   python -m spacy project run eval-gliner-sm
   python -m spacy project run eval-gliner-md
   python -m spacy project run eval-gliner-lg
+  # eval all at once
+  python -m spacy project run eval-all
   ```
 
   This will evaluate on TLUnified-NER's test set ([Miranda, 2023](https://aclanthology.org/2023.sealp-1.2.pdf) and the Tagalog subsets of
