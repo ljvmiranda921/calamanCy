@@ -58,7 +58,7 @@ commands:
       - mkdir -p checkpoints/ckpt_gliner_${vars.size}
       - >-
         python train.py 
-          gliner-community/gliner_${vars.size}-2.5
+          gliner-community/gliner_${vars.size}-v2.5
           models/gliner_${vars.size}
           --checkpoint-dir checkpoints/ckpt_gliner_${vars.size}
           --push-to-hub ljvmiranda921/tl_gliner_${vars.size}
