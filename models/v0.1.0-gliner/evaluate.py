@@ -1,14 +1,14 @@
 from pathlib import Path
-from typing import Optional, Dict, Iterable
+from typing import Dict, Iterable, Optional
 
+import spacy
 import torch
 import typer
-import spacy
-from wasabi import msg
+from datasets import Dataset, load_dataset
+from spacy.scorer import Scorer
 from spacy.tokens import Doc
 from spacy.training import Example
-from spacy.scorer import Scorer
-from datasets import load_dataset, Dataset
+from wasabi import msg
 
 
 def main(
