@@ -1,5 +1,6 @@
 title: "Release v0.1.0-gliner"
 description: |
+  oijwiofj
   This is a spaCy project that trains and evaluates new v0.1.0-gliner models.
   [GliNER](https://github.com/urchade/GLiNER) (Generalist and Lightweight Model for Named Entity Recognition) is a powerful model capable of identifying any entity type using a BERT-like encoder.
   In this project, we finetune the GliNER model with the TLUnified-NER training dataset.
