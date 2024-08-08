@@ -1,0 +1,4 @@
+gliner
+accelerate
+spacy
+gliner-spacy
