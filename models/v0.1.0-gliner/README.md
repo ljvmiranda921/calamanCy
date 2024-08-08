@@ -53,5 +53,6 @@ Commands are only re-run if their inputs have changed.
 | Command | Description |
 | --- | --- |
 | `finetune-gliner` | Finetune the GliNER model using TLUnified-NER |
+| `eval-gliner` | Evaluate trained GliNER models on the TLUnified-NER and Universal NER test sets |
 
 <!-- WEASEL: AUTO-GENERATED DOCS END (do not remove) -->

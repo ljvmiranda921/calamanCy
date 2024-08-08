@@ -39,7 +39,7 @@ vars:
   version: 0.1.0
   # Training
   size: small
-  num_steps: 2000
+  num_steps: 10000
   batch_size: 8
 
 directories:
@@ -68,3 +68,16 @@ commands:
     outputs:
       - models/gliner_${vars.size}
       - checkpoints/ckpt_gliner_${vars.size}
+
+  - name: "eval-gliner"
+    help: "Evaluate trained GliNER models on the TLUnified-NER and Universal NER test sets"
+    script:
+      - >-
+        python eval.py
+          metrics/tl_gliner_${vars.size}/
+          --model-name ljvmiranda921/tl_gliner_${vars.size}
+          --datasets ljvmiranda921/tlunified-ner,universalner/universal_ner::tl_trg,universalner/universal_ner::tl_ugnayan
+    outputs:
+      - metrics/tl_gliner_${vars.size}/ljvmiranda921___tlunified-ner.json
+      - metrics/tl_gliner_${vars.size}/universalner___universal_ner-tl_trg.json
+      - metrics/tl_gliner_${vars.size}/universalner___universal_ner-tl_ugnayan.json
