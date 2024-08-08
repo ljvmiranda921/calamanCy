@@ -39,7 +39,7 @@ vars:
   version: 0.1.0
   # Training
   size: small
-  num_steps: 500
+  num_steps: 2000
   batch_size: 8
 
 directories:
