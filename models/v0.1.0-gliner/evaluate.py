@@ -1,11 +1,12 @@
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 import torch
 import typer
 import spacy
 from wasabi import msg
-from datasets import load_dataset
+from spacy.tokens import Doc
+from datasets import load_dataset, Dataset
 
 
 def main(
@@ -19,15 +20,12 @@ def main(
     label_map: str = typer.Option("person::PER,organization::ORG,location::LOC", help="Mapping between GliNER labels and the dataset's actual labels (separated by a double-colon '::')."),
     # fmt: on
 ):
-    def process_labels(label_map: str) -> Dict[str, str]:
-        return {m.split("::")[0]: m.split("::")[1] for m in label_map.split(",")}
-
     label_map: Dict[str, str] = process_labels(label_map)
     msg.text(f"Using label map: {label_map}")
 
     msg.info("Processing test dataset")
     ds = load_dataset(dataset, dataset_config, split="test")
-    # Convert to spaCy Docs first
+    gold_docs = convert_to_spacy_docs(ds)
 
     msg.info("Loading GliNER model")
     nlp = spacy.blank("tl")
@@ -42,6 +40,15 @@ def main(
             "map_location": "cuda" if torch.cuda.is_available() else "cpu",
         },
     )
+    pred_docs = nlp(docs)
+
+
+def process_labels(label_map: str) -> Dict[str, str]:
+    return {m.split("::")[0]: m.split("::")[1] for m in label_map.split(",")}
+
+
+def convert_to_spacy_docs(ds: "Dataset") -> List[Doc]:
+    pass
 
 
 if __name__ == "__main__":
