@@ -72,12 +72,26 @@ commands:
   - name: "eval-gliner"
     help: "Evaluate trained GliNER models on the TLUnified-NER and Universal NER test sets"
     script:
+      # TLUnified-NER
       - >-
-        python eval.py
-          metrics/tl_gliner_${vars.size}/
+        python evaluate.py
+          metrics/model___tl_gliner_${vars.size}_dataset___ljvmiranda921-tlunified-ner.json
           --model-name ljvmiranda921/tl_gliner_${vars.size}
-          --datasets ljvmiranda921/tlunified-ner,universalner/universal_ner::tl_trg,universalner/universal_ner::tl_ugnayan
-    outputs:
-      - metrics/tl_gliner_${vars.size}/ljvmiranda921___tlunified-ner.json
-      - metrics/tl_gliner_${vars.size}/universalner___universal_ner-tl_trg.json
-      - metrics/tl_gliner_${vars.size}/universalner___universal_ner-tl_ugnayan.json
+          --dataset ljvmiranda921/tlunified-ner
+          --label-map person::PER,location::LOC,organization::ORG
+      # Universal NER (tl_trg)
+      - >-
+        python evaluate.py
+          metrics/model___tl_gliner_${vars.size}_dataset___universalner-universal_ner.json
+          --model-name ljvmiranda921/tl_gliner_${vars.size}
+          --dataset universalner/universal_ner
+          --dataset-config tl_trg
+          --label-map person::PER,location::LOC,organization::ORG
+      # Universal NER (tl_ugnayan)
+      - >-
+        python evaluate.py
+          metrics/model___tl_gliner_${vars.size}_dataset___universalner-universal_ner.json
+          --model-name ljvmiranda921/tl_gliner_${vars.size}
+          --dataset universalner/universal_ner
+          --dataset-config tl_ugnayan
+          --label-map person::PER,location::LOC,organization::ORG
