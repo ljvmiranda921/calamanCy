@@ -103,7 +103,7 @@ def main(
         per_device_eval_batch_size=batch_size,
         num_train_epochs=num_epochs,
         evaluation_strategy="steps",
-        save_steps=1000,
+        save_steps=num_steps * 2,
         save_total_limit=10,
         dataloader_num_workers=0,
         use_cpu=False,
