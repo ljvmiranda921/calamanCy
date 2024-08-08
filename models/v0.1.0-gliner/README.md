@@ -2,7 +2,6 @@
 
 # 🪐 Weasel Project: Release v0.1.0-gliner
 
-oijwiofj
 This is a spaCy project that trains and evaluates new v0.1.0-gliner models.
 [GliNER](https://github.com/urchade/GLiNER) (Generalist and Lightweight Model for Named Entity Recognition) is a powerful model capable of identifying any entity type using a BERT-like encoder.
 In this project, we finetune the GliNER model with the TLUnified-NER training dataset.
@@ -15,32 +14,28 @@ pip install -r requirements.txt
 
 ## Training
 
-To train a GliNER model, run the `finetune-*` workflow like so:
+To train a GliNER model, run the `finetune-gliner` workflow while passing the size:
 
 ```sh
-python -m spacy project run finetune-gliner-sm
-python -m spacy project run finetune-gliner-md
-python -m spacy project run finetune-gliner-lg
-# train all at once
-python -m spacy project run finetune-all
+# Available options: 'small', 'medium', 'large'
+python -m spacy project run finetune-gliner . --vars.size small
 ```
 
 The models are currently [based on the v2.5 version of GliNER](https://huggingface.co/collections/urchade/gliner-v25-66743e64ab975c859119d1eb).
 
 ## Evaluation
 
-To perform evals, run the `eval-*` workflows:
+To perform evals, run the `eval-gliner` workflow while passing the size:
 
 ```sh
-python -m spacy project run eval-gliner-sm
-python -m spacy project run eval-gliner-md
-python -m spacy project run eval-gliner-lg
-# eval all at once
-python -m spacy project run eval-all
+# Available options: 'small', 'medium', 'large'
+python -m spacy project run eval-gliner . --vars.size small
 ```
 
 This will evaluate on TLUnified-NER's test set ([Miranda, 2023](https://aclanthology.org/2023.sealp-1.2.pdf) and the Tagalog subsets of
 Universal NER ([Mayhew et al., 2024](https://aclanthology.org/2024.naacl-long.243/)).
+
+The evaluation results are shown in the table below:
 
 
 ## 📋 project.yml
