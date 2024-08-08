@@ -73,7 +73,7 @@ def main(
     eval_dataset = [format_to_gliner(eg) for eg in ds["validation"].to_list()]
 
     # Perform training
-    device = torch.device("cuda") if torch.cuda_is_available() else torch.device("cpu")
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = GLiNER.from_pretrained(base_model)
 
     data_collator = DataCollator(
