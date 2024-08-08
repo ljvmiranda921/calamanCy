@@ -31,10 +31,46 @@ def main(
     # Load and Format the dataset
     msg.info(f"Formatting the {dataset} dataset")
     ds = load_dataset(dataset)
-    breakpoint()
-    # TODO
-    train_dataset = []
-    eval_dataset = []
+
+    def format_to_gliner(example):
+        id2label = {
+            1: "person",
+            2: "person",
+            3: "organization",
+            4: "organization",
+            5: "location",
+            6: "location",
+        }
+
+        tokens = example["tokens"]
+        ner_tags = example["ner_tags"]
+
+        ner = []
+        current_entity = None
+        for idx, tag in enumerate(ner_tags):
+            if tag in id2label:
+                if current_entity is None:
+                    current_entity = [idx, idx, id2label[tag]]
+                elif (
+                    tag == ner_tags[current_entity[0]]
+                    or tag == ner_tags[current_entity[0]] + 1
+                ):
+                    current_entity[1] = idx
+                else:
+                    ner.append(current_entity)
+                    current_entity = [idx, idx, id2label[tag]]
+            else:
+                if current_entity is not None:
+                    ner.append(current_entity)
+                    current_entity = None
+
+        if current_entity is not None:
+            ner.append(current_entity)
+
+        return {"tokenized_text": tokens, "ner": ner}
+
+    train_dataset = [format_to_gliner(eg) for eg in ds["train"].to_list()]
+    eval_dataset = [format_to_gliner(eg) for eg in ds["validation"].to_list()]
 
     # Perform training
     device = torch.device("cuda") if torch.cuda_is_available() else torch.device("cpu")
