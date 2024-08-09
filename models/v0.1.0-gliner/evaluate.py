@@ -5,6 +5,7 @@ from copy import deepcopy
 import spacy
 import torch
 import typer
+import srsly
 from datasets import Dataset, load_dataset
 from spacy.scorer import Scorer
 from spacy.tokens import Doc, Span
@@ -53,8 +54,11 @@ def main(
         Example(reference=ref, predicted=pred) for ref, pred in zip(ref_docs, pred_docs)
     ]
     scores = Scorer.score_spans(examples, "ents")
-    print(scores)
-    breakpoint()
+
+    msg.info(f"Results for {dataset} ({model_name})")
+    msg.table({k: v for k, v in scores if k != "ents_per_type"})
+    srsly.write_json(output_path, data=scores, indent=2)
+    msg.good(f"Saving outputs to {output_path}")
 
 
 def process_labels(label_map: str) -> Dict[str, str]:
