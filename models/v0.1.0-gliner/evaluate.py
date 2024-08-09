@@ -6,7 +6,7 @@ import torch
 import typer
 from datasets import Dataset, load_dataset
 from spacy.scorer import Scorer
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 from spacy.training import Example
 from wasabi import msg
 
@@ -27,7 +27,8 @@ def main(
 
     msg.info("Processing test dataset")
     ds = load_dataset(dataset, dataset_config, split="test")
-    ref_docs = convert_to_spacy_docs(ds)
+    ref_docs = convert_hf_to_spacy_docs(ds)
+    breakpoint()
 
     msg.info("Loading GliNER model")
     nlp = spacy.blank("tl")
@@ -57,8 +58,46 @@ def process_labels(label_map: str) -> Dict[str, str]:
     return {m.split("::")[0]: m.split("::")[1] for m in label_map.split(",")}
 
 
-def convert_to_spacy_docs(ds: "Dataset") -> Iterable[Doc]:
-    pass
+def convert_hf_to_spacy_docs(dataset: "Dataset") -> Iterable[Doc]:
+    nlp = spacy.blank("tl")
+    examples = dataset.to_list()
+    entity_types = {
+        idx: feature.split("-")[1]
+        for idx, feature in enumerate(dataset.features["ner_tags"].feature.names)
+        if feature != "O"  # don't include empty
+    }
+    msg.text(f"Using entity types: {entity_types}")
+
+    docs = []
+    for example in examples:
+        tokens = example["tokens"]
+        ner_tags = example["ner_tags"]
+        doc = Doc(nlp.vocab, words=tokens)
+
+        entities = []
+        start_idx = None
+        entity_type = None
+
+        for idx, tag in enumerate(ner_tags):
+            if tag in entity_types:
+                if start_idx is None:
+                    start_idx = idx
+                    entity_type = entity_types[tag]
+                elif entity_type != entity_types.get(tag, None):
+                    entities.append(Span(doc, start_idx, idx, label=entity_type))
+                    start_idx = idx
+                    entity_type = entity_types[tag]
+            else:
+                if start_idx is not None:
+                    entities.append(Span(doc, start_idx, idx, label=entity_type))
+                    start_idx = None
+
+        if start_idx is not None:
+            entities.append(Span(doc, start_idx, len(tokens), label=entity_type))
+        doc.ents = entities
+        docs.append(doc)
+
+    return docs
 
 
 if __name__ == "__main__":
