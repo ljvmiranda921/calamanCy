@@ -28,7 +28,6 @@ def main(
     msg.info("Processing test dataset")
     ds = load_dataset(dataset, dataset_config, split="test")
     ref_docs = convert_hf_to_spacy_docs(ds)
-    breakpoint()
 
     msg.info("Loading GliNER model")
     nlp = spacy.blank("tl")
@@ -44,7 +43,8 @@ def main(
         },
     )
     msg.text("Getting predictions")
-    pred_docs = nlp.pipe(ref_docs)
+    pred_docs = list(nlp.pipe(ref_docs))
+    pred_docs = [update_entity_labels(doc) for doc in pred_docs]
 
     # Get the scores
     examples = [
@@ -98,6 +98,22 @@ def convert_hf_to_spacy_docs(dataset: "Dataset") -> Iterable[Doc]:
         docs.append(doc)
 
     return docs
+
+
+def update_entity_labels(doc: Doc, label_mapping: Dict[str, str]) -> Doc:
+    updated_ents = []
+    for ent in doc.ents:
+        new_label = label_mapping.get(ent.label_.lower(), ent.label_)
+        updated_span = Span(doc, ent.start, ent.end, label=new_label)
+        updated_ents.append(updated_span)
+
+    new_doc = Doc(
+        doc.vocab,
+        words=[token.text for token in doc],
+        spaces=[token.whitespace for token in doc],
+    )
+    new_doc.ents = updated_ents
+    return new_doc
 
 
 if __name__ == "__main__":
