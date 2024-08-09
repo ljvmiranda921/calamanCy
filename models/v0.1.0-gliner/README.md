@@ -21,7 +21,7 @@ To train a GliNER model, run the `finetune-gliner` workflow while passing the si
 python -m spacy project run finetune-gliner . --vars.size small
 ```
 
-The models are currently [based on the v2.5 version of GliNER](https://huggingface.co/collections/urchade/gliner-v25-66743e64ab975c859119d1eb).
+The models are currently based on the [v2.5 version of GliNER](https://huggingface.co/collections/urchade/gliner-v25-66743e64ab975c859119d1eb).
 
 ## Evaluation
 
