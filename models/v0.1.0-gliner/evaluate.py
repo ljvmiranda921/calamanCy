@@ -53,6 +53,7 @@ def main(
         Example(reference=ref, predicted=pred) for ref, pred in zip(ref_docs, pred_docs)
     ]
     scores = Scorer.score_spans(examples, "ents")
+    print(scores)
     breakpoint()
 
 
