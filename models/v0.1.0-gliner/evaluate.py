@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Dict, Iterable, Optional
+from copy import deepcopy
 
 import spacy
 import torch
@@ -43,7 +44,8 @@ def main(
         },
     )
     msg.text("Getting predictions")
-    pred_docs = list(nlp.pipe(ref_docs))
+    docs = deepcopy(ref_docs)
+    pred_docs = list(nlp.pipe(docs))
     pred_docs = [update_entity_labels(doc, label_map) for doc in pred_docs]
 
     # Get the scores
