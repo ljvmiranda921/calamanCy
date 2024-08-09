@@ -18,6 +18,7 @@ reproduction of results, and guides on usage.
 > a citrus fruit native to the Philippines and used in traditional Filipino cuisine.
 
 ## 📰 News
+- [2024-08-01] Released new NER-only models based on [GLiNER](https://github.com/urchade/GLiNER)! You can find the models in [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87). Span-Marker and calamanCy models are still superior, but GLiNER offers a lot of extensibility on unseen entity labels. You can find the training pipeline [here](https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0-gliner).  
 - [2023-12-05] We released the paper [**calamanCy: A Tagalog Natural Language Processing Toolkit**](https://aclanthology.org/2023.nlposs-1.1/) and will be presented in the NLP-OSS workshop at EMNLP 2023! Feel free to check out the [Tagalog NLP collection in HuggingFace](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
 - [2023-11-01] The named entity recognition (NER) dataset used to train the NER component of calamanCy has now a corresponding paper: [**Developing a Named Entity Recognition Dataset for Tagalog**](https://aclanthology.org/2023.nlposs-1.1/)! It will be presented in the SEALP workshop at IJCNLP-AACL 2023! The dataset is also available [in HuggingFace](https://huggingface.co/datasets/ljvmiranda921/tlunified-ner).
 
