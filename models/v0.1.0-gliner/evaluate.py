@@ -28,7 +28,7 @@ def main(
     msg.text(f"Using label map: {label_map}")
 
     msg.info("Processing test dataset")
-    ds = load_dataset(dataset, dataset_config, split="test")
+    ds = load_dataset(dataset, dataset_config, split="test", trust_remote_code=True)
     ref_docs = convert_hf_to_spacy_docs(ds)
 
     msg.info("Loading GliNER model")
