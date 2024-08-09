@@ -45,6 +45,7 @@ vars:
 directories:
   - "checkpoints"
   - "models"
+  - "metrics"
 
 env:
   HF_TOKEN: HF_TOKEN
