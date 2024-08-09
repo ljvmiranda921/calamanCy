@@ -53,6 +53,52 @@ At the same time, the text distribution of the two datasets are widely different
 Nevertheless, I'm still releasing these GliNER models as they are very extensible to other entity types (and it's also nice to have a finetuned version of GliNER for Tagalog!).
 I haven't done any extensive hyperparameter tuning here so it might be nice if someone can contribute better config parameters to bump up these scores.
 
+## Citation
+
+Please cite the following papers when using these models:
+
+```
+@misc{zaratiana2023gliner,
+    title={GLiNER: Generalist Model for Named Entity Recognition using Bidirectional Transformer}, 
+    author={Urchade Zaratiana and Nadi Tomeh and Pierre Holat and Thierry Charnois},
+    year={2023},
+    eprint={2311.08526},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL}
+}
+```
+
+```
+@inproceedings{miranda-2023-calamancy,
+  title = "calaman{C}y: A {T}agalog Natural Language Processing Toolkit",
+  author = "Miranda, Lester James",
+  booktitle = "Proceedings of the 3rd Workshop for Natural Language Processing Open Source Software (NLP-OSS 2023)",
+  month = dec,
+  year = "2023",
+  address = "Singapore, Singapore",
+  publisher = "Empirical Methods in Natural Language Processing",
+  url = "https://aclanthology.org/2023.nlposs-1.1",
+  pages = "1--7",
+} 
+```
+
+If you're using the NER dataset:
+
+```
+@inproceedings{miranda-2023-developing,
+  title = "Developing a Named Entity Recognition Dataset for {T}agalog",
+  author = "Miranda, Lester James",
+  booktitle = "Proceedings of the First Workshop in South East Asian Language Processing",
+  month = nov,
+  year = "2023",
+  address = "Nusa Dua, Bali, Indonesia",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2023.sealp-1.2",
+  doi = "10.18653/v1/2023.sealp-1.2",
+  pages = "13--20",
+}
+```
+
 
 ## 📋 project.yml
 
