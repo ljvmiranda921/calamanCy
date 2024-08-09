@@ -35,13 +35,22 @@ python -m spacy project run eval-gliner . --vars.size small
 This will evaluate on TLUnified-NER's test set ([Miranda, 2023](https://aclanthology.org/2023.sealp-1.2.pdf)) and the Tagalog subsets of
 Universal NER ([Mayhew et al., 2024](https://aclanthology.org/2024.naacl-long.243/)).
 
-The evaluation results are shown in the table below:
+The evaluation results for TLUnified-NER are shown in the table below (reported numbers are F1-scores):
 
-In general, GliNER is competitive with the current calamanCy models on TLUnified-NER, but it doesn't perform really well on Universal NER.
+|                  | PER   | ORG   | LOC   | Overall |
+|------------------|-------|-------|-------|---------|
+| tl_gliner_small  | 86.76 | 78.72 | 86.78 | 84.83   |
+| tl_gliner_medium | 87.46 | 79.71 | 86.75 | 85.40   |
+| tl_gliner_large  | 86.75 | 80.20 | 86.76 | 85.72   |
+| tl_calamancy_trf | **91.95** | **84.84** | **88.92** | **88.03**   |
+
+In general, GliNER is competitive with the current calamanCy models on TLUnified-NER, but [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) is still the best performing model overall (around ~90% F1-score overall).
+The performance on Universal NER is generally worse (the highest is around ~50%).
 One possible reason is that the annotation guidelines for TULunified-NER are more loose, because we consider some entities that Universal NER ignores.
 At the same time, the text distribution of the two datasets are widely different.
 
 Nevertheless, I'm still releasing these GliNER models as they are very extensible to other entity types (and it's also nice to have a finetuned version of GliNER for Tagalog!).
+I haven't done any extensive hyperparameter tuning here so it might be nice if someone can contribute better config parameters to bump up these scores.
 
 
 ## 📋 project.yml
