@@ -1,0 +1,7 @@
+gliner==0.2.8
+accelerate
+spacy
+gliner-spacy
+huggingface_hub
+datasets
+conllu
