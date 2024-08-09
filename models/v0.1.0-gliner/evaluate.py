@@ -110,7 +110,7 @@ def update_entity_labels(doc: Doc, label_mapping: Dict[str, str]) -> Doc:
     new_doc = Doc(
         doc.vocab,
         words=[token.text for token in doc],
-        spaces=[token.whitespace for token in doc],
+        spaces=[token.whitespace_ for token in doc],
     )
     new_doc.ents = updated_ents
     return new_doc
