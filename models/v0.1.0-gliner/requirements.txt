@@ -4,3 +4,4 @@ spacy
 gliner-spacy
 huggingface_hub
 datasets
+conllu
