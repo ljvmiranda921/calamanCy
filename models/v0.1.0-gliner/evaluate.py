@@ -56,7 +56,7 @@ def main(
     scores = Scorer.score_spans(examples, "ents")
 
     msg.info(f"Results for {dataset} ({model_name})")
-    msg.table({k: v for k, v in scores if k != "ents_per_type"})
+    msg.text(scores)
     srsly.write_json(output_path, data=scores, indent=2)
     msg.good(f"Saving outputs to {output_path}")
 
