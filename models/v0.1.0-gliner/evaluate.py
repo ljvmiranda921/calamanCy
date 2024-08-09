@@ -44,7 +44,7 @@ def main(
     )
     msg.text("Getting predictions")
     pred_docs = list(nlp.pipe(ref_docs))
-    pred_docs = [update_entity_labels(doc) for doc in pred_docs]
+    pred_docs = [update_entity_labels(doc, label_map) for doc in pred_docs]
 
     # Get the scores
     examples = [
