@@ -35,6 +35,12 @@ description: |
 
   The evaluation results are shown in the table below:
 
+  In general, GliNER is competitive with the current calamanCy models on TLUnified-NER, but it doesn't perform really well on Universal NER.
+  One possible reason is that the annotation guidelines for TULunified-NER are more loose, because we consider some entities that Universal NER ignores.
+  At the same time, the text distribution of the two datasets are widely different.
+
+  Nevertheless, I'm still releasing these GliNER models as they are very extensible to other entity types (and it's also nice to have a finetuned version of GliNER for Tagalog!).
+
 vars:
   version: 0.1.0
   # Training
