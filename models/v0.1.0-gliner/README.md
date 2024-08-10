@@ -53,11 +53,53 @@ At the same time, the text distribution of the two datasets are widely different
 Nevertheless, I'm still releasing these GliNER models as they are very extensible to other entity types (and it's also nice to have a finetuned version of GliNER for Tagalog!).
 I haven't done any extensive hyperparameter tuning here so it might be nice if someone can contribute better config parameters to bump up these scores.
 
+## Usage
+
+Here's how you can use the trained Tagalog GLiNER models:
+
+```python
+from gliner import GLiNER
+
+# Initialize GLiNER with the base model
+model = GLiNER.from_pretrained("ljvmiranda921/tl_gliner_small")
+
+# Sample text for entity prediction
+# Reference: Leni Robredo’s speech at the 2022 UP College of Law recognition rites
+text = """"
+Nagsimula ako sa Public Attorney’s Office, kung saan araw-araw, mula Lunes hanggang Biyernes, nasa loob ako ng iba’t ibang court room at tambak ang kaso.
+Bawat Sabado, nasa BJMP ako para ihanda ang aking mga kliyente. Nahasa ako sa crim law at litigation. Pero kinalaunan, lumipat ako sa isang NGO,
+‘yung Sentro ng Alternatibong Lingap Panligal. Sa SALIGAN talaga ako nahubog bilang abugado: imbes na tinatanggap na lang ang mga batas na kailangang
+sundin, nagtatanong din kung ito ba ay tunay na instrumento para makapagbigay ng katarungan sa ordinaryong Pilipino. Imbes na maghintay ng mga kliyente
+sa de-aircon na opisina, dinadayo namin ang mga malalayong komunidad. Kadalasan, naka-tsinelas, naka-t-shirt at maong, hinahanap namin ang mga komunidad,
+tinatawid ang mga bundok, palayan, at mga ilog para tumungo sa mga lugar kung saan hirap ang mga batayang sektor na makakuha ng access to justice.
+Naaalala ko pa noong naging lead lawyer ako para sa isang proyekto: sa loob ng mahigit dalawang taon, bumibiyahe ako buwan-buwan papunta sa malayong
+isla ng Masbate, nagpa-paralegal training sa mga batayang sektor doon, ipinapaliwanag, itinituturo, at sinasanay sila sa mga batas na nagbibigay-proteksyon
+sa mga karapatan nila.
+"""
+
+# Labels for entity prediction
+# Most GLiNER models should work best when entity types are in lower case or title case
+labels = ["person", "organization", "location"]
+
+# Perform entity prediction
+entities = model.predict_entities(text, labels, threshold=0.5)
+
+# Display predicted entities and their labels
+for entity in entities:
+    print(entity["text"], "=>", entity["label"])
+
+# Sample output:
+# Public Attorney’s Office => organization
+# BJMP => organization
+# Sentro ng Alternatibong Lingap Panligal => organization
+# Masbate => location
+```
+
 ## Citation
 
 Please cite the following papers when using these models:
 
-```
+```bib
 @misc{zaratiana2023gliner,
     title={GLiNER: Generalist Model for Named Entity Recognition using Bidirectional Transformer}, 
     author={Urchade Zaratiana and Nadi Tomeh and Pierre Holat and Thierry Charnois},
@@ -68,7 +110,7 @@ Please cite the following papers when using these models:
 }
 ```
 
-```
+```bib
 @inproceedings{miranda-2023-calamancy,
   title = "calaman{C}y: A {T}agalog Natural Language Processing Toolkit",
   author = "Miranda, Lester James",
@@ -84,7 +126,7 @@ Please cite the following papers when using these models:
 
 If you're using the NER dataset:
 
-```
+```bib
 @inproceedings{miranda-2023-developing,
   title = "Developing a Named Entity Recognition Dataset for {T}agalog",
   author = "Miranda, Lester James",
