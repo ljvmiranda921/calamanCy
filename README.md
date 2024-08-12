@@ -2,8 +2,9 @@
 
 # calamanCy: NLP pipelines for Tagalog
 
-[![example workflow](https://github.com/ljvmiranda921/calamancy/actions/workflows/test.yml/badge.svg)](https://github.com/ljvmiranda921/calamanCy/actions/workflows/test.yml)
+[![GitHub workflow](https://github.com/ljvmiranda921/calamancy/actions/workflows/test.yml/badge.svg)](https://github.com/ljvmiranda921/calamanCy/actions/workflows/test.yml)
 [![PyPI](https://img.shields.io/pypi/v/calamancy?labelColor=%23272c32&color=%2333cc56&logo=pypi&logoColor=white)](https://pypi.org/project/calamanCy/)
+[![Paper](https://img.shields.io/badge/read-EMNLP%20paper-blue?logo=semanticscholar)](https://www.semanticscholar.org/reader/598a4f17da8f4cddfab3c7c10bc96a05078e7a91)
 
 
 
