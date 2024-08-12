@@ -22,7 +22,6 @@ def main(readme_path: Path = DEFAULT_README_PATH):
 
     metadata = []
     for fp in meta_files:
-        breakpoint()
         name = fp.parent.name
         url = (
             f"https://github.com/ljvmiranda921/calamanCy/tree/master/experiments/{name}"
