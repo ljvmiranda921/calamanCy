@@ -98,9 +98,9 @@ assets:
   - dest: "assets/fasttext.tl.gz"
     description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
-  - dest: "assets/tlunified.zip"
-    url: "https://s3.us-east-2.amazonaws.com/blaisecruz.com/datasets/tlunified/tlunified.zip"
+  - dest: "assets/tlunified/train.txt"
     description: "TLUnified dataset (from Improving Large-scale Language Models and Resources for Filipino by Cruz and Cheng 2022)."
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.txt"
   - dest: "assets/floret"
     description: "Floret repository for training floret and fastText models."
     git:
