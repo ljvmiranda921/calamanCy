@@ -122,14 +122,14 @@ workflows:
     - "train-ner-trf"
     - "assemble-trf"
   tl-calamancy-lg:
-    - "pretrain-lg"
     - "train-vectors-lg"
+    - "pretrain-lg"
     - "train-parser-tagger-lg"
     - "train-ner-lg"
     - "assemble-lg"
   tl-calamancy-md:
-    - "pretrain-md"
     - "train-vectors-md"
+    - "pretrain-md"
     - "train-parser-tagger-md"
     - "train-ner-md"
     - "assemble-md"
