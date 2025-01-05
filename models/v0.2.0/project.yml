@@ -210,7 +210,7 @@ commands:
       - mkdir -p assets/vectors/floret-tl-md/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
+        -input assets/tlunified_raw_text.txt 
         -output assets/vectors/floret-tl-md/vectors
         -dim 200
         -minn 3
