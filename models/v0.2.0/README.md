@@ -27,13 +27,13 @@ Please see [this HuggingFace collection](https://huggingface.co/collections/ljvm
 You can use this project to replicate the pipelines shipped by the project.
 First, you need to install the required dependencies:
 
-```
+```sh
 pip install -r requirements.txt
 ```
 
 Then run the set-up commands:
 
-```
+```sh
 python -m spacy project assets
 python -m spacy project run setup
 ```
@@ -41,8 +41,8 @@ python -m spacy project run setup
 This step downloads all assets and prepares all the datasets and binaries for
 training use. For example, if you want to train `tl_calamancy_md`, run the following comand:
 
-```
-bash scripts/tl_calamancy_md.sh
+```sh
+MODEL=tl_calamancy_md scripts/train.sh
 ```
 
 
@@ -95,7 +95,7 @@ inputs have changed.
 | --- | --- |
 | `setup` | `setup-finetuning-data` &rarr; `setup-fasttext-vectors` &rarr; `build-floret` &rarr; `train-vectors-md` |
 | `tl-calamancy` | `train-parser` &rarr; `train-ner` &rarr; `assemble` |
-| `tl-calamancy-trf` | `train-parser-trf` &rarr; `train-ner-trf` &rarr; `assemble` |
+| `tl-calamancy-trf` | `train-parser-trf` &rarr; `train-ner-trf` &rarr; `assemble-trf` |
 
 ### 🗂 Assets
 
