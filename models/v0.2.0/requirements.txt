@@ -4,3 +4,4 @@ spacy-transformers==1.3.5
 torch==2.5.1
 transformers==4.36.2
 spacy-huggingface-hub
+cupy-cuda113
