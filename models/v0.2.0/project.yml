@@ -42,7 +42,7 @@ description: |
   ```sh
   MODEL=tl_calamancy_md scripts/train.sh
   ```
-  
+
 
   ## Model information
 
@@ -81,7 +81,7 @@ assets:
     url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.txt"
   - dest: assets/corpus.tar.gz
     description: "Annotated TLUnified corpora in spaCy format with train, dev, and test splits."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/1.0/corpus.tar.gz"
+    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
   - dest: assets/tl_newscrawl-ud-train.conllu
     description: "Train dataset for NewsCrawl"
     url: https://raw.githubusercontent.com/UniversalDependencies/UD_Tagalog-NewsCrawl/refs/heads/dev/tl_newscrawl-ud-train.conllu
