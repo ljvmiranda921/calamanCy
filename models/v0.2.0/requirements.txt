@@ -5,3 +5,7 @@ torch==2.5.1
 transformers==4.36.2
 spacy-huggingface-hub
 cupy-cuda113
+build
+pip==22.0.2
+sentencepiece
+protobuf
