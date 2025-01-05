@@ -25,13 +25,13 @@ description: |
   You can use this project to replicate the pipelines shipped by the project.
   First, you need to install the required dependencies:
 
-  ```
+  ```sh
   pip install -r requirements.txt
   ```
 
   Then run the set-up commands:
 
-  ```
+  ```sh
   python -m spacy project assets
   python -m spacy project run setup
   ```
