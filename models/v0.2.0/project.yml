@@ -276,6 +276,7 @@ commands:
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
         --paths.vectors ${vars.vectors}
+        --gpu-id ${vars.gpu_id}
     deps:
       - corpus/ner/train.spacy
       - corpus/ner/dev.spacy
@@ -294,6 +295,7 @@ commands:
         --components.transformer.model.name microsoft/mdeberta-v3-base 
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
+        --gpu-id ${vars.gpu_id}
     deps:
       - corpus/ner/train.spacy
       - corpus/ner/dev.spacy
