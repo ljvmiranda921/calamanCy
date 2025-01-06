@@ -297,7 +297,6 @@ commands:
     deps:
       - corpus/ner/train.spacy
       - corpus/ner/dev.spacy
-      - ${vars.vectors}
     outputs:
       - training/ner_trf/model-best
 
