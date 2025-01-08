@@ -6,4 +6,9 @@ title: Home
 
 # calamanCy: NLP pipelines for Tagalog
 
-Hi there
+**calamanCy** is a Tagalog natural language preprocessing framework made with [spaCy](https://spacy.io).
+Its goal is to provide pipelines and datasets for downstream NLP tasks.
+calamanCy takes inspiration from other language-specific spaCy Universe frameworks such as [DaCy](https://github.com/centre-for-humanities-computing/DaCy) and [huSpaCy](https://github.com/huspacy/huspacy).
+The name is based from _calamansi_, a citrus fruit native to the Philippines and used in traditional Filipino cuisine.
+
+## Running your first pipeline
