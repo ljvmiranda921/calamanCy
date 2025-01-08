@@ -4,3 +4,6 @@
 [submodule "website/themes/hugo-texify3"]
 	path = website/themes/hugo-texify3
 	url = https://github.com/michaelneuper/hugo-texify3.git
+[submodule "website/themes/xmin"]
+	path = website/themes/xmin
+	url = https://github.com/yihui/hugo-xmin
