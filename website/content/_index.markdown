@@ -14,6 +14,12 @@ The name is based from _calamansi_, a citrus fruit native to the Philippines and
 
 ## Running your first pipeline
 
+First install calamanCy
+
+```
+pip install calamanCy
+```
+
 ## Blog
 
 ## Citation
