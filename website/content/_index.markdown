@@ -14,13 +14,24 @@ The name is based from _calamansi_, a citrus fruit native to the Philippines and
 
 ## Running your first pipeline
 
-First install calamanCy and download the
+First install calamanCy:
 
-```
+```sh
 pip install calamanCy
 ```
 
-## Blog
+To use calamanCy you first have to download either the medium, large, or transformer model. To see a list of all available models, run:
+
+```python
+import calamancy
+from model in calamancy.models():
+    print(model)
+
+nlp = calamancy.load("tl_calamancy_md-0.1.0")
+doc = nlp("Ako si Juan de la Cruz")
+```
+
+Alternatively, you can use all the calamanCy models within spaCy.
 
 ## Citation
 
@@ -40,3 +51,5 @@ If you're using calamanCy in your paper, please cite our publication:
     pages = "1--7",
 }
 ```
+
+## Posts

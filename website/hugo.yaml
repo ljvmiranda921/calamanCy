@@ -15,15 +15,12 @@ menu:
     - name: Home
       url: ""
       weight: 1
-    - name: About
-      url: "about/"
+    - name: News
+      url: "news/"
       weight: 2
-    - name: Categories
-      url: "categories/"
+    - name: Tutorials
+      url: "tutorials/"
       weight: 3
-    - name: Tags
-      url: "tags/"
-      weight: 4
     - name: Subscribe
       url: "index.xml"
 
