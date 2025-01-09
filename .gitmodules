@@ -1,3 +1,6 @@
 [submodule "datasets/tl_calamancy_gold_corpus/tlunified-ner"]
 	path = datasets/tl_calamancy_gold_corpus/tlunified-ner
 	url = https://huggingface.co/dataasets/ljvmiranda921/tlunified-ner
+[submodule "website/themes/xmin"]
+	path = website/themes/xmin
+	url = https://github.com/ljvmiranda921/hugo-xmin
