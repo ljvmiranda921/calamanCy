@@ -14,30 +14,35 @@ The name is based from _calamansi_, a citrus fruit native to the Philippines and
 
 ## Running your first pipeline
 
-First install calamanCy:
-
-```sh
-pip install calamanCy
-```
-
-To use calamanCy you first have to download either the medium, large, or transformer model. To see a list of all available models, run:
+First install calamanCy, then download either the medium, large, or transformer model.
+The command below automatically downloads and load the model you pass:
 
 ```python
-import calamancy
-from model in calamancy.models():
-    print(model)
+!pip install calamanCy
 
 nlp = calamancy.load("tl_calamancy_md-0.1.0")
 doc = nlp("Ako si Juan de la Cruz")
 ```
 
-Alternatively, you can use all the calamanCy models within spaCy.
+You can see all available calamanCy models in this [HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
+Alternatively, you can use all the calamanCy models within the spaCy library:
+
+```python
+!pip install spacy
+!pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/main/tl_calamancy_md-any-py3-none-any.whl
+
+import spacy
+nlp = spacy.load("tl_calamancy_md")
+doc = nlp("Ako si Juan de la Cruz")
+```
+
+To learn more about how calamanCy (or spaCy) process your text, feel free to explore the [official documentation](https://spacy.io/usage/processing-pipelines).
 
 ## Citation
 
 If you're using calamanCy in your paper, please cite our publication:
 
-```
+```bibtex
 @inproceedings{miranda-2023-calamancy,
     title = "calaman{C}y: A {T}agalog Natural Language Processing Toolkit",
     author = "Miranda, Lester James",
