@@ -21,8 +21,9 @@ menu:
     - name: Tutorials
       url: "tutorials/"
       weight: 3
-    - name: Subscribe
-      url: "index.xml"
+    - name: "Who uses calamanCy"
+      url: "users/"
+      weight: 4
 
 params:
   description: "A website built through Hugo and blogdown."
