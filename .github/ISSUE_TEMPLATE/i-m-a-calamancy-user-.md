@@ -1,6 +1,7 @@
 ---
 name: I'm a calamanCy user!
-about: Do you use calamanCy in your research or project? I'd love to hear from you and hopefully showcase your work!
+about: Do you use calamanCy in your research or project? I'd love to hear from you
+  and hopefully showcase your work!
 title: "[USER]"
 labels: users
 assignees: ljvmiranda921
