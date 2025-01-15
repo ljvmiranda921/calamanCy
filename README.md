@@ -6,20 +6,21 @@
 [![PyPI](https://img.shields.io/pypi/v/calamancy?labelColor=%23272c32&color=%2333cc56&logo=pypi&logoColor=white)](https://pypi.org/project/calamanCy/)
 [![Paper](https://img.shields.io/badge/read-EMNLP%20paper-blue?logo=semanticscholar)](https://www.semanticscholar.org/reader/598a4f17da8f4cddfab3c7c10bc96a05078e7a91)
 
-
-
 **calamanCy** is a Tagalog natural language preprocessing framework made with
 [spaCy](https://spacy.io). Its goal is to provide pipelines and datasets for
 downstream NLP tasks. This repository contains material for using calamanCy,
-reproduction of results, and guides on usage. 
+reproduction of results, and guides on usage.
 
-> calamanCy takes inspiration from other language-specific [spaCy Universe frameworks](https://spacy.io/universe) such as 
+> calamanCy takes inspiration from other language-specific [spaCy Universe frameworks](https://spacy.io/universe) such as
 > [DaCy](https://github.com/centre-for-humanities-computing/DaCy), [huSpaCy](https://github.com/huspacy/huspacy),
-> and [graCy](https://github.com/jmyerston/graCy). The name is based from [*calamansi*](https://en.wikipedia.org/wiki/Calamansi),
+> and [graCy](https://github.com/jmyerston/graCy). The name is based from [_calamansi_](https://en.wikipedia.org/wiki/Calamansi),
 > a citrus fruit native to the Philippines and used in traditional Filipino cuisine.
 
+🌐 **Website**: [https://ljvmiranda921.github.io/calamanCy](https://ljvmiranda921.github.io/calamanCy)
+
 ## 📰 News
-- [2024-08-01] Released new NER-only models based on [GLiNER](https://github.com/urchade/GLiNER)! You can find the models in [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87). Span-Marker and calamanCy models are still superior, but GLiNER offers a lot of extensibility on unseen entity labels. You can find the training pipeline [here](https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0-gliner).  
+
+- [2024-08-01] Released new NER-only models based on [GLiNER](https://github.com/urchade/GLiNER)! You can find the models in [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87). Span-Marker and calamanCy models are still superior, but GLiNER offers a lot of extensibility on unseen entity labels. You can find the training pipeline [here](https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0-gliner).
 - [2024-07-02] I talked about calamanCy during my guest lecture, "Artisanal Filipino NLP Resources in the time of Large Language Models," @ DLSU Manila. You can find the slides (and an accompanying blog post) [here](https://ljvmiranda921.github.io/notebook/2024/07/02/talk-dlsu/).
 - [2023-12-05] We released the paper [**calamanCy: A Tagalog Natural Language Processing Toolkit**](https://aclanthology.org/2023.nlposs-1.1/) and will be presented in the NLP-OSS workshop at EMNLP 2023! Feel free to check out the [Tagalog NLP collection in HuggingFace](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
 - [2023-11-01] The named entity recognition (NER) dataset used to train the NER component of calamanCy has now a corresponding paper: [**Developing a Named Entity Recognition Dataset for Tagalog**](https://aclanthology.org/2023.nlposs-1.1/)! It will be presented in the SEALP workshop at IJCNLP-AACL 2023! The dataset is also available [in HuggingFace](https://huggingface.co/datasets/ljvmiranda921/tlunified-ner). I've also talked about my thoughts on the annotation process [in my blog](https://ljvmiranda921.github.io/notebook/2023/07/03/devlog-calamancy/).
@@ -32,7 +33,7 @@ following line in your terminal:
 
 ```sh
 pip install calamanCy
-``` 
+```
 
 ### Development
 
@@ -62,7 +63,6 @@ We use [pytest](https://docs.pytest.org/en/7.4.x/) as our test runner:
 ```sh
 python -m pytest --pyargs calamancy
 ```
-
 
 ## 👩‍💻 Usage
 
@@ -102,7 +102,7 @@ an instance of a [spaCy project](https://spacy.io/usage/projects).
 Here are the models for the latest release:
 
 | Model                       | Pipelines                                   | Description                                                                                                  |
-|-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| --------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | tl_calamancy_md (73.7 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
 | tl_calamancy_lg (431.9 MB)  | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
 | tl_calamancy_trf (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                   |
@@ -110,7 +110,7 @@ Here are the models for the latest release:
 ## 📓 API
 
 The calamanCy library contains utility functions that help you load its models
-and infer on your text.  You can think of these functions as "syntactic sugar"
+and infer on your text. You can think of these functions as "syntactic sugar"
 to the spaCy API. We highly recommend checking out the [spaCy Doc
 object](https://spacy.io/api/doc), as it provides the most flexibility.
 
@@ -124,32 +124,29 @@ so you can try them out first before downloading.
 
 Return the latest version of a calamanCy model.
 
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| `model`     | `str` | The string indicating the model.   |
-| **RETURNS** | `str` | The latest version of the model.   |
-
+| Argument    | Type  | Description                      |
+| ----------- | ----- | -------------------------------- |
+| `model`     | `str` | The string indicating the model. |
+| **RETURNS** | `str` | The latest version of the model. |
 
 #### <kbd>function</kbd> `models`
 
 Get a list of valid calamanCy models.
 
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| **RETURNS** | `List[str]` | List of valid calamanCy models   |
-
+| Argument    | Type        | Description                    |
+| ----------- | ----------- | ------------------------------ |
+| **RETURNS** | `List[str]` | List of valid calamanCy models |
 
 #### <kbd>function</kbd> `load`
 
 Load a calamanCy model as a [spaCy language pipeline](https://spacy.io/usage/processing-pipelines).
 
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| `model`     | `str` | The model to download. See the available models at [`calamancy.models()`](#function-models).   |
-| `force`     | `bool` | Force download the model. Defaults to `False`.   |
-| `**kwargs`     | `dict` | Additional arguments to `spacy.load()`.   |
-| **RETURNS** | [`Language`](https://spacy.io/api/language) | A spaCy language pipeline.   |
-
+| Argument    | Type                                        | Description                                                                                  |
+| ----------- | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `model`     | `str`                                       | The model to download. See the available models at [`calamancy.models()`](#function-models). |
+| `force`     | `bool`                                      | Force download the model. Defaults to `False`.                                               |
+| `**kwargs`  | `dict`                                      | Additional arguments to `spacy.load()`.                                                      |
+| **RETURNS** | [`Language`](https://spacy.io/api/language) | A spaCy language pipeline.                                                                   |
 
 ### Inference
 
@@ -166,30 +163,28 @@ is the token and the second part is its label.
 
 #### <kbd>method</kbd> `EntityRecognizer.__call__`
 
-Perform named entity recognition (NER).  By default, it uses the v0.1.0 of
+Perform named entity recognition (NER). By default, it uses the v0.1.0 of
 [TLUnified-NER](https://huggingface.co/datasets/ljvmiranda921/tlunified-ner)
-with the following entity labels: *PER (Person), ORG (Organization), LOC
-(Location).*
+with the following entity labels: _PER (Person), ORG (Organization), LOC
+(Location)._
 
-
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| `text`     | `str` | The text to get the entities from.   |
-| **YIELDS** | `Iterable[Tuple[str, str]]` | the token and its entity in IOB format.   |
+| Argument   | Type                        | Description                             |
+| ---------- | --------------------------- | --------------------------------------- |
+| `text`     | `str`                       | The text to get the entities from.      |
+| **YIELDS** | `Iterable[Tuple[str, str]]` | the token and its entity in IOB format. |
 
 #### <kbd>method</kbd> `Tagger.__call__`
 
 Perform parts-of-speech tagging. It uses the annotations from the
 [TRG](https://universaldependencies.org/treebanks/tl_trg/index.html) and
 [Ugnayan](https://universaldependencies.org/treebanks/tl_ugnayan/index.html)
-treebanks with the following tags: *ADJ, ADP, ADV, AUX, DET, INTJ, NOUN, PART,
-PRON, PROPN, PUNCT, SCONJ, VERB.*
+treebanks with the following tags: _ADJ, ADP, ADV, AUX, DET, INTJ, NOUN, PART,
+PRON, PROPN, PUNCT, SCONJ, VERB._
 
-
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| `text`     | `str` | The text to get the POS tags from.   |
-| **YIELDS** | `Iterable[Tuple[str, Tuple[str, str]]]` | the token and its coarse- and fine-grained POS tag.   |
+| Argument   | Type                                    | Description                                         |
+| ---------- | --------------------------------------- | --------------------------------------------------- |
+| `text`     | `str`                                   | The text to get the POS tags from.                  |
+| **YIELDS** | `Iterable[Tuple[str, Tuple[str, str]]]` | the token and its coarse- and fine-grained POS tag. |
 
 #### <kbd>method</kbd> `Parser.__call__`
 
@@ -197,19 +192,16 @@ Perform syntactic dependency parsing. It uses the annotations from the
 [TRG](https://universaldependencies.org/treebanks/tl_trg/index.html) and
 [Ugnayan](https://universaldependencies.org/treebanks/tl_ugnayan/index.html) treebanks.
 
-
-| Argument    | Type  | Description            |
-| ----------- | ----- | ---------------------- |
-| `text`     | `str` | The text to get the dependency relations from.   |
-| **YIELDS** | `Iterable[Tuple[str, str]]` | the token and its dependency relation.   |
-
+| Argument   | Type                        | Description                                    |
+| ---------- | --------------------------- | ---------------------------------------------- |
+| `text`     | `str`                       | The text to get the dependency relations from. |
+| **YIELDS** | `Iterable[Tuple[str, str]]` | the token and its dependency relation.         |
 
 ## 📝 Reporting Issues
 
 If you have questions regarding the usage of `calamanCy`, bug reports, or just
 want to give us feedback after giving it a spin, please use the [Issue
 tracker](https://github.com/ljvmiranda921/calamancy/issues). Thank you!
-
 
 ## 📜 Citation
 
