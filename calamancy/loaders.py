@@ -18,9 +18,9 @@ def _get_models_url() -> Dict[str, str]:
     tracked and the download functions below work as expected.
     """
     return {
-        "tl_calamancy_md-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/{GIT_REF}/tl_calamancy_md-0.1.0-py3-none-any.whl",
-        "tl_calamancy_lg-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_lg/resolve/{GIT_REF}/tl_calamancy_lg-0.1.0-py3-none-any.whl",
-        "tl_calamancy_trf-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_trf/resolve/{GIT_REF}/tl_calamancy_trf-0.1.0-py3-none-any.whl",
+        "tl_calamancy_md-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_md-0.1.0/resolve/{GIT_REF}/tl_calamancy_md-0.1.0-py3-none-any.whl",
+        "tl_calamancy_lg-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_lg-0.1.0/resolve/{GIT_REF}/tl_calamancy_lg-0.1.0-py3-none-any.whl",
+        "tl_calamancy_trf-0.1.0": f"https://huggingface.co/ljvmiranda921/tl_calamancy_trf-0.1.0/resolve/{GIT_REF}/tl_calamancy_trf-0.1.0-py3-none-any.whl",
     }
 
 
