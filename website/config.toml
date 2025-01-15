@@ -1,0 +1,42 @@
+baseURL = "https://ljvmiranda921.github.io/calamancy"
+languageCode = "en-us"
+title = "calamanCy"
+theme = "xmin"
+
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
+footnotereturnlinkcontents = "↩"
+
+[permalinks]
+note = "/note/:year/:month/:day/:slug/"
+post = "/post/:year/:month/:day/:slug/"
+
+[menu]
+[[menu.main]]
+name = "Home"
+url = ""
+weight = 1
+[[menu.main]]
+name = "News"
+url = "news/"
+weight = 2
+[[menu.main]]
+name = "Tutorials"
+url = "tutorials/"
+weight = 3
+[[menu.main]]
+name = "Who uses calamanCy"
+url = "users/"
+weight = 4
+
+[params]
+description = "A website built through Hugo and blogdown."
+footer = "&copy; [Lj V. Miranda](https://ljvmiranda921.github.io) 2023 -- {Year} | [Github](https://github.com/ljvmiranda921/) | [Twitter](https://twitter.com/ljvmiranda)"
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+codeFences = false
+
+[markup.goldmark.extensions.passthrough]
+enable = true
