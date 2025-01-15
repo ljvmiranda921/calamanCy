@@ -60,5 +60,5 @@ jobs:
       - name: "Run tests"
         shell: bash
         run: |
-          python -m pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/main/tl_calamancy_md-0.1.0-py3-none-any.whl --no-deps
+          python -m pip install https://huggingface.co/ljvmiranda921/tl_calamancy_md/resolve/main/tl_calamancy_md-any-py3-none-any.whl --no-deps
           python -m pytest --pyargs $MODULE_NAME
