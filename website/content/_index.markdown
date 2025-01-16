@@ -10,7 +10,7 @@ title: Home
 Its goal is to provide pipelines and datasets for core NLP tasks such as dependency parsing, morphological analysis, parts-of-speech tagging, and named entity recognition.
 calamanCy takes inspiration from other language-specific spaCy frameworks such as [DaCy](https://github.com/centre-for-humanities-computing/DaCy) (Danish) and [huSpaCy](https://github.com/huspacy/huspacy) (Hungarian).
 
-The name is based from _calamansi_, a citrus fruit native to the Philippines and used in traditional Filipino cuisine.
+The name is based on _calamansi_, a citrus fruit native to the Philippines and used in traditional Filipino cuisine.
 
 ## Running your first pipeline
 
@@ -24,7 +24,7 @@ nlp = calamancy.load("tl_calamancy_md-0.1.0")
 doc = nlp("Ako si Juan de la Cruz")
 ```
 
-You can see all available calamanCy models in this [HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
+You can see all available calamanCy models in this [🤗 HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
 Alternatively, you can use all the calamanCy models within the spaCy library:
 
 ```python

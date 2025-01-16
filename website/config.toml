@@ -24,9 +24,13 @@ name = "Tutorials"
 url = "tutorials/"
 weight = 3
 [[menu.main]]
+name = "🤗 Models"
+url = "https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87"
+weight = 4
+[[menu.main]]
 name = "Who uses calamanCy"
 url = "users/"
-weight = 4
+weight = 5
 
 [params]
 description = "A website built through Hugo and blogdown."
