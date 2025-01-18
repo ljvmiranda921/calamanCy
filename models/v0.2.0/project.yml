@@ -52,9 +52,9 @@ description: |
 
   | Model                       | Pipelines                                   | Description                                                                                                  |
   |-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-  | tl_calamancy_md ()   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
-  | tl_calamancy_lg ()  | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
-  | tl_calamancy_trf () | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors.                   |
+  | tl_calamancy_md (446 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
+  | tl_calamancy_lg (1.44 GB)  | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
+  | tl_calamancy_trf (3.98 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors.                   |
 
 vars:
   # Versioning
@@ -64,6 +64,8 @@ vars:
   gpu_id: 0
   vectors: ""
   size: ""
+  # Evaluation
+  eval_model: ""
 
 directories:
   - "assets"
@@ -73,6 +75,7 @@ directories:
   - "packages"
   - "scripts"
   - "training"
+  - "evals"
   - "vectors"
 
 assets:
@@ -337,3 +340,63 @@ commands:
     deps:
       - training/parser_trf/model-best
       - training/ner_trf/model-best
+
+  - name: "evaluate-model"
+    help: "Evaluate a model"
+    script:
+      - mkdir -p evals/${vars.eval_model}
+      - >-
+        python -m pip install
+        https://huggingface.co/ljvmiranda921/${vars.eval_model}/resolve/main/${vars.eval_model}-any-py3-none-any.whl
+      # Dependency parsing (TRG, Ugnayan, NewsCrawl-Test)
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/treebank/tl_ugnayan-ud-test.spacy
+        --output evals/${vars.eval_model}/dep_ugnayan.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/treebank/tl_trg-ud-test.spacy
+        --output evals/${vars.eval_model}/dep_trg.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/treebank/tl_newscrawl-ud-test.spacy
+        --output evals/${vars.eval_model}/dep_newscrawl.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      # Named Entity Recognition (TLUnified-NER test, Universal NER filipino, TF-Nerd)
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/ner/test.spacy
+        --output evals/${vars.eval_model}/ner_tlunified.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/ner/uner-ugnayan-test.spacy
+        --output evals/${vars.eval_model}/ner_uner-ugnayan.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/ner/uner-trg-test.spacy
+        --output evals/${vars.eval_model}/ner_uner-trg.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+      - >-
+        python -m spacy evaluate
+        ${vars.eval_model} corpus/ner/tfnerd-test.spacy
+        --output evals/${vars.eval_model}/ner-tfnerd.json
+        --gpu-id ${vars.gpu_id}
+        --per-component
+    deps:
+      - corpus/treebank/tl_newscrawl-ud-test.spacy
+      - corpus/treebank/tl_trg-ud-test.spacy
+      - corpus/treebank/tl_ugnayan-ud-test.spacy
+      - corpus/ner/test.spacy
+      - corpus/ner/uner-ugnayan-test.spacy
+      - corpus/ner/uner-trg-test.spacy
+      - corpus/ner/trfnerd-test.spacy
