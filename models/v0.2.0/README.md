@@ -113,6 +113,9 @@ in the project directory.
 | `assets/tl_newscrawl-ud-test.conllu` | URL | Test dataset for NewsCrawl |
 | `assets/tl_trg-ud-test.conllu` | URL | Test dataset for TRG |
 | `assets/tl_ugnayan-ud-test.conllu` | URL | Test dataset for Ugnayan |
+| `assets/uner_trg.iob2` | URL | Test dataset for Universal NER TRG |
+| `assets/uner_ugnayan.iob2` | URL | Test dataset for Universal NER Ugnayan |
+| `assets/tfnerd.txt` | URL | Test dataset for TF-NERD |
 | `assets/fasttext.tl.gz` | URL | Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia). |
 | `assets/floret` | Git | Floret repository for training floret and fastText models. |
 
