@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import typer
 import pandas as pd
@@ -19,10 +20,29 @@ def report(
         if model_dir.is_dir():
             model_name = model_dir.name
             for json_file in model_dir.glob("*.json"):
-                task_dataset = json_file.stem
+                task, dataset = json_file.stem.split("_")
                 data = read_json(json_file)
-                results.append((model_name, task_dataset, data))
-    breakpoint()
+                results.append((model_name, task, dataset, data))
+
+    msg.info(f"Found {len(results)} results in {indir}")
+
+    msg.text("Parsing syntactic annotation results...")
+    syn_rows = []
+    for result in results:
+        pass
+
+    msg.text("Parsing NER results...")
+    ner_rows = []
+
+
+def parse_syntactic_results(results: dict[str, Any]) -> dict[str, float]:
+    """Get tokenizer, lemmatization, morph, and parsing evals"""
+    pass
+
+
+def parse_ner_results(results: dict[str, Any]) -> dict[str, float]:
+    """Get NER evals"""
+    pass
 
 
 if __name__ == "__main__":
