@@ -15,7 +15,6 @@ def convert(
     # fmt: on
 ):
     if source == "uner":
-        # TODO: Get texts and labels
         texts = []
         labels = []
 
@@ -44,6 +43,32 @@ def convert(
         # TODO: Get texts and labels
         texts = []
         labels = []
+
+    if source == "tfnerd":
+        texts = []
+        labels = []
+        texts = []
+        labels = []
+        with infile.open("r", encoding="utf-8") as file:
+            current_text = []
+            current_labels = []
+            for line in file:
+                line = line.strip()
+                if line:
+                    parts = line.split(" ")
+                    if len(parts) >= 2:
+                        word, label = parts[0], parts[1].upper()
+                        if label == "B-PERSON" or label == "I-PERSON":
+                            label = label.replace("PERSON", "PER")
+                        elif label == "B-ORGANIZATION" or label == "I-ORGANIZATION":
+                            label = label.replace("ORGANIZATION", "ORG")
+                        elif label == "B-LOCATION" or label == "I-LOCATION":
+                            label = label.replace("LOCATION", "LOC")
+                        current_text.append(word)
+                        current_labels.append(label)
+            if current_text:
+                texts.append(current_text)
+                labels.append(current_labels)
     else:
         msg.fail(f"Unknown source: {source}", exits=1)
 
