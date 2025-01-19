@@ -10,3 +10,4 @@ sentencepiece
 protobuf
 typer
 pandas
+tabulate

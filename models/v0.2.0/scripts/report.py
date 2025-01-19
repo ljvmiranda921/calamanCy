@@ -28,11 +28,39 @@ def report(
 
     msg.text("Parsing syntactic annotation results...")
     syn_rows = []
-    for result in results:
-        pass
+    for model_name, task, dataset, data in results:
+        if task == "dep":
+            row = {
+                "model": model_name,
+                "dataset": dataset,
+                "token_acc": data.get("tokenizer").get("token_f"),
+                "lemma_acc": data.get("trainable_lemmatizer").get("lemma_acc"),
+                "tag_acc": data.get("tagger").get("tag_acc"),
+                "pos_acc": data.get("morphologizer").get("pos_acc"),
+                "morph_acc": data.get("morphologizer").get("morph_acc"),
+                "dep_uas": data.get("parser").get("dep_uas"),
+                "dep_las": data.get("parser").get("dep_las"),
+            }
+            syn_rows.append(row)
+
+    syn_df = pd.DataFrame(syn_rows).sort_values(by="dataset").reset_index(drop=True)
+    print(syn_df.to_markdown(index=False))
 
     msg.text("Parsing NER results...")
     ner_rows = []
+    for model_name, task, dataset, data in results:
+        if task == "ner":
+            row = {
+                "model": model_name,
+                "dataset": dataset,
+                "ents_p": data.get("ner").get("ents_p"),
+                "ents_r": data.get("ner").get("ents_r"),
+                "ents_f": data.get("ner").get("ents_f"),
+            }
+            ner_rows.append(row)
+
+    ner_df = pd.DataFrame(ner_rows).sort_values(by="dataset").reset_index(drop=True)
+    print(ner_df.to_markdown(index=False))
 
 
 def parse_syntactic_results(results: dict[str, Any]) -> dict[str, float]:
