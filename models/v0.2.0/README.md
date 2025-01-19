@@ -83,6 +83,7 @@ Commands are only re-run if their inputs have changed.
 | `train-ner-trf` | Train ner component |
 | `assemble` | Assemble pipelines to create a single spaCy piepline |
 | `assemble-trf` | Assemble pipelines to create a single spaCy piepline |
+| `setup-eval-data` | Convert remaining test datasets |
 | `evaluate-model` | Evaluate a model |
 
 ### ⏭ Workflows
@@ -97,6 +98,7 @@ inputs have changed.
 | `setup` | `setup-finetuning-data` &rarr; `setup-fasttext-vectors` &rarr; `build-floret` &rarr; `train-vectors-md` |
 | `tl-calamancy` | `train-parser` &rarr; `train-ner` &rarr; `assemble` |
 | `tl-calamancy-trf` | `train-parser-trf` &rarr; `train-ner-trf` &rarr; `assemble-trf` |
+| `evaluate` | `setup-eval-data` &rarr; `evaluate-model` |
 
 ### 🗂 Assets
 
