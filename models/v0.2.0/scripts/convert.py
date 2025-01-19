@@ -50,6 +50,7 @@ def convert(
     # Perform conversion to DocBin
     msg.info(f"Converting texts from {infile} to spaCy Doc objects")
     docs = [make_doc(tokens, label) for tokens, label in zip(texts, labels)]
+    breakpoint()
 
     # Save docbin to outfile
     doc_bin = DocBin(docs=docs)
@@ -57,7 +58,11 @@ def convert(
     msg.good(f"Saved {len(docs)} documents to {outfile}!")
 
 
-def make_doc(tokens: list[str], labels: list[str]) -> Doc:
+def make_doc(
+    tokens: list[str],
+    labels: list[str],
+    allow_labels=["PER", "ORG", "LOC"],
+) -> Doc:
     nlp = spacy.blank("tl")
     doc = Doc(nlp.vocab, words=tokens)
     ents = []
@@ -81,7 +86,11 @@ def make_doc(tokens: list[str], labels: list[str]) -> Doc:
     if start is not None:
         ents.append((start, len(tokens), entity))
 
-    doc.ents = [Span(doc, start, end, label=entity) for start, end, entity in ents]
+    doc.ents = [
+        Span(doc, start, end, label=entity)
+        for start, end, entity in ents
+        if entity in allow_labels
+    ]
     return doc
 
 
