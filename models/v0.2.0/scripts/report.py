@@ -63,15 +63,5 @@ def report(
     print(ner_df.to_markdown(index=False))
 
 
-def parse_syntactic_results(results: dict[str, Any]) -> dict[str, float]:
-    """Get tokenizer, lemmatization, morph, and parsing evals"""
-    pass
-
-
-def parse_ner_results(results: dict[str, Any]) -> dict[str, float]:
-    """Get NER evals"""
-    pass
-
-
 if __name__ == "__main__":
     typer.run(report)
