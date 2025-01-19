@@ -17,9 +17,11 @@ def report(
     results = []
     for model_dir in indir.iterdir():
         if model_dir.is_dir():
+            model_name = model_dir.name
             for json_file in model_dir.glob("*.json"):
+                task_dataset = json_file.stem
                 data = read_json(json_file)
-                results.append(data)
+                results.append((model_name, task_dataset, data))
     breakpoint()
 
 
