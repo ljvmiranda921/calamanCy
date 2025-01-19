@@ -357,7 +357,7 @@ commands:
     help: "Convert remaining test datasets"
     script:
       - python -m scripts.convert assets/uner_trg.iob2 corpus/ner/uner-trg-test.spacy --source uner
-      - python -m scripts.convert assets/uner_trg.iob2 corpus/ner/uner-ugnayan-test.spacy --source uner
+      - python -m scripts.convert assets/uner_ugnayan.iob2 corpus/ner/uner-ugnayan-test.spacy --source uner
       - python -m scripts.convert assets/tfnerd.txt corpus/ner/tfnerd-test.spacy --source tfnerd
     outputs:
       - corpus/ner/uner-trg-test.spacy
@@ -422,4 +422,4 @@ commands:
       - corpus/ner/test.spacy
       - corpus/ner/uner-ugnayan-test.spacy
       - corpus/ner/uner-trg-test.spacy
-      - corpus/ner/trfnerd-test.spacy
+      - corpus/ner/tfnerd-test.spacy
