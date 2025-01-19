@@ -133,6 +133,9 @@ workflows:
     - "train-parser-trf"
     - "train-ner-trf"
     - "assemble-trf"
+  evaluate:
+    - "setup-eval-data"
+    - "evaluate-model"
 
 commands:
   - name: "setup-finetuning-data"
@@ -349,6 +352,17 @@ commands:
     deps:
       - training/parser_trf/model-best
       - training/ner_trf/model-best
+
+  - name: "setup-eval-data"
+    help: "Convert remaining test datasets"
+    script:
+      - python -m scripts.convert assets/uner_trg.iob2 corpus/ner/uner-trg-test.spacy --source uner
+      - python -m scripts.convert assets/uner_trg.iob2 corpus/ner/uner-ugnayan-test.spacy --source uner
+      - python -m scripts.convert assets/tfnerd.txt corpus/ner/tfnerd-test.spacy --source tfnerd
+    outputs:
+      - corpus/ner/uner-trg-test.spacy
+      - corpus/ner/uner-ugnayan-test.spacy
+      - corpus/ner/tfnerd-test.spacy
 
   - name: "evaluate-model"
     help: "Evaluate a model"
