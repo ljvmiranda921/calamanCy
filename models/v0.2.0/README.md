@@ -54,9 +54,9 @@ I suggest checking the [language pipeline metadata](https://spacy.io/api/languag
 
 | Model                       | Pipelines                                   | Description                                                                                                  |
 |-----------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| tl_calamancy_md (446 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
-| tl_calamancy_lg (1.44 GB)  | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
-| tl_calamancy_trf (3.98 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors.                   |
+| tl_calamancy_md (214 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
+| tl_calamancy_lg (482 MB)  | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
+| tl_calamancy_trf (1.7 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors.                   |
 
 
 ## 📋 project.yml
