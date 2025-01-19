@@ -39,16 +39,10 @@ def convert(
                 texts.append(current_text)
                 labels.append(current_labels)
 
-    elif source == "tfnerd":
-        # TODO: Get texts and labels
-        texts = []
-        labels = []
-
     if source == "tfnerd":
         texts = []
         labels = []
-        texts = []
-        labels = []
+
         with infile.open("r", encoding="utf-8") as file:
             current_text = []
             current_labels = []
