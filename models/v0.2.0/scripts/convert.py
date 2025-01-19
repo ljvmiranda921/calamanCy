@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+import spacy
 import typer
 from spacy.tokens import Doc, DocBin, Span
 from wasabi import msg
@@ -39,22 +40,49 @@ def convert(
                 texts.append(current_text)
                 labels.append(current_labels)
 
-        converter = convert_ner
     elif source == "tfnerd":
         # TODO: Get texts and labels
         texts = []
         labels = []
-        converter = convert_ner
     else:
         msg.fail(f"Unknown source: {source}", exits=1)
 
     # Perform conversion to DocBin
-    docs = convert_ner(texts, labels)
-    # Save to outfile
+    msg.info(f"Converting texts from {infile} to spaCy Doc objects")
+    docs = [make_doc(tokens, label) for tokens, label in zip(texts, labels)]
+
+    # Save docbin to outfile
+    doc_bin = DocBin(docs=docs)
+    doc_bin.to_disk(outfile)
+    msg.good(f"Saved {len(docs)} documents to {outfile}!")
 
 
-def convert_ner(texts: list[list[str]], labels: list[list[str]]) -> list[Doc]:
-    pass
+def make_doc(tokens: list[str], labels: list[str]) -> Doc:
+    nlp = spacy.blank("tl")
+    doc = Doc(nlp.vocab, words=tokens)
+    ents = []
+    start = None
+    entity = None
+
+    for i, (token, label) in enumerate(zip(tokens, labels)):
+        if label.startswith("B-"):
+            if start is not None:
+                ents.append((start, i, entity))
+            start = i
+            entity = label[2:]
+        elif label.startswith("I-") and start is not None and entity == label[2:]:
+            continue
+        else:
+            if start is not None:
+                ents.append((start, i, entity))
+                start = None
+                entity = None
+
+    if start is not None:
+        ents.append((start, len(tokens), entity))
+
+    doc.ents = [Span(doc, start, end, label=entity) for start, end, entity in ents]
+    return doc
 
 
 if __name__ == "__main__":
