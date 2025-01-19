@@ -66,7 +66,6 @@ def convert(
     # Perform conversion to DocBin
     msg.info(f"Converting texts from {infile} to spaCy Doc objects (len={len(texts)})")
     docs = [make_doc(tokens, label) for tokens, label in zip(texts, labels)]
-    breakpoint()
 
     # Save docbin to outfile
     doc_bin = DocBin(docs=docs)
