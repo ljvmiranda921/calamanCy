@@ -39,7 +39,7 @@ def convert(
                 texts.append(current_text)
                 labels.append(current_labels)
 
-    if source == "tfnerd":
+    elif source == "tfnerd":
         texts = []
         labels = []
 
@@ -51,23 +51,20 @@ def convert(
                 if line:
                     parts = line.split(" ")
                     if len(parts) >= 2:
-                        word, label = parts[0], parts[1].upper()
-                        if label == "B-PERSON" or label == "I-PERSON":
-                            label = label.replace("PERSON", "PER")
-                        elif label == "B-ORGANIZATION" or label == "I-ORGANIZATION":
-                            label = label.replace("ORGANIZATION", "ORG")
-                        elif label == "B-LOCATION" or label == "I-LOCATION":
-                            label = label.replace("LOCATION", "LOC")
+                        word, label = parts[0], parts[1]
                         current_text.append(word)
                         current_labels.append(label)
-            if current_text:
-                texts.append(current_text)
-                labels.append(current_labels)
+                else:
+                    texts.append(current_text)
+                    labels.append(current_labels)
+                    current_text = []
+                    current_labels = []
+
     else:
         msg.fail(f"Unknown source: {source}", exits=1)
 
     # Perform conversion to DocBin
-    msg.info(f"Converting texts from {infile} to spaCy Doc objects")
+    msg.info(f"Converting texts from {infile} to spaCy Doc objects (len={len(texts)})")
     docs = [make_doc(tokens, label) for tokens, label in zip(texts, labels)]
     breakpoint()
 
@@ -98,6 +95,11 @@ def make_doc(
             continue
         else:
             if start is not None:
+                # Normalize entities
+                entity = entity.upper()[:3]
+                if entity == "GPE":
+                    entity = "LOC"
+                # Add entity to list
                 ents.append((start, i, entity))
                 start = None
                 entity = None
