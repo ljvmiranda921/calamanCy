@@ -8,3 +8,6 @@ build
 pip==22.0.2
 sentencepiece
 protobuf
+typer
+pandas
+tabulate
