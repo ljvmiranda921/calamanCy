@@ -27,9 +27,9 @@ The models are also [hosted on Huggingface](https://huggingface.co/ljvmiranda921
 
 | Model                                                                                | Pipelines                                   | Description                                                                                                       |
 | ------------------------------------------------------------------------------------ | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md) (73.7 MB)    | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)          |
-| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_md) (431.9 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k keys) |
-| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                        |
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md-0.1.0) (73.7 MB)    | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)          |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg-0.1.0) (431.9 MB)   | tok2vec, tagger, morphologizer, parser, ner | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k keys) |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf-0.1.0) (775.6 MB) | transformer, tagger, parser, ner            | GPU-optimized transformer Tagalog NLP model. Uses roberta-tagalog-base as context vectors.                        |
 
 ## Performance and baselines
 
@@ -51,9 +51,9 @@ The results show that our calamanCy pipelines are competitive (you can reproduce
 
 | Language Pipeline                                                         | Binary textcat (Hatespeech) | Multilabel textcat (Dengue) | NER (TLUnified-NER) | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
 | ------------------------------------------------------------------------- | --------------------------- | --------------------------- | ------------------- | ----------------------------------- | ----------------------------------- |
-| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md)   | 74.40 (0.05)                | 65.32 (0.04)                | 87.67 (0.03)        | 76.47                               | 54.40                               |
-| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg)   | 75.62 (0.02)                | 68.42 (0.01)                | 88.90 (0.01)        | 82.13                               | 70.32                               |
-| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) | 78.25 (0.06)                | 72.45 (0.02)                | 90.34 (0.02)        | 92.48                               | 80.90                               |
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md-0.1.0)   | 74.40 (0.05)                | 65.32 (0.04)                | 87.67 (0.03)        | 76.47                               | 54.40                               |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg-0.1.0)   | 75.62 (0.02)                | 68.42 (0.01)                | 88.90 (0.01)        | 82.13                               | 70.32                               |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf-0.1.0) | 78.25 (0.06)                | 72.45 (0.02)                | 90.34 (0.02)        | 92.48                               | 80.90                               |
 
 We also evaluated cross-lingual and multilingual approaches in our benchmarks:
 
