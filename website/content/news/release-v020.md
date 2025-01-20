@@ -37,3 +37,5 @@ This treebank contains 15,000 sentences with expert annotations on dependency re
 
 This is all thanks to the annotation efforts made by [Elsie Or](https://linguistics.upd.edu.ph/building-a-tagalog-universal-dependencies-treebank/), [Angelina Aquino](https://angelaquino.github.io/), and their [team](https://linguistics.upd.edu.ph/building-a-tagalog-universal-dependencies-treebank/) from the University of the Philippines!
 I was also partly involved in the project, focusing on post-processing and on training the baseline dependency parsers, so expect a paper from us soon!
+
+All the v0.2.0 models now use the UD-NewsCrawl treebank as their training set. I've also retired the TRG and Ugnayan treebanks and designated them as test sets for evaluation. Below, you'll find the syntactic parsing results for (1) the test split of UD-NewsCrawl and (2) the full datasets of TRG and Ugnayan.
