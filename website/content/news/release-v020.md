@@ -94,17 +94,29 @@ You can definitely see performance improvemnts across our previous benchmarks wh
 
 ## New NER evaluations
 
-| model            | dataset      |   ents_p |   ents_r |   ents_f |
-|:-----------------|:-------------|---------:|---------:|---------:|
-| tl_calamancy_lg  | uner-trg     |   100    |    95.65 |    97.78 |
-| tl_calamancy_trf | uner-trg     |    57.5  |   100    |    73.02 |
-| tl_calamancy_md  | uner-trg     |   100    |    95.65 |    97.78 |
+Finally, I also added new NER evaluations based on new datasets published within the past year.
+One of which, [Universal NER](https://arxiv.org/abs/2311.09122), is a project I contributed to.
+It is a fun project&mdash; the goal is to follow the footsteps of Universal Dependencies and create a single annotation schema for NER.
 
-| model            | dataset      |   ents_p |   ents_r |   ents_f |
+For Tagalog, we took the existing treebanks back then (TRG and Ugnayan) and annotated them in a [common annotation guideline](https://www.universalner.org/guidelines/).
+Since UD-NewsCrawl is a new treebank, there are still no NER annotations for it yet.
+If you're interested to help out and annotate NewsCrawl for NER, then [let us know](https://www.universalner.org/)! 
+
+#### UD-TRG (Universal NER) results
+
+| Model            |  Precision | Recall |F-score |
+|:-----------------|---------:|---------:|---------:|
+| tl_calamancy_md |    57.5  |   100    |    73.02 |
+| tl_calamancy_lg  |   100    |    95.65 |    97.78 |
+| tl_calamancy_trf  |   100    |    95.65 |    97.78 |
+
+#### UD-Ugnayan (Universal NER) results
+
+| Model            |  Precision | Recall |F-score |
 |:-----------------|:-------------|---------:|---------:|---------:|
+| tl_calamancy_md  | uner-ugnayan |    58.97 |    69.7  |    63.89 |
 | tl_calamancy_lg  | uner-ugnayan |    60.47 |    78.79 |    68.42 |
 | tl_calamancy_trf | uner-ugnayan |    63.64 |    84.85 |    72.73 |
-| tl_calamancy_md  | uner-ugnayan |    58.97 |    69.7  |    63.89 |
 
 
 | model            | dataset      |   ents_p |   ents_r |   ents_f |
