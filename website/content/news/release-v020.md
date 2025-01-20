@@ -121,3 +121,6 @@ For the evals below, I only evaluation on the three labels I had and converted a
 ## Final thoughts
 
 And that's it! 
+I hope you find these new models useful for Tagalog NLP.
+Be sure to install [calamanCy](https://github.com/ljvmiranda921/calamanCy), and feel free to [submit any Issues on GitHub](https://github.com/ljvmiranda921/calamanCy/issues) if you have questions, bug reports, or feature requests!
+Finally, I'd love to hear from you: if you're using calamanCy for a research paper or an application, then don't hesitate to [let me know](https://github.com/ljvmiranda921/calamanCy/issues/new?template=i-m-a-calamancy-user-.md)!
