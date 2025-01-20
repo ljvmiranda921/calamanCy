@@ -17,8 +17,10 @@ I am excited to highlight three features for this version:
 
 You can find all the models in this [HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87):
 
-| Model                                                                              | Pipelines                                                             | Description                                                                                                  |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md) (214 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner     | CPU-optimized Tagalog NLP model. Pretrained using the TLUnified dataset. Using floret vectors (50k keys)     |
-| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg) (482 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner     | CPU-optimized large Tagalog NLP model. Pretrained using the TLUnified dataset. Using fastText vectors (714k) |
-| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) (1.7 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors.                       |
+| Model                                                                              | Pipelines                                                             | Description                                                                            |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md) (214 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner     | CPU-optimized Tagalog NLP model. Using floret vectors (50k keys)                       |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg) (482 MB)   | tok2vec, tagger, trainable_lemmatizer, morphologizer, parser, ner     | CPU-optimized large Tagalog NLP model. Using fastText vectors (714k)                   |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) (1.7 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors. |
+
+## Improved syntactic parsing from a larger treebank
