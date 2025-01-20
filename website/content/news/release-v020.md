@@ -9,11 +9,11 @@ I am excited to highlight three features for this version:
 
 1. **Improved syntactic parsing from a larger treebank.** Before, we're training our dependency parser and morphological annotation models using a smaller treebank (~150 examples combined). Now, we have access to [UD-NewsCrawl](https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl), an expert-annotated treebank with 100x more examples! This allows us to train better syntactic parsing models for dependency parsing, POS tagging, and morphological annotation!
 
-2. **Modern spaCy components.** Due to the larger treebank, we now have the means to train a lemmatizer using spaCy's [neural edit-tree lemmatization](https://explosion.ai/blog/edit-tree-lemmatizer) approach.
+2. **Updated spaCy components.** Due to the larger treebank, we now have the means to train a lemmatizer using spaCy's [neural edit-tree lemmatization](https://explosion.ai/blog/edit-tree-lemmatizer) approach.
    This lemmatizer removes the need to handcraft rules and rely solely on statistical methods.
    In addition, the [`tl_calamancy_trf`](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) pipeline now uses the modern [mDeBERTa-v3](https://huggingface.co/microsoft/mdeberta-v3-base) pretrained model as its base.
 
-3. **More evaluations.** New datasets have been built since the [last release of calamanCy](/calamanCy/news/release-v010/) and I've incorporated them here. This includes [Universal NER](https://www.universalner.org/) (Mayhew et al., 2024) and [TF-NERD](https://dl.acm.org/doi/abs/10.1145/3639233.3639341) (Ramos et al., 2024). I've also removed the TRG and Ugnayan treebanks from the training set and treated them as test sets (as they should be).
+3. **New NER evaluations.** New datasets have been built since the [last release of calamanCy](/calamanCy/news/release-v010/) and I've incorporated them here. This includes [Universal NER](https://www.universalner.org/) (Mayhew et al., 2024) and [TF-NERD](https://dl.acm.org/doi/abs/10.1145/3639233.3639341) (Ramos et al., 2024). I've also removed the TRG and Ugnayan treebanks from the training set and treated them as test sets (as they should be).
 
 You can find all the models in this [HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87):
 
@@ -40,8 +40,44 @@ I was also partly involved in the project, focusing on post-processing and on tr
 
 All the v0.2.0 models now use the UD-NewsCrawl treebank as their training set. I've also retired the TRG and Ugnayan treebanks and designated them as test sets for evaluation. Below, you'll find the syntactic parsing results for (1) the test split of UD-NewsCrawl and (2) the full datasets of TRG and Ugnayan.
 
-## Modern spaCy components
+#### UD-NewsCrawl (test split) results
 
-## More evaluations
+This treebank consists of annotated text extracted from the Leipzig Tagalog Corpus. 
+Data included in the Leipzig Tagalog Corpus were crawled from Tagalog-language online news sites by the Leipzig University Institute for Computer Science.
+
+| Model            |   Token Acc. |   Lemma Acc. |   Tag Acc. |   POS  |   Morph Acc. |   Dep UAS |   Dep LAS |
+|:-----------------|------------:|------------:|----------:|----------:|------------:|----------:|----------:|
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md)  |       95.01 |       90.09 |     90.85 |     95    |       95.34 |     83.45 |     77.13 |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg)  |       95.01 |       89.79 |     90.62 |     94.99 |       95.04 |     82.9  |     76.5  |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) |       95.01 |       90.46 |     91.34 |     95.43 |       95.32 |     85.09 |     78.83 |
+
+
+
+#### UD-TRG results
+
+This treebank was manually annotated using sentences from a grammar book.
+The Tagalog treebank, so far, consists of 55 sentences with sources from the grammar books Tagalog Reference Grammar (Schachter and Otanes 1972) and Essential Tagalog Grammar: A Reference for Learners of Tagalog (De Vos 2010). The annotations are done manually.
+
+| Model            |   Token Acc. |   Lemma Acc. |   Tag Acc. |   POS  |   Morph Acc. |   Dep UAS |   Dep LAS |
+|:-----------------|------------:|------------:|----------:|----------:|------------:|----------:|----------:|
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md)  |      100    |       79.84 |     58.17 |     78.2  |       73.16 |     93.29 |     66.94 |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg) |      100    |       78.88 |     56.68 |     77.93 |       71.53 |     94.28 |     67.61 |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) |      100    |       80.79 |     58.31 |     78.47 |       72.89 |     94.95 |     67.77 |
+
+#### UD-Ugnayan results
+
+Ugnayan is a manually annotated Tagalog treebank currently composed of educational fiction and nonfiction text. 
+The treebank is under development at the University of the Philippines.
+
+| Model            |   Token Acc. |   Lemma Acc. |   Tag Acc. |   POS  |   Morph Acc. |   Dep UAS |   Dep LAS |
+|:-----------------|------------:|------------:|----------:|----------:|------------:|----------:|----------:|
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md)  |       98.08 |       82.29 |     49.16 |     82.82 |       59.41 |     79.7  |     57.32 |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg)  |       98.08 |       82.29 |     48.58 |     81.67 |       58.95 |     80.92 |     58.47 |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) |       98.08 |       82.55 |     48.48 |     82.21 |       58.75 |     80.78 |     58.61 |
+
+
+## Updated spaCy components
+
+## New NER evaluations
 
 ## What's next?
