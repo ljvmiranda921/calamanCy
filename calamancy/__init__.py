@@ -1,4 +1,4 @@
-__version__ = "0.1.4"
+__version__ = "0.2.0"
 
 from .inference import EntityRecognizer, Parser, Tagger
 from .loaders import get_latest_version, load, models
