@@ -11,3 +11,5 @@ I am excited to highlight three features for this version:
 
 2. **New trainable lemmatizer component.** Due to the larger treebank, we now have the means to train a lemmatizer using spaCy's [neural edit-tree lemmatization](https://explosion.ai/blog/edit-tree-lemmatizer) approach.
    This lemmatizer removes the need to handcraft rules and rely solely on statistical methods.
+
+3. **More evaluations.** New datasets have been built since the [last release of calamanCy](/calamanCy/news/release-v010/) and I've incorporated them here. This includes [Universal NER](https://www.universalner.org/) (Mayhew et al., 2024) and [TF-NERD](https://dl.acm.org/doi/abs/10.1145/3639233.3639341) (Ramos et al., 2024). I've also removed the TRG and Ugnayan treebanks from the training set and treated them as test sets (as they should be).
