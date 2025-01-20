@@ -78,6 +78,40 @@ The treebank is under development at the University of the Philippines.
 
 ## Updated spaCy components
 
+This release also updates the [spaCy components](https://spacy.io/usage/processing-pipelines) included in the pipelines.
+Think of a component as a specific step of a pipeline that performs a particular task, such as [POS tagging](https://spacy.io/api/tagger) or [named-entity recognition](https://spacy.io/api/entityrecognizer).
+For v0.2.0, we added a new [trainable lemmatizer](https://spacy.io/api/edittreelemmatizer) to take advantage of the treebank we acquired.
+
+In addition, we also updated the transformer model and moved on from RoBERTa Tagalog (which served us quite well in the first release) to mDeBERTa.
+From internal experiments, we saw that the updated multilingual transformer served as a more performance base model than a Tagalog-focused one.
+
+You can definitely see performance improvemnts across our previous benchmarks when comparing the previous versions of the transformer-based pipeline on TLUnifed-NER (NER), Hatespeech (binary text categorization) and Dengue (mutilabel text categorization) datasets:
+
+| Model            |   NER (TLUnified-NER) | Binary textcat (Hatespeech) | Multilabel textcat (Dengue)
+|:-----------------|---------:|-----:| ----|
+| tl_calamancy_trf v0.1.0  |    90.34 | 78.25 | 72.45 |
+| tl_calamancy_trf v0.2.0  |    **93.31** | **84.54** | **79.00** |
+
 ## New NER evaluations
+
+| model            | dataset      |   ents_p |   ents_r |   ents_f |
+|:-----------------|:-------------|---------:|---------:|---------:|
+| tl_calamancy_lg  | uner-trg     |   100    |    95.65 |    97.78 |
+| tl_calamancy_trf | uner-trg     |    57.5  |   100    |    73.02 |
+| tl_calamancy_md  | uner-trg     |   100    |    95.65 |    97.78 |
+
+| model            | dataset      |   ents_p |   ents_r |   ents_f |
+|:-----------------|:-------------|---------:|---------:|---------:|
+| tl_calamancy_lg  | uner-ugnayan |    60.47 |    78.79 |    68.42 |
+| tl_calamancy_trf | uner-ugnayan |    63.64 |    84.85 |    72.73 |
+| tl_calamancy_md  | uner-ugnayan |    58.97 |    69.7  |    63.89 |
+
+
+| model            | dataset      |   ents_p |   ents_r |   ents_f |
+|:-----------------|:-------------|---------:|---------:|---------:|
+| tl_calamancy_lg  | tfnerd       |    67.26 |    70.58 |    68.88 |
+| tl_calamancy_trf | tfnerd       |    72.28 |    80.54 |    76.18 |
+| tl_calamancy_md  | tfnerd       |    68.36 |    70.78 |    69.55 |
+
 
 ## What's next?
