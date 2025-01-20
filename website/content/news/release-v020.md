@@ -24,3 +24,16 @@ You can find all the models in this [HuggingFace collection](https://huggingface
 | [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) (1.7 GB) | transformer, tagger, trainable_lemmatizer, morphologizer, parser, ner | GPU-optimized transformer Tagalog NLP model. Uses mdeberta-v3-base as context vectors. |
 
 ## Improved syntactic parsing from a larger treebank
+
+One of the biggest updates in v0.2.0 is that we're now using the [UD-NewsCrawl treebank](https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl) for our syntactic parsing models.
+This treebank contains 15,000 sentences with expert annotations on dependency relations, morphology, and tokenization&mdash; a huge jump from the ~150 examples we had before.
+
+<iframe
+  src="https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl/embed/viewer"
+  frameborder="0"
+  width="100%"
+  height="560px"
+></iframe>
+
+This is all thanks to the annotation efforts made by [Elsie Or](https://linguistics.upd.edu.ph/building-a-tagalog-universal-dependencies-treebank/), [Angelina Aquino](https://angelaquino.github.io/), and their [team](https://linguistics.upd.edu.ph/building-a-tagalog-universal-dependencies-treebank/) from the University of the Philippines!
+I was also partly involved in the project, focusing on post-processing and on training the baseline dependency parsers, so expect a paper from us soon!
