@@ -43,7 +43,16 @@ def report(
             }
             syn_rows.append(row)
 
-    syn_df = pd.DataFrame(syn_rows).sort_values(by="dataset").reset_index(drop=True)
+    def format_table(df: pd.DataFrame) -> pd.DataFrame:
+        df[df.select_dtypes(include="number").columns] *= 100
+        df[df.select_dtypes(include="number").columns] = df.select_dtypes(
+            include="number"
+        ).round(2)
+        return df
+
+    syn_df = format_table(
+        pd.DataFrame(syn_rows).sort_values(by="dataset").reset_index(drop=True)
+    )
     print(syn_df.to_markdown(index=False))
 
     msg.text("Parsing NER results...")
@@ -59,7 +68,9 @@ def report(
             }
             ner_rows.append(row)
 
-    ner_df = pd.DataFrame(ner_rows).sort_values(by="dataset").reset_index(drop=True)
+    ner_df = format_table(
+        pd.DataFrame(ner_rows).sort_values(by="dataset").reset_index(drop=True)
+    )
     print(ner_df.to_markdown(index=False))
 
 
