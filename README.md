@@ -20,6 +20,7 @@ reproduction of results, and guides on usage.
 
 ## 📰 News
 
+- [2025-01-19] Released v0.2.0 models with significantly improved performance on syntactic parsing and NER! All thanks to the newly-released [UD-NewsCrawl](https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl) treebank! See full changes in this [blogpost](https://ljvmiranda921.github.io/calamanCy/news/release-v020/).
 - [2024-08-01] Released new NER-only models based on [GLiNER](https://github.com/urchade/GLiNER)! You can find the models in [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87). Span-Marker and calamanCy models are still superior, but GLiNER offers a lot of extensibility on unseen entity labels. You can find the training pipeline [here](https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0-gliner).
 - [2024-07-02] I talked about calamanCy during my guest lecture, "Artisanal Filipino NLP Resources in the time of Large Language Models," @ DLSU Manila. You can find the slides (and an accompanying blog post) [here](https://ljvmiranda921.github.io/notebook/2024/07/02/talk-dlsu/).
 - [2023-12-05] We released the paper [**calamanCy: A Tagalog Natural Language Processing Toolkit**](https://aclanthology.org/2023.nlposs-1.1/) and will be presented in the NLP-OSS workshop at EMNLP 2023! Feel free to check out the [Tagalog NLP collection in HuggingFace](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
