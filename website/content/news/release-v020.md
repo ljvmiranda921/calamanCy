@@ -1,6 +1,6 @@
 ---
 title: Release v0.2.0 - Better syntactic parsing and high-quality evaluations
-date: "2025-01-15"
+date: "2025-01-19"
 ---
 
 Hi everyone, I am excited to release the v0.2.0 models for calamanCy.
