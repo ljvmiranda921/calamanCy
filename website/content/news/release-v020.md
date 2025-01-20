@@ -102,28 +102,22 @@ For Tagalog, we took the existing treebanks back then (TRG and Ugnayan) and anno
 Since UD-NewsCrawl is a new treebank, there are still no NER annotations for it yet.
 If you're interested to help out and annotate NewsCrawl for NER, then [let us know](https://www.universalner.org/)! 
 
-#### UD-TRG (Universal NER) results
+| Model            |  P (TRG) | R (TRG) |F (TRG) | P (Ugnayan) | R (Ugnayan) | F (Ugnayan)
+|:-----------------|---------:|---------:|---------:| ---:| -----:| ----:|
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md) |    57.5  |   100    |    73.02 | 58.97 | 69.70 | 63.89 |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg)  |   100    |    95.65 |    97.78 | 60.47 | 78.79 | 68.42 |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf)|   100    |    95.65 |    97.78 | 63.64 | 84.84 | 72.73 |
 
-| Model            |  Precision | Recall |F-score |
+I also find this very interesting NER dataset called TF-NERD, which includes more named entity labels than PER (person), ORG (organization), and LOC (location).
+For the evals below, I only evaluation on the three labels I had and converted all GPE (geopolitical entities) into LOC for fairness.
+
+| model            |  P (TF-NERD) | R (TF-NERD) |  F (TF-NERD) |
 |:-----------------|---------:|---------:|---------:|
-| tl_calamancy_md |    57.5  |   100    |    73.02 |
-| tl_calamancy_lg  |   100    |    95.65 |    97.78 |
-| tl_calamancy_trf  |   100    |    95.65 |    97.78 |
-
-#### UD-Ugnayan (Universal NER) results
-
-| Model            |  Precision | Recall |F-score |
-|:-----------------|:-------------|---------:|---------:|---------:|
-| tl_calamancy_md  | uner-ugnayan |    58.97 |    69.7  |    63.89 |
-| tl_calamancy_lg  | uner-ugnayan |    60.47 |    78.79 |    68.42 |
-| tl_calamancy_trf | uner-ugnayan |    63.64 |    84.85 |    72.73 |
+| [tl_calamancy_md](https://huggingface.co/ljvmiranda921/tl_calamancy_md)  |    68.36 |    70.78 |    69.55 |
+| [tl_calamancy_lg](https://huggingface.co/ljvmiranda921/tl_calamancy_lg) |    67.26 |    70.58 |    68.88 |
+| [tl_calamancy_trf](https://huggingface.co/ljvmiranda921/tl_calamancy_trf) |    72.28 |    80.54 |    76.18 |
 
 
-| model            | dataset      |   ents_p |   ents_r |   ents_f |
-|:-----------------|:-------------|---------:|---------:|---------:|
-| tl_calamancy_lg  | tfnerd       |    67.26 |    70.58 |    68.88 |
-| tl_calamancy_trf | tfnerd       |    72.28 |    80.54 |    76.18 |
-| tl_calamancy_md  | tfnerd       |    68.36 |    70.78 |    69.55 |
+## Final thoughts
 
-
-## What's next?
+And that's it! 
