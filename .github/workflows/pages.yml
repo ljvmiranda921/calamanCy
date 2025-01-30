@@ -46,7 +46,7 @@ jobs:
       - name: Build with Hugo
         run: cd website && ls && hugo --minify --baseURL ${{ steps.pages.outputs.base_url }}
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./website/public
 
@@ -60,4 +60,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
