@@ -2,6 +2,7 @@ baseURL = "https://ljvmiranda921.github.io/calamanCy"
 languageCode = "en-us"
 title = "calamanCy"
 theme = "xmin"
+enableRobotsTXT = true
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 footnotereturnlinkcontents = "↩"
@@ -47,3 +48,4 @@ enable = true
 [markup.goldmark.extensions.passthrough.delimiters]
 block = [['\[', '\]'], ['$$', '$$']]
 inline = [['\(', '\)']]
+
