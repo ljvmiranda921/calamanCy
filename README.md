@@ -72,7 +72,7 @@ transformer model. To see a list of all available models, run:
 
 ```python
 import calamancy
-from model in calamancy.models():
+for model in calamancy.models():
     print(model)
 
 # ..
