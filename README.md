@@ -39,24 +39,20 @@ pip install calamanCy
 
 ### Development
 
+This step assumes you have [`uv`](https://docs.astral.sh/uv/) installed.
 If you are developing calamanCy, first clone the repository:
 
 ```sh
 git clone git@github.com:ljvmiranda921/calamanCy.git
 ```
 
-Then, create a virtual environment and install the dependencies:
+Then, install the dependencies:
 
 ```sh
-python -m venv venv
-venv/bin/pip install -e .  # requires pip>=23.0
-venv/bin/pip install .[dev]
-
+uv sync --dev
 # Activate the virtual environment
-source venv/bin/activate
+source .venv/bin/activate
 ```
-
-or alternatively, use `make dev`.
 
 ### Running the tests
 
