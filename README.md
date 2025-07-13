@@ -20,6 +20,7 @@ reproduction of results, and guides on usage.
 
 ## 📰 News
 
+- [2025-05-15] [UD-NewsCrawl](https://arxiv.org/abs/2505.20428), a work that currently powers calamanCy v2 and where I'm one of the lead authors, has been accepted at ACL 2025! I will be presenting this work in Vienna on July 29! See you :)
 - [2025-01-19] Released v0.2.0 models with significantly improved performance on syntactic parsing and NER! All thanks to the newly-released [UD-NewsCrawl](https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl) treebank! See full changes in this [blogpost](https://ljvmiranda921.github.io/calamanCy/news/release-v020/).
 - [2024-08-01] Released new NER-only models based on [GLiNER](https://github.com/urchade/GLiNER)! You can find the models in [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87). Span-Marker and calamanCy models are still superior, but GLiNER offers a lot of extensibility on unseen entity labels. You can find the training pipeline [here](https://github.com/ljvmiranda921/calamanCy/tree/master/models/v0.1.0-gliner).
 - [2024-07-02] I talked about calamanCy during my guest lecture, "Artisanal Filipino NLP Resources in the time of Large Language Models," @ DLSU Manila. You can find the slides (and an accompanying blog post) [here](https://ljvmiranda921.github.io/notebook/2024/07/02/talk-dlsu/).
