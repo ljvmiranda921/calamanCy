@@ -3,14 +3,14 @@
 # 🪐 spaCy Project: Reproducing calamanCy benchmarks
 
 This is a spaCy project that benchmarks calamanCy on a variety of tasks.
-You can use this project to reproduce the experiments in the write-up. 
+You can use this project to reproduce the experiments in the write-up.
 First, you need to install the required dependencies:
 
 ```
 pip install -r requirements.txt
 ```
 
-This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.
 Now run the set-up commands:
 
 ```
@@ -18,23 +18,23 @@ python -m spacy project assets
 python -m spacy project run setup
 ```
 
-This step downloads all the necessary datasets and models for benchmarking use. 
-You can then run one of the [workflows](#-) below. 
+This step downloads all the necessary datasets and models for benchmarking use.
+You can then run one of the [workflows](#-) below.
 They are organized by task and a dataset identifier (e.g., `textcat-hatespeech`, `textcat_multilabel-dengue`).
 You can find the training configuration (i.e., hyperparameters, architectures, etc.) in the `configs/` directory.
 
 > **Note**
-> Some commands may take some time to run. 
+> Some commands may take some time to run.
 > This is especially true for the transformer training and evaluation pipelines.
 > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
-The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
-You should be able to use them independently from one another. 
+The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications.
+You should be able to use them independently from one another.
 
 
 ## Benchmarking results
 
-We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set. 
+We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set.
 We did this for five (5) trials and we report their average. Since the combined treebank has little data, we opted to evaluate it using k-fold cross-validation:
 
 - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
@@ -48,8 +48,8 @@ We did this for five (5) trials and we report their average. Since the combined 
 | tl_calamancy_lg        | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 70.32                               |
 | tl_calamancy_trf       | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.90                               |
 
-We also evaluated cross-lingual and multilingual approaches in our benchmarks: 
-- **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines. 
+We also evaluated cross-lingual and multilingual approaches in our benchmarks:
+- **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines.
   We came up with Indonesian (id), Vietnamese (vi), Ukranian (uk), Romanian (ro), and Catalan (ca). However, only uk, ca, ro have spaCy pipelines. We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
 
 | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |

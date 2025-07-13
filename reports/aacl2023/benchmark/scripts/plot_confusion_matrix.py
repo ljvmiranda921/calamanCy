@@ -1,14 +1,14 @@
 from pathlib import Path
-from wasabi import msg
 from typing import Iterable
 
 import matplotlib.pylab as pylab
 import matplotlib.pyplot as plt
+import numpy as np
 import spacy
 import typer
-import numpy as np
-from spacy.tokens import Doc, DocBin
 from sklearn.metrics import confusion_matrix
+from spacy.tokens import Doc, DocBin
+from wasabi import msg
 
 from .constants import MATPLOTLIB_STYLE
 

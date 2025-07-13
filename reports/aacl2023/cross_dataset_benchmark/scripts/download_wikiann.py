@@ -3,10 +3,9 @@ from typing import Dict, Optional
 
 import spacy
 import typer
+from datasets import load_dataset
 from spacy.tokens import Doc, DocBin
 from wasabi import msg
-
-from datasets import load_dataset
 
 # Reference: https://huggingface.co/datasets/wikiann#data-fields
 WIKIANN_IOB = ["O", "B-PER", "I-PER", "B-ORG", "I-LOC", "B-LOC", "I-LOC"]

@@ -1,8 +1,8 @@
-spacy>=3.4.0
 plotext==4.2.0  # for train-curve
+spacy>=3.4.0
 spacy-transformers
-wasabi
-typer
 srsly
 tqdm
+typer
 wandb
+wasabi

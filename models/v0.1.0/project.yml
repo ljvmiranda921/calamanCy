@@ -21,7 +21,7 @@ description: |
   execute the corresponding workflow like so:
 
   ```
-  python -m spacy project run tl-calamancy-md 
+  python -m spacy project run tl-calamancy-md
   ```
 
   ## Model information
@@ -145,13 +145,13 @@ commands:
       # we are merging these two treebanks because the amount of data is too small
       - mkdir -p corpus/treebank/
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/treebank/UD_Tagalog-Ugnayan/tl_ugnayan-ud-test.conllu assets/treebank
         --converter conllu
         --n-sents 1
         --merge-subtokens
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/treebank/UD_Tagalog-TRG/tl_trg-ud-test.conllu assets/treebank
         --converter conllu
         --n-sents 1
@@ -213,17 +213,17 @@ commands:
       - mkdir -p assets/vectors/floret-tl-md/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
+        -input assets/tlunified/train.txt
         -output assets/vectors/floret-tl-md/vectors
         -dim 200
         -minn 3
-        -maxn 5 
+        -maxn 5
         -mode floret
         -hashCount 2
         -bucket 50000
       - mkdir -p vectors/floret-tl-md
       - >-
-        python -m spacy init vectors 
+        python -m spacy init vectors
         tl assets/vectors/floret-tl-md/vectors.floret vectors/floret-tl-md
         --mode floret
     deps:
@@ -276,7 +276,7 @@ commands:
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
         --initialize.init_tok2vec pretraining/init-tok2vec-md/model-last.bin
-        --paths.vectors vectors/floret-tl-md 
+        --paths.vectors vectors/floret-tl-md
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/ner/train.spacy
@@ -313,17 +313,17 @@ commands:
       - mkdir -p assets/vectors/floret-tl-lg/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
+        -input assets/tlunified/train.txt
         -output assets/vectors/floret-tl-lg/vectors
         -dim 200
         -minn 3
-        -maxn 5 
+        -maxn 5
         -mode floret
         -hashCount 2
         -bucket 200000
       - mkdir -p vectors/floret-tl-lg
       - >-
-        python -m spacy init vectors 
+        python -m spacy init vectors
         tl assets/vectors/floret-tl-lg/vectors.floret vectors/floret-tl-lg
         --mode floret
     deps:
@@ -433,7 +433,7 @@ commands:
         configs/ner_trf.cfg
         --nlp.lang ${vars.lang}
         --output training/ner_trf/
-        --components.transformer.model.name jcblaise/roberta-tagalog-base 
+        --components.transformer.model.name jcblaise/roberta-tagalog-base
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
         --gpu-id ${vars.gpu_id}
@@ -469,7 +469,7 @@ commands:
     script:
       - huggingface-cli login --token ${env.HUGGINGFACE_TOKEN}
       - >-
-        python -m spacy huggingface-hub push packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl 
+        python -m spacy huggingface-hub push packages/tl_calamancy_md-${vars.version}/dist/tl_calamancy_md-${vars.version}-py3-none-any.whl
         --msg "(calamanCy ${vars.version}): ${vars.publish_message}"
         --verbose
       - >-

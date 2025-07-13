@@ -13,7 +13,7 @@ description: |
 
   Then, I benchmarked word vector and transformer-based spaCy pipelines in
   different settings (e.g., with or without pretraining, fastText/floret static
-  vectors, etc.). 
+  vectors, etc.).
 
   Finally, I came up with a (1) word vector-based pipeline that consists of
   [floret vectors](https://github.com/explosion/floret) and [tok2vec weight
@@ -40,7 +40,7 @@ description: |
   `ner-trf`) workflow to preprocess data, train a model, and evaluate results.
 
   ```sh
-  python3 -m scripts.benchmark experiment_id [OPTIONS] 
+  python3 -m scripts.benchmark experiment_id [OPTIONS]
   ```
 
   For example, if we want to conduct a pipeline that uses fastText vectors for
@@ -223,7 +223,7 @@ commands:
       - mkdir -p assets/vectors/tl-fasttext-tlunified/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
+        -input assets/tlunified/train.txt
         -output assets/vectors/tl-fasttext-tlunified/vectors
         -dim ${vars.vectors_dim}
         -minn ${vars.vectors_minn}
@@ -231,7 +231,7 @@ commands:
       - mkdir -p assets/vectors/tl-floret-tlunified/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified/train.txt 
+        -input assets/tlunified/train.txt
         -output assets/vectors/tl-floret-tlunified/vectors
         -dim ${vars.vectors_dim}
         -minn ${vars.vectors_minn}
@@ -251,7 +251,7 @@ commands:
       - "gzip -d -f assets/fasttext.tl.gz"
       - >-
         python -m spacy init vectors tl
-        assets/fasttext.tl 
+        assets/fasttext.tl
         vectors/fasttext-tl
       - >-
         python -m spacy init vectors tl
@@ -374,7 +374,7 @@ commands:
       - mkdir -p summarized_metrics/${vars.experiment_id}/
       - >-
         python -m scripts.collate_results
-        metrics/${vars.experiment_id} 
+        metrics/${vars.experiment_id}
         --dataset ${vars.eval_dataset}
         --output-path summarized_metrics/${vars.experiment_id}/results.json
         --per-entity-type

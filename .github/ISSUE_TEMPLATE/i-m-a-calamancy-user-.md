@@ -12,6 +12,6 @@ assignees: ljvmiranda921
 
 ## Did you encounter any problems or pain points in using the models or library?
 
-## I'd love to showcase your work in a website! 
+## I'd love to showcase your work in a website!
 
 <!-- Feel free to add a link of your work / publication here so I can add it to the growing list of calamanCy users! -->

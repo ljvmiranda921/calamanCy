@@ -8,8 +8,8 @@
 \toprule
            & \multicolumn{2}{c}{Training dataset} \\ \cmidrule{2-3}
 Model      & WikiANN   & \tlunified{}             \\ \midrule
-Baseline (no additional embeddings)          & 19.92$\pm$0.03 & \textbf{30.24$\pm$0.02}  \\ 
-fastText  \cite{Bojanowski2016EnrichingWV}   & 24.41$\pm$0.01 & \textbf{45.09$\pm$0.02}  \\ 
+Baseline (no additional embeddings)          & 19.92$\pm$0.03 & \textbf{30.24$\pm$0.02}  \\
+fastText  \cite{Bojanowski2016EnrichingWV}   & 24.41$\pm$0.01 & \textbf{45.09$\pm$0.02}  \\
 RoBERTa Tagalog \cite{Cruz2021ImprovingLL}   & 23.38$\pm$0.02 & \textbf{58.90$\pm$0.03}  \\
 XLM-RoBERTa \cite{Conneau2019UnsupervisedCR} & 31.28$\pm$0.01 & \textbf{57.67$\pm$0.01}  \\
 Multilingual BERT \cite{Devlin2019BERTPO}    & 29.20$\pm$0.03 & \textbf{59.26$\pm$0.03}  \\
@@ -19,7 +19,7 @@ Multilingual BERT \cite{Devlin2019BERTPO}    & 29.20$\pm$0.03 & \textbf{59.26$\p
 }
 
 \caption{
-    Cross-dataset comparison between WikiANN \citep{Pan2017CrosslingualNT} and \tlunified{}. 
+    Cross-dataset comparison between WikiANN \citep{Pan2017CrosslingualNT} and \tlunified{}.
     We trained a model from WikiANN then applied it to \tlunified{} (and vice-versa).
     Reported results are F1-scores on the test set across three trials.
 }

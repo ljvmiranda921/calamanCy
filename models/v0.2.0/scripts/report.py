@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import Any
 
-import typer
 import pandas as pd
+import typer
 from srsly import read_json
 from wasabi import msg
 

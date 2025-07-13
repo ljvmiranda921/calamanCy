@@ -15,7 +15,7 @@
 % intended as input to urlbst script
 % $ ./urlbst --hyperref --inlinelinks acl_natbib_nourl.bst > acl_natbib.bst
 %
-% adapted from compling.bst 
+% adapted from compling.bst
 % in order to mimic the style files for ACL conferences prior to 2017
 % by making the following three changes:
 % - for @incollection, page numbers now follow volume title.
@@ -38,106 +38,106 @@
 % BibTeX style file compling.bst
 %
 % Intended for the journal Computational Linguistics (ACL/MIT Press)
-% Created by Ron Artstein on 2005/08/22 
+% Created by Ron Artstein on 2005/08/22
 % For use with <natbib.sty> for author-year citations.
 %
-% I created this file in order to allow submissions to the journal 
+% I created this file in order to allow submissions to the journal
 % Computational Linguistics using the <natbib> package for author-year
-% citations, which offers a lot more flexibility than <fullname>, CL's 
+% citations, which offers a lot more flexibility than <fullname>, CL's
 % official citation package. This file adheres strictly to the official
 % style guide available from the MIT Press:
 %
 % http://mitpress.mit.edu/journals/coli/compling_style.pdf
 %
-% This includes all the various quirks of the style guide, for example: 
+% This includes all the various quirks of the style guide, for example:
 % - a chapter from a monograph (@inbook) has no page numbers.
 % - an article from an edited volume (@incollection) has page numbers
 %   after the publisher and address.
-% - an article from a proceedings volume (@inproceedings) has page 
+% - an article from a proceedings volume (@inproceedings) has page
 %   numbers before the publisher and address.
 %
-% Where the style guide was inconsistent or not specific enough I 
-% looked at actual published articles and exercised my own judgment. 
+% Where the style guide was inconsistent or not specific enough I
+% looked at actual published articles and exercised my own judgment.
 % I noticed two inconsistencies in the style guide:
 %
-% - The style guide gives one example of an article from an edited 
-%   volume with the editor's name spelled out in full, and another 
-%   with the editors' names abbreviated. I chose to accept the first 
-%   one as correct, since the style guide generally shuns abbreviations, 
-%   and editors' names are also spelled out in some recently published 
+% - The style guide gives one example of an article from an edited
+%   volume with the editor's name spelled out in full, and another
+%   with the editors' names abbreviated. I chose to accept the first
+%   one as correct, since the style guide generally shuns abbreviations,
+%   and editors' names are also spelled out in some recently published
 %   articles.
 %
-% - The style guide gives one example of a reference where the word 
-%   "and" between two authors is preceded by a comma. This is most 
-%   likely a typo, since in all other cases with just two authors or 
+% - The style guide gives one example of a reference where the word
+%   "and" between two authors is preceded by a comma. This is most
+%   likely a typo, since in all other cases with just two authors or
 %   editors there is no comma before the word "and".
 %
 % One case where the style guide is not being specific is the placement
-% of the edition number, for which no example is given. I chose to put 
+% of the edition number, for which no example is given. I chose to put
 % it immediately after the title, which I (subjectively) find natural,
 % and is also the place of the edition in a few recently published
 % articles.
 %
 % This file correctly reproduces all of the examples in the official
 % style guide, except for the two inconsistencies noted above. I even
-% managed to get it to correctly format the proceedings example which 
-% has an organization, a publisher, and two addresses (the conference 
-% location and the publisher's address), though I cheated a bit by 
-% putting the conference location and month as part of the title field; 
+% managed to get it to correctly format the proceedings example which
+% has an organization, a publisher, and two addresses (the conference
+% location and the publisher's address), though I cheated a bit by
+% putting the conference location and month as part of the title field;
 % I feel that in this case the conference location and month can be
-% considered as part of the title, and that adding a location field 
-% is not justified. Note also that a location field is not standard, 
-% so entries made with this field would not port nicely to other styles. 
-% However, if authors feel that there's a need for a location field 
+% considered as part of the title, and that adding a location field
+% is not justified. Note also that a location field is not standard,
+% so entries made with this field would not port nicely to other styles.
+% However, if authors feel that there's a need for a location field
 % then tell me and I'll see what I can do.
 %
-% The file also produces to my satisfaction all the bibliographical 
-% entries in my recent (joint) submission to CL (this was the original 
+% The file also produces to my satisfaction all the bibliographical
+% entries in my recent (joint) submission to CL (this was the original
 % motivation for creating the file). I also tested it by running it
 % on a larger set of entries and eyeballing the results. There may of
 % course still be errors, especially with combinations of fields that
-% are not that common, or with cross-references (which I seldom use). 
-% If you find such errors please write to me. 
-% 
-% I hope people find this file useful. Please email me with comments 
+% are not that common, or with cross-references (which I seldom use).
+% If you find such errors please write to me.
+%
+% I hope people find this file useful. Please email me with comments
 % and suggestions.
-% 
+%
 % Ron Artstein
 % artstein [at] essex.ac.uk
 % August 22, 2005.
 %
 % Some technical notes.
 %
-% This file is based on a file generated with the package <custom-bib> 
-% by Patrick W. Daly (see selected options below), which was then 
+% This file is based on a file generated with the package <custom-bib>
+% by Patrick W. Daly (see selected options below), which was then
 % manually customized to conform with certain CL requirements which
-% cannot be met by <custom-bib>. Departures from the generated file 
+% cannot be met by <custom-bib>. Departures from the generated file
 % include:
 %
-% Function inbook: moved publisher and address to the end; moved 
-% edition after title; replaced function format.chapter.pages by 
+% Function inbook: moved publisher and address to the end; moved
+% edition after title; replaced function format.chapter.pages by
 % new function format.chapter to output chapter without pages.
-% 
+%
 % Function inproceedings: moved publisher and address to the end;
-% replaced function format.in.ed.booktitle by new function 
-% format.in.booktitle to output the proceedings title without 
+% replaced function format.in.ed.booktitle by new function
+% format.in.booktitle to output the proceedings title without
 % the editor.
-% 
+%
 % Functions book, incollection, manual: moved edition after title.
 %
-% Function mastersthesis: formatted title as for articles (unlike 
+% Function mastersthesis: formatted title as for articles (unlike
 % phdthesis which is formatted as book) and added month.
-% 
-% Function proceedings: added new.sentence between organization and 
+%
+% Function proceedings: added new.sentence between organization and
 % publisher when both are present.
-% 
+%
 % Function format.lab.names: modified so that it gives all the
 % authors' surnames for in-text citations for one, two and three
 % authors and only uses "et. al" for works with four authors or more
-% (thanks to Ken Shan for convincing me to go through the trouble of 
+% (thanks to Ken Shan for convincing me to go through the trouble of
 % modifying this function rather than using unreliable hacks).
 %
-% Changes: 
+% Changes:
 %
 % 2006-10-27: Changed function reverse.pass so that the extra label is
 % enclosed in parentheses when the year field ends in an uppercase or
@@ -156,7 +156,7 @@
 %% merlin.mbs  (with options: `ay,nat,vonx,nm-revv1,jnrlst,keyxyr,blkyear,dt-beg,yr-per,note-yr,num-xser,pre-pub,xedn,nfss')
 %% ----------------------------------------
 %% *** Intended for the journal Computational Linguistics ***
-%% 
+%%
 %% Copyright 1994-2002 Patrick W Daly
  % ===============================================================
  % IMPORTANT NOTICE:
@@ -269,7 +269,7 @@ FUNCTION {init.urlbst.variables}
   "" 'openinlinelink :=     % ditto
   "" 'closeinlinelink :=    % ditto
 }
-INTEGERS { 
+INTEGERS {
   bracket.state
   outside.brackets
   open.brackets
@@ -388,14 +388,14 @@ FUNCTION {output.nonnull}
       bracket.state open.brackets =
         { " [" * }
         { ", " * } % bracket.state will be within.brackets
-      if$ 
-      s * 
+      if$
+      s *
       close.brackets 'bracket.state :=
     }
   if$
 }
 
-% Call this function just before adding something which should be presented in 
+% Call this function just before adding something which should be presented in
 % brackets.  bracket.state is handled specially within output.nonnull.
 FUNCTION {inbrackets}
 { bracket.state close.brackets =
@@ -672,7 +672,7 @@ FUNCTION {format.names}
     { s nameptr
       duplicate$ #1 >
         { "{ff~}{vv~}{ll}{, jj}" }
-        { "{ff~}{vv~}{ll}{, jj}" }	% first name first for first author 
+        { "{ff~}{vv~}{ll}{, jj}" }	% first name first for first author
 %        { "{vv~}{ll}{, ff}{, jj}" }	% last name first for first author
       if$
       format.name$
@@ -1236,14 +1236,14 @@ FUNCTION {make.href.null}
 }
 % make hypertex specials
 FUNCTION {make.href.hypertex}
-{ 
+{
   "\special {html:<a href=" quote$ *
   swap$ * quote$ * "> }" * swap$ *
   "\special {html:</a>}" *
 }
 % make hyperref specials
 FUNCTION {make.href.hyperref}
-{ 
+{
   "\href {" swap$ * "} {\path{" * swap$ * "}}" *
 }
 FUNCTION {make.href}
@@ -1299,10 +1299,10 @@ FUNCTION {format.pubmed}
 % the URL and the lastchecked in brackets.
 FUNCTION {output.url}
 { url empty$
-    'skip$ 
-    { new.block 
+    'skip$
+    { new.block
       format.url output
-      format.lastchecked output 
+      format.lastchecked output
     }
   if$
 }
@@ -1360,7 +1360,7 @@ FUNCTION {fin.entry}
 % Webpage entry type.
 % Title and url fields required;
 % author, note, year, month, and lastchecked fields optional
-% See references 
+% See references
 %   ISO 690-2 http://www.nlc-bnc.ca/iso/tc46sc9/standard/690-2e.htm
 %   http://www.classroom.net/classroom/CitingNetResources.html
 %   http://neal.ctstateu.edu/history/cite.html
@@ -1928,7 +1928,7 @@ FUNCTION {reverse.pass}
   extra.label
   duplicate$ empty$
     'skip$
-    { year field.or.null #-1 #1 substring$ chr.to.int$ #65 < 
+    { year field.or.null #-1 #1 substring$ chr.to.int$ #65 <
       { "{\natexlab{" swap$ * "}}" * }
       { "{(\natexlab{" swap$ * "})}" * }
     if$ }

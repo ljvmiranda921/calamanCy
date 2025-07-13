@@ -18,7 +18,7 @@ test sets (as intended).
 - **Improved base model for tl_calamancy_trf**: Based on internal evaluations, we are now using [mDeBERTa-v3 (base)](https://huggingface.co/microsoft/mdeberta-v3-base) as our source of context-sensitive vectors for tl_calamancy_trf.
 - **Simpler pipelines, no more pretraining**: We found that pretraining doesn't really offer huge performance gains (0-1%) given the huge effort and time needed to do it. Hence, for ease of training the whole pipeline, we removed it from the calamanCy recipe.
 
-The namespaces for the latest models remain the same. 
+The namespaces for the latest models remain the same.
 The legacy models will have an explicit version number in their HuggingFace repositories.
 Please see [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87) for more information.
 

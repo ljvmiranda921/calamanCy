@@ -1,9 +1,9 @@
+calamancy==0.1.0
+pathy[gcs]
+scipy
 spacy>=3.6.0
 spacy-llm[transformers]==0.4.3
-transformers[sentencepiece]
 spacy-transformers
-pathy[gcs]
-calamancy==0.1.0
+transformers[sentencepiece]
 typer
 wasabi
-scipy

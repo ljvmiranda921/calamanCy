@@ -49,14 +49,11 @@ multi_line_output = 9
 max-line-length = 88
 
 [tool.ruff]
-ignore = ["E203", "E266", "E501", "E731", "E741", "F541"]
-select = [
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "F",    # Pyflakes
-    "Q",    # flake8-quotes
-    "T201"  # flake8-print
-]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+select = ["E", "F"]
+ignore = ["E501"] # line too long (black is taking care of this)
+line-length = 88
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
 
 [tool.black]
 line-length = 88

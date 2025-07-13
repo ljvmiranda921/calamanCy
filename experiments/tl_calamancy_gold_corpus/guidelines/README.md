@@ -1,7 +1,7 @@
 # Annotation Guidelines
 
 > **Note**
-> version 1.0, last updated October 21, 2022 
+> version 1.0, last updated October 21, 2022
 
 We need to train our model to recognize three entities. The entities were based
 on the CoNLL 2003 Shared Task by [Tjong Kim Sang and De Meulder
@@ -57,7 +57,7 @@ Entities are  limited to the following types:
 3. **Annotate Person entities even if they refer to more than one person, unless
     the group meets the requirements of an Organization.** For example, *mga
     senador*, should be annotated as a Person, but a collection of them, e.g.,
-    *Senado* or *Blue Ribbon Committee*, should be annotated as an Organization. 
+    *Senado* or *Blue Ribbon Committee*, should be annotated as an Organization.
 
     Examples:
     - Binatikos ng <mga senador|PER> ang NBN-ZTE deal.
@@ -99,10 +99,10 @@ Entities are  limited to the following types:
         medical care or the pursuit of scientific research. For example: *FDA*,
         *Philvocs*, etc.
     - Sports: those that are primarily concerned with participating in or
-        governing organized sporting events. For example: *Gilas*, *FIFA*, *PBA* 
+        governing organized sporting events. For example: *Gilas*, *FIFA*, *PBA*
 
 2. **Annotate the full organization name and its shorthand separately.** Some texts specify the full
-    name of an organization and its acronym, usually enclosed in a parenthesis. These two should 
+    name of an organization and its acronym, usually enclosed in a parenthesis. These two should
     be annotated separately.
 
     Examples:
@@ -116,19 +116,19 @@ Entities are  limited to the following types:
 
     - Address: name of a location in a postal system, or even abstract coordinates. For example: *31°
         S, 22° W*, *Forbes Park*.
-    - Celestial: a location which is otherworldly or entire-world-inclusive. For example: *sa mundo*, 
+    - Celestial: a location which is otherworldly or entire-world-inclusive. For example: *sa mundo*,
         *sa araw*, etc.
     - Water Body: bodies of water, natural or artificial. For example: *Pasig River*, *Angat Dam*, etc.
-    - Land Region (natural): geologically or ecosystemically designated, non-artificial locations. For example: 
+    - Land Region (natural): geologically or ecosystemically designated, non-artificial locations. For example:
         *Mt. Mayon*, *Bulkang Taal*,  etc.
-    - International Region: taggable non-named locations that cross national borders. For example: *Timog Africa*, 
+    - International Region: taggable non-named locations that cross national borders. For example: *Timog Africa*,
         *Gitnang Silangan*, etc.
     - General Region: taggable locations that do not cross national borders. For example: *Timog Luzon*, etc.
 
 2. **Do not annotate places distinguished only by the occurence of an event at
     that position**. For example: *sa kanilang bahay*, *sa mall*.
 
-3. **Do not annotate general locative phrases.** Locations should be specific. Phrases like *sa itaas*, *sa gitna*, 
+3. **Do not annotate general locative phrases.** Locations should be specific. Phrases like *sa itaas*, *sa gitna*,
     *sa pagitan ng*, should be ignored.
 
 4. **Do not tag compass points unless they refer to sections of a region.** When a compass point (*hilaga*, *kanluran*, *timog*, *silangan*),
@@ -142,14 +142,14 @@ Entities are  limited to the following types:
     - Path: a facility that allows fluids, energies, persons, or vehicles to pass from one location to the other. For example: *EDSA*, *Welcome Rotunda*, etc.
 
 6. **Annotate the full location name and its shorthand separately.** Some texts specify the full
-    name of a location and its acronym, usually enclosed in a parenthesis. These two should 
+    name of a location and its acronym, usually enclosed in a parenthesis. These two should
     be annotated separately.
 
     Examples:
     - Nagdiwang sa <Ninoy Aquino International Airport|LOC> (<NAIA|LOC>)...
     - Ginanap sa <MoA|LOC> o <SM Mall of Asia|LOC> ang palabas.
 
-7. **Annotate Geopolitical Entities (GPE) that fall into the following subtypes:** 
+7. **Annotate Geopolitical Entities (GPE) that fall into the following subtypes:**
 
     - Continent: entireties of any of the seven continents. For example: *Asya*, *Amerika*, *Europa*, etc.
     - Nation: entireties of any nation. For example: *Pilipinas*, *Tsina*, *Espanya*, etc.

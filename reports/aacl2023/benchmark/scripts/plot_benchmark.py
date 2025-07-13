@@ -2,8 +2,8 @@ from pathlib import Path
 
 import matplotlib.pylab as pylab
 import matplotlib.pyplot as plt
-import typer
 import numpy as np
+import typer
 
 from .constants import MATPLOTLIB_STYLE
 
@@ -39,17 +39,26 @@ def plot_benchmark(outfile: Path):
     # Data
     rects = []
     for idx, (xy, (model, results)) in enumerate(zip(coords, RESULTS.items())):
-        rects.append(ax.bar(1.5*x + xy, results, width, label=model, color=colors[idx], edgecolor="#353935", hatch=hatches[idx]))
+        rects.append(
+            ax.bar(
+                1.5 * x + xy,
+                results,
+                width,
+                label=model,
+                color=colors[idx],
+                edgecolor="#353935",
+                hatch=hatches[idx],
+            )
+        )
 
     ax.set_ylabel("F1-score")
-    ax.set_xticks(np.arange(0,6,1.5))
+    ax.set_xticks(np.arange(0, 6, 1.5))
     ax.set_xticklabels(labels)
     ax.set_ylim(top=100)
     ax.legend(ncol=5, frameon=False, loc=(-0.1, -0.125))
     # Hide the right and top splines
     ax.spines.right.set_visible(False)
     ax.spines.top.set_visible(False)
-
 
     def _autolabel(rects):
         """Attach a text label above each bar in *rects*, displaying its height."""
@@ -69,6 +78,7 @@ def plot_benchmark(outfile: Path):
 
     fig.tight_layout()
     plt.savefig(outfile, transparent=True, dpi=300)
+
 
 if __name__ == "__main__":
     typer.run(plot_benchmark)

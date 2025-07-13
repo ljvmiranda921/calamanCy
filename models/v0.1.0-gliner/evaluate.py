@@ -1,11 +1,11 @@
+from copy import deepcopy
 from pathlib import Path
 from typing import Dict, Iterable, Optional
-from copy import deepcopy
 
 import spacy
+import srsly
 import torch
 import typer
-import srsly
 from datasets import Dataset, load_dataset
 from spacy.scorer import Scorer
 from spacy.tokens import Doc, Span

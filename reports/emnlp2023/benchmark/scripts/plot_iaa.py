@@ -1,8 +1,8 @@
 from pathlib import Path
 
-import typer
-import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
+import matplotlib.pyplot as plt
+import typer
 
 pylab.rcParams.update(
     {

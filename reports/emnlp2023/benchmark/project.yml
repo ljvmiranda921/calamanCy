@@ -1,14 +1,14 @@
 title: "Reproducing calamanCy benchmarks"
 description: |
   This is a spaCy project that benchmarks calamanCy on a variety of tasks.
-  You can use this project to reproduce the experiments in the write-up. 
+  You can use this project to reproduce the experiments in the write-up.
   First, you need to install the required dependencies:
 
   ```
   pip install -r requirements.txt
   ```
 
-  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.
   Now run the set-up commands:
 
   ```
@@ -16,23 +16,23 @@ description: |
   python -m spacy project run setup
   ```
 
-  This step downloads all the necessary datasets and models for benchmarking use. 
-  You can then run one of the [workflows](#-) below. 
+  This step downloads all the necessary datasets and models for benchmarking use.
+  You can then run one of the [workflows](#-) below.
   They are organized by task and a dataset identifier (e.g., `textcat-hatespeech`, `textcat_multilabel-dengue`).
   You can find the training configuration (i.e., hyperparameters, architectures, etc.) in the `configs/` directory.
 
   > **Note**
-  > Some commands may take some time to run. 
+  > Some commands may take some time to run.
   > This is especially true for the transformer training and evaluation pipelines.
   > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
-  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
-  You should be able to use them independently from one another. 
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications.
+  You should be able to use them independently from one another.
 
 
   ## Benchmarking results
 
-  We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set. 
+  We benchmarked on the following datasets by training the pipeline on the train and development data and evaluating on a held-out test set.
   We did this for five (5) trials and we report their average. Since the combined treebank has little data, we opted to evaluate it using k-fold cross-validation:
 
   - **Hatespeech** (Cabasag et al., 2019): a binary text categorization task that contains 10k tweets labeled as hate speech or non hate speech. We report the macro F1-score on the test set.
@@ -46,8 +46,8 @@ description: |
   | tl_calamancy_lg        | 75.62 (0.02)                                            | 68.42 (0.01)                                             | 88.90 (0.01)                                        | 82.13                               | 70.32                               |
   | tl_calamancy_trf       | 78.25 (0.06)                                            | 72.45 (0.02)                                             | 90.34 (0.02)                                        | 92.48                               | 80.90                               |
 
-  We also evaluated cross-lingual and multilingual approaches in our benchmarks: 
-  - **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines. 
+  We also evaluated cross-lingual and multilingual approaches in our benchmarks:
+  - **Cross-lingual**: we chose the source languages using a WALS-reliant metric (Agic, 2017) to choose the linguistically-closest languages to Tagalog and looked for their corresponding spaCy pipelines.
     We came up with Indonesian (id), Vietnamese (vi), Ukranian (uk), Romanian (ro), and Catalan (ca). However, only uk, ca, ro have spaCy pipelines. We finetuned each dataset for each task and evaluated them similarly to our Tagalog monolingual models.
 
   | Language Pipeline      | Binary text categorization, macro F1-score (Hatespeech) | Multilabel text categorization, macro F1-score (Dengue)  | Named entity recognition, F1-score (TLUnified-NER)  | Dependency parsing, UAS (Merged UD) | Dependency parsing, LAS (Merged UD) |
@@ -286,26 +286,26 @@ commands:
     help: "Evaluate binary textcat on Hatespeech test data"
     script:
       - >-
-        python -m spacy evaluate 
-        training/textcat-hatespeech-md/model-best/ 
+        python -m spacy evaluate
+        training/textcat-hatespeech-md/model-best/
         corpus/textcat-hatespeech/test.spacy
         --output metrics/textcat-hatespeech-md-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat-hatespeech-md/model-best/ 
+        python -m spacy evaluate
+        training/textcat-hatespeech-md/model-best/
         corpus/textcat-hatespeech/dev.spacy
         --output metrics/textcat-hatespeech-md-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat-hatespeech-lg/model-best/ 
+        python -m spacy evaluate
+        training/textcat-hatespeech-lg/model-best/
         corpus/textcat-hatespeech/test.spacy
         --output metrics/textcat-hatespeech-lg-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat-hatespeech-lg/model-best/ 
+        python -m spacy evaluate
+        training/textcat-hatespeech-lg/model-best/
         corpus/textcat-hatespeech/dev.spacy
         --output metrics/textcat-hatespeech-lg-dev.json
         --gpu-id ${vars.gpu_id}
@@ -412,38 +412,38 @@ commands:
     help: "Evaluate multilabel textcat on Dengue test data"
     script:
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-md/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-md/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/textcat_multilabel-dengue-md-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-md/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-md/model-best/
         corpus/textcat_multilabel-dengue/dev.spacy
         --output metrics/textcat_multilabel-dengue-md-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-lg/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-lg/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/textcat_multilabel-dengue-lg-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-lg/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-lg/model-best/
         corpus/textcat_multilabel-dengue/dev.spacy
         --output metrics/textcat_multilabel-dengue-lg-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-trf/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-trf/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/textcat_multilabel-dengue-trf-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/textcat_multilabel-dengue-trf/model-best/ 
+        python -m spacy evaluate
+        training/textcat_multilabel-dengue-trf/model-best/
         corpus/textcat_multilabel-dengue/dev.spacy
         --output metrics/textcat_multilabel-dengue-trf-dev.json
         --gpu-id ${vars.gpu_id}
@@ -465,37 +465,37 @@ commands:
     help: "Evaluate ner on calamanCy gold dev and test data"
     script:
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_md
         corpus/ner-calamancy_gold/test.spacy
         --output metrics/ner-calamancy_gold-md-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_md
         corpus/ner-calamancy_gold/dev.spacy
         --output metrics/ner-calamancy_gold-md-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_lg
         corpus/ner-calamancy_gold/test.spacy
         --output metrics/ner-calamancy_gold-lg-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_lg
         corpus/ner-calamancy_gold/dev.spacy
         --output metrics/ner-calamancy_gold-lg-dev.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_trf
         corpus/ner-calamancy_gold/test.spacy
         --output metrics/ner-calamancy_gold-trf-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_trf
         corpus/ner-calamancy_gold/dev.spacy
         --output metrics/ner-calamancy_gold-trf-dev.json
@@ -557,7 +557,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat-hatespeech-trf.cfg
-        --nlp.lang uk 
+        --nlp.lang uk
         --output training/crosslingual/textcat-hatespeech-uk/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
@@ -577,7 +577,7 @@ commands:
         configs/textcat-hatespeech.cfg
         --nlp.lang ro
         --output training/crosslingual/textcat-hatespeech-ro/
-        --paths.vectors ro_core_news_lg 
+        --paths.vectors ro_core_news_lg
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
         --gpu-id ${vars.gpu_id}
@@ -635,7 +635,7 @@ commands:
       - >-
         python -m spacy train
         configs/textcat_multilabel-dengue-trf.cfg
-        --nlp.lang uk 
+        --nlp.lang uk
         --output training/crosslingual/textcat_multilabel-dengue-uk/
         --paths.train corpus/textcat_multilabel-dengue/train.spacy
         --paths.dev corpus/textcat_multilabel-dengue/dev.spacy
@@ -662,20 +662,20 @@ commands:
     help: "Evaluate crosslingual models for the Dengue dataset"
     script:
       - >-
-        python -m spacy evaluate 
-        training/crosslingual/textcat_multilabel-dengue-uk/model-best/ 
+        python -m spacy evaluate
+        training/crosslingual/textcat_multilabel-dengue-uk/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/crosslingual/textcat_multilabel-dengue-uk.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/crosslingual/textcat_multilabel-dengue-ca/model-best/ 
+        python -m spacy evaluate
+        training/crosslingual/textcat_multilabel-dengue-ca/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/crosslingual/textcat_multilabel-dengue-ca.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
-        training/crosslingual/textcat_multilabel-dengue-ro/model-best/ 
+        python -m spacy evaluate
+        training/crosslingual/textcat_multilabel-dengue-ro/model-best/
         corpus/textcat_multilabel-dengue/test.spacy
         --output metrics/crosslingual/textcat_multilabel-dengue-ro.json
         --gpu-id ${vars.gpu_id}
@@ -774,7 +774,7 @@ commands:
         --output training/multilingual/textcat-hatespeech-mbert/
         --paths.train corpus/textcat-hatespeech/train.spacy
         --paths.dev corpus/textcat-hatespeech/dev.spacy
-        --components.transformer.model.name bert-base-multilingual-uncased 
+        --components.transformer.model.name bert-base-multilingual-uncased
         --gpu-id ${vars.gpu_id}
     deps:
       - corpus/textcat-hatespeech/train.spacy

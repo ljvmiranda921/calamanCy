@@ -42,7 +42,7 @@ All the v0.2.0 models now use the UD-NewsCrawl treebank as their training set. I
 
 #### UD-NewsCrawl (test split) results
 
-This treebank consists of annotated text extracted from the Leipzig Tagalog Corpus. 
+This treebank consists of annotated text extracted from the Leipzig Tagalog Corpus.
 Data included in the Leipzig Tagalog Corpus were crawled from Tagalog-language online news sites by the Leipzig University Institute for Computer Science.
 
 | Model            |   Token Acc. |   Lemma Acc. |   Tag Acc. |   POS  |   Morph Acc. |   Dep UAS |   Dep LAS |
@@ -66,7 +66,7 @@ The Tagalog treebank, so far, consists of 55 sentences with sources from the gra
 
 #### UD-Ugnayan results
 
-Ugnayan is a manually annotated Tagalog treebank currently composed of educational fiction and nonfiction text. 
+Ugnayan is a manually annotated Tagalog treebank currently composed of educational fiction and nonfiction text.
 The treebank is under development at the University of the Philippines.
 
 | Model            |   Token Acc. |   Lemma Acc. |   Tag Acc. |   POS  |   Morph Acc. |   Dep UAS |   Dep LAS |
@@ -100,7 +100,7 @@ It is a fun project&mdash; the goal is to follow the footsteps of Universal Depe
 
 For Tagalog, we took the existing treebanks back then (TRG and Ugnayan) and annotated them in a [common annotation guideline](https://www.universalner.org/guidelines/).
 Since UD-NewsCrawl is a new treebank, there are still no NER annotations for it yet.
-If you're interested to help out and annotate NewsCrawl for NER, then [let us know](https://www.universalner.org/)! 
+If you're interested to help out and annotate NewsCrawl for NER, then [let us know](https://www.universalner.org/)!
 
 | Model            |  P (TRG) | R (TRG) |F (TRG) | P (Ugnayan) | R (Ugnayan) | F (Ugnayan)
 |:-----------------|---------:|---------:|---------:| ---:| -----:| ----:|
@@ -120,7 +120,7 @@ For the evals below, I only evaluation on the three labels I had and converted a
 
 ## Final thoughts
 
-And that's it! 
+And that's it!
 I hope you find these new models useful for Tagalog NLP.
 Be sure to install [calamanCy](https://github.com/ljvmiranda921/calamanCy), and feel free to [submit any Issues on GitHub](https://github.com/ljvmiranda921/calamanCy/issues) if you have questions, bug reports, or feature requests!
 Finally, I'd love to hear from you: if you're using calamanCy for a research paper or an application, then don't hesitate to [let me know](https://github.com/ljvmiranda921/calamanCy/issues/new?template=i-m-a-calamancy-user-.md)!
