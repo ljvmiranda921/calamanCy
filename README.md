@@ -63,6 +63,13 @@ uv sync --dev
 source .venv/bin/activate
 ```
 
+We also require using pre-commit hooks to standardize formatting.
+The pre-commit dependency should be in your virtual environment if the installation steps above were successful:
+
+```sh
+pre-commit install
+```
+
 ### Running the tests
 
 We use [pytest](https://docs.pytest.org/en/7.4.x/) as our test runner:
