@@ -70,5 +70,6 @@ dev = [
     "isort>=5.0.0",
     "ruff>=0.0.272",
     "mypy>=1.0.0",
-    "pytest"
+    "pytest",
+    "pip>=24.0",
 ]
