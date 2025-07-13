@@ -26,7 +26,7 @@
 
 \typeout{Conference Style for EMNLP 2023}
 
-\usepackage{xcolor}	
+\usepackage{xcolor}
 
 \ifacl@hyperref
   \PassOptionsToPackage{breaklinks}{hyperref}
@@ -76,7 +76,7 @@
   % are numbered. Bug: multline has an extra line number.
   % https://tex.stackexchange.com/questions/461186/how-to-use-lineno-with-amsmath-align
   \usepackage{etoolbox} %% <- for \pretocmd, \apptocmd and \patchcmd
-  
+
   \newcommand*\linenomathpatch[1]{%
     \expandafter\pretocmd\csname #1\endcsname {\linenomath}{}{}%
     \expandafter\pretocmd\csname #1*\endcsname {\linenomath}{}{}%
@@ -89,7 +89,7 @@
     \expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}%
     \expandafter\apptocmd\csname end#1*\endcsname {\endlinenomath}{}{}%
   }
-  
+
   %% Definition of \linenomathAMS depends on whether the mathlines option is provided
   \expandafter\ifx\linenomath\linenomathWithnumbers
     \let\linenomathAMS\linenomathWithnumbers
@@ -120,8 +120,8 @@
 \PassOptionsToPackage{a4paper,margin=2.5cm}{geometry}
 \RequirePackage{geometry}
 
-\setlength\columnsep{0.6cm}  
-\newlength\titlebox 
+\setlength\columnsep{0.6cm}
+\newlength\titlebox
 \setlength\titlebox{5cm}
 
 \flushbottom \twocolumn \sloppy
@@ -131,7 +131,7 @@
 \def\addcontentsline#1#2#3{}
 
 \ifacl@finalcopy
-    \thispagestyle{empty}        
+    \thispagestyle{empty}
     \pagestyle{empty}
 \else
     \pagenumbering{arabic}
@@ -145,7 +145,7 @@
     \begin{tabular}[t]{c}
     \ifacl@finalcopy
 	     \bf\@author
-	\else 
+	\else
 		% Avoiding common accidental de-anonymization issue. --MM
         \bf Anonymous EMNLP submission
 	\fi
@@ -165,14 +165,14 @@
  \linewidth\hsize \vskip 0.125in minus 0.125in \centering
  {\Large\bf \@title \par} \vskip 0.2in plus 1fil minus 0.1in
  {\def\and{\unskip\enspace{\rm and}\enspace}%
-  \def\And{\end{tabular}\hss \egroup \hskip 1in plus 2fil 
+  \def\And{\end{tabular}\hss \egroup \hskip 1in plus 2fil
            \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\bf}%
   \def\AND{\end{tabular}\hss\egroup \hfil\hfil\egroup
           \vskip 0.25in plus 1fil minus 0.125in
            \hbox to \linewidth\bgroup\large \hfil\hfil
              \hbox to 0pt\bgroup\hss \begin{tabular}[t]{c}\bf}
   \hbox to \linewidth\bgroup\large \hfil\hfil
-    \hbox to 0pt\bgroup\hss 
+    \hbox to 0pt\bgroup\hss
 	\outauthor
    \hss\egroup
     \hfil\hfil\egroup}
@@ -189,8 +189,8 @@
 		   \@setsize\normalsize{12pt}\xpt\@xpt
 		   }%
 		 {\unskip\end{list}}
-  
-%\renewenvironment{abstract}{\centerline{\large\bf  
+
+%\renewenvironment{abstract}{\centerline{\large\bf
 % Abstract}\vspace{0.5ex}\begin{quote}}{\par\end{quote}\vskip 1ex}
 
 % Resizing figure and table captions - SL
@@ -203,9 +203,9 @@
 % for citation commands in the .tex, authors can use:
 % \citep, \citet, and \citeyearpar for compatibility with natbib, or
 % \cite, \newcite, and \shortcite for compatibility with older ACL .sty files
-\renewcommand\cite{\citep}	% to get "(Author Year)" with natbib    
-\newcommand\shortcite{\citeyearpar}% to get "(Year)" with natbib    
-\newcommand\newcite{\citet}	% to get "Author (Year)" with natbib    
+\renewcommand\cite{\citep}	% to get "(Author Year)" with natbib
+\newcommand\shortcite{\citeyearpar}% to get "(Year)" with natbib
+\newcommand\newcite{\citet}	% to get "Author (Year)" with natbib
 
 \newcommand{\citeposs}[1]{\citeauthor{#1}'s (\citeyear{#1})}
 
@@ -284,7 +284,7 @@
    \itemsep \parsep}
 \def\@listiii{\leftmargin\leftmarginiii
     \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
-    \topsep 1pt plus 0.5pt minus 0.5pt 
+    \topsep 1pt plus 0.5pt minus 0.5pt
     \parsep \z@ \partopsep 0.5pt plus 0pt minus 0.5pt
     \itemsep \topsep}
 \def\@listiv{\leftmargin\leftmarginiv
@@ -296,7 +296,7 @@
 
 \abovedisplayskip 7pt plus2pt minus5pt%
 \belowdisplayskip \abovedisplayskip
-\abovedisplayshortskip  0pt plus3pt%   
+\abovedisplayshortskip  0pt plus3pt%
 \belowdisplayshortskip  4pt plus3pt minus3pt%
 
 % Less leading in most fonts (due to the narrow columns)

@@ -1,10 +1,10 @@
 """Copy Doc.ents into Doc.spans"""
 
+from copy import copy
 from pathlib import Path
 
 import spacy
 import typer
-from copy import copy
 from spacy.tokens import DocBin
 
 

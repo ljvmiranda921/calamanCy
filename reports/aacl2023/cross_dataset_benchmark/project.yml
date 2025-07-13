@@ -2,14 +2,14 @@ title: "Cross-dataset benchmarks"
 description: |
   This is a spaCy project for additional cross-dataset experiments for the paper.
   I decided to separate them from the other `benchmarks/` directory for easier organization.
-  You can use this project to reproduce the experiments in the write-up. 
+  You can use this project to reproduce the experiments in the write-up.
   First, you need to install the required dependencies:
 
   ```
   pip install -r requirements.txt
   ```
 
-  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.
   Now run the set-up commands:
 
   ```
@@ -18,17 +18,17 @@ description: |
   ```
 
   > **Note**
-  > Some commands may take some time to run. 
+  > Some commands may take some time to run.
   > This is especially true for the transformer training and evaluation pipelines.
   > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
-  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications.
   You should be able to use them independently from one another.
 
   Let's say we want to train a model from WikiANN and evaluate it to TLUnified, we simply need to run the following command:
 
   ```
-  python -m spacy project run all . --vars.train_dev wikiann --vars.test tlunified 
+  python -m spacy project run all . --vars.train_dev wikiann --vars.test tlunified
   # If vice-versa (note that we should use the corrected version):
   python -m spacy project run all . --vars.train_dev tlunified --vars.test wikiann_corrected
   ```

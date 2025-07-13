@@ -10,7 +10,7 @@
 \usepackage{times}                            % font style
 \usepackage{latexsym}                         % for additional symbols
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc} 
+\usepackage[utf8]{inputenc}
 \usepackage{microtype}                        % better types
 \usepackage{inconsolata}                      % truetype font style
 \usepackage{booktabs}                         % better-looking tables
@@ -30,7 +30,7 @@
 \maketitle
 \begin{abstract}
   We introduce calamanCy, an open-source toolkit for constructing natural language processing (NLP) pipelines for Tagalog.
-  It is built on top of spaCy, enabling easy experimentation and integration with other frameworks.  
+  It is built on top of spaCy, enabling easy experimentation and integration with other frameworks.
   calamanCy addresses the development gap by providing a consistent API for building NLP applications and offering general-purpose multitask models with out-of-the-box support for dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER).
   calamanCy aims to accelerate the progress of Tagalog NLP by consolidating disjointed resources in a unified framework.
   The calamanCy toolkit is available on GitHub: \url{https://github.com/ljvmiranda921/calamanCy}.
@@ -39,17 +39,17 @@
 \section{Introduction}
 
 Tagalog is a low-resource language from the Austronesian family, with over 28 million speakers in the Philippines \citep{Lewis2009EthnologueL}.
-Despite its speaker population, few resources exist for the language \citep{Cruz2021ImprovingLL}. 
-For example, Universal Dependencies (UD) treebanks for Tagalog are tiny ($\ll$ 20k words) \citep{Samson2018TRG,Aquino2020ParsingIT}, 
-while domain-specific corpora are sparse \citep{Cabasag2016HatespeechIP,Livelo2018IntelligentDI}. 
+Despite its speaker population, few resources exist for the language \citep{Cruz2021ImprovingLL}.
+For example, Universal Dependencies (UD) treebanks for Tagalog are tiny ($\ll$ 20k words) \citep{Samson2018TRG,Aquino2020ParsingIT},
+while domain-specific corpora are sparse \citep{Cabasag2016HatespeechIP,Livelo2018IntelligentDI}.
 In addition, Tagalog language models (LMs) \citep{Cruz2021ImprovingLL,Jiang2021PretrainedLM} are few, while most multilingual LMs \citep{Conneau2019UnsupervisedCR,Devlin2019BERTPO} underrepresent the language \citep{Lauscher2020FromZT}.
 Thus, consolidating these disjointed resources in a coherent framework is still an open problem.
 The lack of such framework hampers model development, experimental workflows, and the overall advancement of Tagalog NLP.
 
 To address this problem, we introduce calamanCy,\footnote[1]{
   ``calamanCy'' derives its name from \textit{kalamansi}, a citrus fruit native to the Philippines.}
-an open-source toolkit for Tagalog NLP. 
-It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks such as dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER). 
+an open-source toolkit for Tagalog NLP.
+It is built on top of spaCy \citep{Honnibal2020Spacy} and offers end-to-end pipelines for NLP tasks such as dependency parsing, parts-of-speech (POS) tagging, and named entity recognition (NER).
 calamanCy also provides general-purpose pipelines in three different sizes to fit any performance or accuracy requirements.
 This work has two main contributions: (1) an open-source toolkit with out-of-the box support for common NLP tasks, and (2) comprehensive evaluations on several Tagalog benchmarks.
 
@@ -67,7 +67,7 @@ Using spaCy as a foundation is optimal, given its popularity and integration wit
 However, no tool has existed for Tagalog until now.
 We aim to fill this development gap and serve the needs of the Tagalog language community through calamanCy.
 
-\paragraph*{Evaluations on Tagalog NLP Tasks} 
+\paragraph*{Evaluations on Tagalog NLP Tasks}
 Structured evaluations for core NLP tasks, such as dependency parsing, POS tagging, and NER, are meager.
 However, we have access to a reasonable amount of data to conduct comprehensive benchmarks.
 For example, TLUnified \citep{Cruz2021ImprovingLL} is a pretraining corpus that combines news reports \citep{Cruz2020ExploitingNA}, a preprocessed version of CommonCrawl \citep{OrtizSuarez2019AsynchronousPF}, and several other datasets.
@@ -87,21 +87,21 @@ After installing the library, users can access the models in a few lines of code
 \end{verbatim}
 
 Here, the variable \texttt{nlp} is a spaCy processing pipeline\footnote[2]{\url{https://spacy.io/usage/processing-pipelines}} that contains trained components for POS tagging, dependency parsing, and NER.
-Applying this pipeline to a text will produce a \texttt{Doc} object with various linguistic features. 
+Applying this pipeline to a text will produce a \texttt{Doc} object with various linguistic features.
 calamanCy offers three pipelines of varying capacity: two static word vector-based models (md, lg), and one transformer-based model (trf).
 We will discuss how we developed these pipelines in the following section.
 
 \subsection{Pipeline development}
 
 \paragraph*{Data annotation for NER}
-There is no gold-standard corpus for NER, so we built one. 
+There is no gold-standard corpus for NER, so we built one.
 To construct the NER corpus, we curated a portion of TLUnified \citep{Cruz2021ImprovingLL} to contain Tagalog news articles.
 Including the author, we recruited two more annotators with at least a bachelor's degree and whose native language is Tagalog.
 The three annotators labeled for four months, given three entity types as seen in Table \ref{table:entity_types}.
 We chose the entity types to resemble ConLL \citep{Sang2002IntroductionTT,Sang2003IntroductionTT}, a standard NER benchmark.
 We excluded the \texttt{MISC} label to reduce uncertainty and confusion when labeling.
 Then, we measured inter-annotator agreement (IAA) by taking the pairwise Cohen's $\kappa$ on all tokens and then averaged them for all three pairs.
-This process resulted in a Cohen's $\kappa$ score of 0.81. 
+This process resulted in a Cohen's $\kappa$ score of 0.81.
 To avoid confusion with the original TLUnified pretraining corpora, we will refer to this annotated NER dataset as TLUnified-NER.
 The final dataset statistics can be found in Table \ref{table:dset_stats}.
 For the dependency parser and POS tagger, we merged the TRG \citep{Samson2018TRG} and Ugnayan \citep{Aquino2020ParsingIT} treebanks to leverage their small yet relevant examples.
@@ -135,7 +135,7 @@ The token-to-vector layer uses the multi-hash embedding trick \citep{Miranda2022
 For the parser and named entity recognizer, we used a transition-based parser that maps text representations into a series of state transitions.
 As for the text categorizer, we utilized an ensemble of a bag-of-words model and a feed-forward network.
 
-\paragraph*{Experimental set-up} 
+\paragraph*{Experimental set-up}
 We assessed the calamanCy pipelines on various Tagalog benchmarks as detailed in Table \ref{table:benchmark_datasets}.
 We also tested on text categorization, an unseen task, for robustness.
 For NER evaluation, we used a held-out test split from TLUnified-NER.
@@ -160,15 +160,15 @@ The transformer-based calamanCy pipeline is the best option for users who priori
 However, we were surprised that most alternative approaches perform better in dependency parsing.
 We attribute this performance to the added strength of multilingual and cross-lingual information, which we don't have when training solely on a smaller treebank.
 We plan to improve dependency parsing performance by building a larger treebank within the Universal Dependencies framework.
-For practical applications, we recommend users to start with a medium- or large-sized calamanCy model before trying out GPU-intensive pipelines. 
+For practical applications, we recommend users to start with a medium- or large-sized calamanCy model before trying out GPU-intensive pipelines.
 Only then can they switch to a transformer-based pipeline to get accuracy gains.
 
 \section{Conclusion}
 
 In this paper, we introduced calamanCy, a natural language processing toolkit for Tagalog.
 Our work has two main contributions: (1) an open-source toolkit containing general-purpose multitask pipelines with out-of-the-box support for common NLP tasks, and
-(2) comprehensive benchmarks that compare against alternative approaches, such as cross-lingual or multilingual finetuning. 
-We hope that calamanCy is a step forward to improving the state of Tagalog NLP. 
+(2) comprehensive benchmarks that compare against alternative approaches, such as cross-lingual or multilingual finetuning.
+We hope that calamanCy is a step forward to improving the state of Tagalog NLP.
 As a low-resource language, consolidating resources into a unified framework is crucial to advance research and improve collaboration.
 In the future, we plan to create a more fine-grained NER benchmark corpus and extend calamanCy to natural language understanding (NLU) tasks.
 Finally, the project is hosted on GitHub (\url{https://github.com/ljvmiranda921/calamanCy}) and we are happy to receive community feedback and contributions.
@@ -179,7 +179,7 @@ The TLUnified-NER corpus utilized for training the NER component of calamanCy co
 In addition the Universal Dependencies (UD) corpora for the POS tagger and dependency parser components are relatively modest in size, containing fewer than 10k tokens.
 Hence, the performance for these tasks during test-time could potentially be constrained by these factors.
 
-Finally, reproducing the transformer pipelines may require a T4 or V100 GPU. 
+Finally, reproducing the transformer pipelines may require a T4 or V100 GPU.
 The biggest bottleneck for reproduction is pretraining on the whole TLUnified corpus.
 In a 64vCPU machine with 256GB of RAM, the pretraining process can take three full days for 20 epochs.
 
@@ -194,7 +194,7 @@ In a 64vCPU machine with 256GB of RAM, the pretraining process can take three fu
 \subsection{Reproducibility}
 
 
-All the experiments and models in this paper are available publicly. 
+All the experiments and models in this paper are available publicly.
 Readers can head over to \url{https://github.com/ljvmiranda921/calamanCy} for all related software.
 Note that the XLM-RoBERTa and multilingual BERT experiments may at least require a T4 or V100 GPU.
 
@@ -210,7 +210,7 @@ Readers who are interested in the training set-up (e.g., hyperparameters, archit
 \includegraphics[width=0.5\textwidth]{images/iaa}
 \caption{
   Inter-annotator agreement measurement after each annotation round.
-  Each mark represents the end of a round. 
+  Each mark represents the end of a round.
   For each round, the annotators discuss disagreements, update the annotation guidelines, and evaluate the current set of annotations.
 }
 \label{fig:iaa}
@@ -223,7 +223,7 @@ The author, together with two more annotators, annotated TLUnified in the course
 We employed an iterative approach as recommended by \citet{Reiter2017HT}, which included resolving disagreements and updating the annotation guidelines.
 
 To get the inter-annotator agreement (IAA) score, we took \citet{Brandsen2020CreatingAD}'s work on the Archaeology dataset as inspiration.
-We computed Cohen's $\kappa$ for all tokens, and only annotated tokens.  
+We computed Cohen's $\kappa$ for all tokens, and only annotated tokens.
 In addition, we also measured the (3) pairwise F1 score without the `O' label \citep{Deleger2012BG}.
 Table \ref{table:iaa} shows the IAA measurements while Figure \ref{fig:iaa} shows their growth after each annotation round.
 

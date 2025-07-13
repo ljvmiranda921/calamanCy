@@ -3,14 +3,14 @@
 # 🪐 spaCy Project: Reproducing TLUnified-NER benchmarks
 
 This is a spaCy project that benchmarks TLUnified-NER on a variety of pipelines.
-You can use this project to reproduce the experiments in the write-up. 
+You can use this project to reproduce the experiments in the write-up.
 First, you need to install the required dependencies:
 
 ```
 pip install -r requirements.txt
 ```
 
-This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.
 Now run the set-up commands:
 
 ```
@@ -19,11 +19,11 @@ python -m spacy project run setup
 ```
 
 > **Note**
-> Some commands may take some time to run. 
+> Some commands may take some time to run.
 > This is especially true for the transformer training and evaluation pipelines.
 > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
-The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications.
 You should be able to use them independently from one another.
 
 

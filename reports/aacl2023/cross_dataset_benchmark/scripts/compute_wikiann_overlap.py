@@ -14,7 +14,7 @@ LABELS = ["PER", "ORG", "LOC"]
 
 def compute_wikiann_overlap(
     # fmt: off
-    references: Path = typer.Argument(..., help="Path to spaCy file containing reference annotations."), 
+    references: Path = typer.Argument(..., help="Path to spaCy file containing reference annotations."),
     predictions: Path = typer.Argument(..., help="Path to spaCy file containing predicted / corrected annotations."),
     output_path: Path = typer.Option(None, "-o", "--output-path", help="Path to save scores in a JSONL file."),
     dedupe: bool = typer.Option(False, "-d", "--dedupe", help="Dedupe files (more accurate reporting)."),

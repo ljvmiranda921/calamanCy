@@ -1,7 +1,7 @@
 from pathlib import Path
 
-import typer
 import spacy
+import typer
 from spacy.tokens import DocBin
 
 
@@ -13,7 +13,11 @@ def convert_to_iob(infile: Path, outfile: Path):
     with open(outfile, "w") as f:
         for doc in docs:
             for token in doc:
-                iob_tag = token.ent_iob_ if not token.ent_type_ else f"{token.ent_iob_}-{token.ent_type_}"
+                iob_tag = (
+                    token.ent_iob_
+                    if not token.ent_type_
+                    else f"{token.ent_iob_}-{token.ent_type_}"
+                )
                 line = f"{token.text}\t{iob_tag}"
                 f.write(f"{line}\n")
             f.write("\n")  # Add new line for every document

@@ -16,7 +16,7 @@ WikiANN,I split the dataset into train, dev, and test for different sizes
 TLUnified dataset cannot fit my machine's memory constraints.
 
 Lastly, I trained a TLUnified model from these silver-standard annotations and
-evaluated it on its own test set. I did this for five trials, reporting the mean 
+evaluated it on its own test set. I did this for five trials, reporting the mean
 and standard deviation. You can see the results below:
 
 | Dataset Size              | ENTS_P      | ENTS_R      | ENTS_F      | SPEED (WPS)       |

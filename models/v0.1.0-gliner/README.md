@@ -101,7 +101,7 @@ Please cite the following papers when using these models:
 
 ```bib
 @misc{zaratiana2023gliner,
-    title={GLiNER: Generalist Model for Named Entity Recognition using Bidirectional Transformer}, 
+    title={GLiNER: Generalist Model for Named Entity Recognition using Bidirectional Transformer},
     author={Urchade Zaratiana and Nadi Tomeh and Pierre Holat and Thierry Charnois},
     year={2023},
     eprint={2311.08526},
@@ -121,7 +121,7 @@ Please cite the following papers when using these models:
   publisher = "Empirical Methods in Natural Language Processing",
   url = "https://aclanthology.org/2023.nlposs-1.1",
   pages = "1--7",
-} 
+}
 ```
 
 If you're using the NER dataset:

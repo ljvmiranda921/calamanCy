@@ -16,7 +16,7 @@ description: |
   - **Improved base model for tl_calamancy_trf**: Based on internal evaluations, we are now using [mDeBERTa-v3 (base)](https://huggingface.co/microsoft/mdeberta-v3-base) as our source of context-sensitive vectors for tl_calamancy_trf.
   - **Simpler pipelines, no more pretraining**: We found that pretraining doesn't really offer huge performance gains (0-1%) given the huge effort and time needed to do it. Hence, for ease of training the whole pipeline, we removed it from the calamanCy recipe.
 
-  The namespaces for the latest models remain the same. 
+  The namespaces for the latest models remain the same.
   The legacy models will have an explicit version number in their HuggingFace repositories.
   Please see [this HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87) for more information.
 
@@ -147,33 +147,33 @@ commands:
       # parser, tagger, morph: Convert treebank into spaCy format
       - mkdir -p corpus/treebank
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/tl_newscrawl-ud-train.conllu corpus/treebank
         --converter conllu
         --morphology
         --merge-subtokens
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/tl_newscrawl-ud-dev.conllu corpus/treebank
         --converter conllu
         --morphology
         --merge-subtokens
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/tl_newscrawl-ud-test.conllu corpus/treebank
         --converter conllu
         --n-sents 1
         --morphology
         --merge-subtokens
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/tl_ugnayan-ud-test.conllu corpus/treebank
         --converter conllu
         --n-sents 1
         --morphology
         --merge-subtokens
       - >-
-        python -m spacy convert 
+        python -m spacy convert
         assets/tl_trg-ud-test.conllu corpus/treebank
         --converter conllu
         --n-sents 1
@@ -225,17 +225,17 @@ commands:
       - mkdir -p assets/vectors/floret-tl-md/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified_raw_text.txt 
+        -input assets/tlunified_raw_text.txt
         -output assets/vectors/floret-tl-md/vectors
         -dim 200
         -minn 3
-        -maxn 5 
+        -maxn 5
         -mode floret
         -hashCount 2
         -bucket 200000
       - mkdir -p vectors/floret-tl-md
       - >-
-        python -m spacy init vectors 
+        python -m spacy init vectors
         tl assets/vectors/floret-tl-md/vectors.floret vectors/floret-tl-md
         --mode floret
     deps:
@@ -307,7 +307,7 @@ commands:
         configs/ner_trf.cfg
         --nlp.lang tl
         --output training/ner_trf/
-        --components.transformer.model.name microsoft/mdeberta-v3-base 
+        --components.transformer.model.name microsoft/mdeberta-v3-base
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
         --gpu-id ${vars.gpu_id}

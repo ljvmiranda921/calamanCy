@@ -23,7 +23,7 @@ project command. For example, if you wish to train `tl_calamancy_md`, you can
 execute the corresponding workflow like so:
 
 ```
-python -m spacy project run tl-calamancy-md 
+python -m spacy project run tl-calamancy-md
 ```
 
 ## Model information

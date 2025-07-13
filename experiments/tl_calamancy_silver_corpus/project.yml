@@ -14,7 +14,7 @@ description: |
   TLUnified dataset cannot fit my machine's memory constraints.
 
   Lastly, I trained a TLUnified model from these silver-standard annotations and
-  evaluated it on its own test set. I did this for five trials, reporting the mean 
+  evaluated it on its own test set. I did this for five trials, reporting the mean
   and standard deviation. You can see the results below:
 
   | Dataset Size              | ENTS_P      | ENTS_R      | ENTS_F      | SPEED (WPS)       |
@@ -154,7 +154,7 @@ commands:
     help: "Annotate a larger TLUnified dataset using the trained model from WikiANN"
     script:
       - >-
-        python -m scripts.annotate 
+        python -m scripts.annotate
         corpus/raw/${vars.tlunified_silver}-train.spacy
         corpus/raw/${vars.tlunified_silver}-validation.spacy
         corpus/raw/${vars.tlunified_silver}-test.spacy
@@ -194,7 +194,7 @@ commands:
     script:
       - mkdir -p metrics/mono/${vars.wikiann_silver}/
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/mono/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
@@ -210,8 +210,8 @@ commands:
     script:
       - mkdir -p metrics/mono/${vars.tlunified_silver}/
       - >-
-        python -m spacy evaluate 
-        training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/ 
+        python -m spacy evaluate
+        training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/mono/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}-${vars.tlunified_limit}-${vars.seed}.json
         --gpu-id ${vars.gpu_id}
@@ -226,13 +226,13 @@ commands:
     script:
       - mkdir -p metrics/cross/${vars.wikiann_silver}/
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/
         corpus/silver/${vars.wikiann_silver}-test.spacy
         --output metrics/cross/${vars.wikiann_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
@@ -250,13 +250,13 @@ commands:
     script:
       - mkdir -p metrics/cross/${vars.tlunified_silver}/
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}/model-best/
         corpus/silver/${vars.tlunified_silver}-test.spacy
         --output metrics/cross/${vars.tlunified_silver}/${vars.lang}_${vars.tlunified_silver}-${vars.tlunified_limit}-${vars.seed}.json
@@ -274,13 +274,13 @@ commands:
     script:
       - mkdir -p metrics/${vars.tlunified_gold}/
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.wikiann_silver}/model-best/
         corpus/gold/${vars.tlunified_gold}-test.spacy
         --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.wikiann_silver}.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         training/${vars.lang}_${vars.tlunified_silver}/model-best/
         corpus/gold/${vars.tlunified_gold}-test.spacy
         --output metrics/${vars.tlunified_gold}/${vars.lang}_${vars.tlunified_silver}.json
@@ -315,7 +315,7 @@ commands:
     script:
       - >-
         python -m prodigy ner.correct
-        ${vars.prodigy_dataset} 
+        ${vars.prodigy_dataset}
         training/${vars.lang}_${vars.tlunified_silver}/model-best/
         assets/tlunified/train.txt
     deps:

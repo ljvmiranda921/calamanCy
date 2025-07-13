@@ -1,14 +1,14 @@
 title: "Reproducing TLUnified-NER benchmarks"
 description: |
   This is a spaCy project that benchmarks TLUnified-NER on a variety of pipelines.
-  You can use this project to reproduce the experiments in the write-up. 
+  You can use this project to reproduce the experiments in the write-up.
   First, you need to install the required dependencies:
 
   ```
   pip install -r requirements.txt
   ```
 
-  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.  
+  This step installs [spaCy](https://spacy.io) that allows you to access its command-line interface.
   Now run the set-up commands:
 
   ```
@@ -17,11 +17,11 @@ description: |
   ```
 
   > **Note**
-  > Some commands may take some time to run. 
+  > Some commands may take some time to run.
   > This is especially true for the transformer training and evaluation pipelines.
   > I highly recommend running these on at least a T4 GPU (available on Colab Pro+) for faster runtimes.
 
-  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications. 
+  The Python scripts in the `scripts/` directory are supposed to be standalone command-line applications.
   You should be able to use them independently from one another.
 
 directories:
@@ -84,8 +84,8 @@ commands:
       - python -m scripts.convert_to_spans corpus/dev.spacy corpus/dev_sc.spacy
       - python -m scripts.convert_to_spans corpus/test.spacy corpus/test_sc.spacy
       - >-
-        python -m spacy debug data configs/default.cfg 
-        --paths.train corpus/train_sc.spacy 
+        python -m spacy debug data configs/default.cfg
+        --paths.train corpus/train_sc.spacy
         --paths.dev corpus/dev_sc.spacy
     deps:
       - corpus/train.spacy
@@ -137,13 +137,13 @@ commands:
     help: "Use the trained calamanCy pipeline to evaluate the dev and test set"
     script:
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_lg
         corpus/test.spacy
         --output metrics/static-vectors-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_lg
         corpus/dev.spacy
         --output metrics/static-vectors-dev.json
@@ -159,13 +159,13 @@ commands:
     help: "Use the trained transformer-based calamanCy pipeline to evaluate the dev and test set"
     script:
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_trf
         corpus/test.spacy
         --output metrics/trf-monolingual-test.json
         --gpu-id ${vars.gpu_id}
       - >-
-        python -m spacy evaluate 
+        python -m spacy evaluate
         tl_calamancy_trf
         corpus/dev.spacy
         --output metrics/trf-monolingual-dev.json

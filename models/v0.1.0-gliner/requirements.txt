@@ -1,7 +1,7 @@
-gliner==0.2.8
 accelerate
-spacy
+conllu
+datasets
+gliner==0.2.8
 gliner-spacy
 huggingface_hub
-datasets
-conllu
+spacy

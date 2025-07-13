@@ -3,10 +3,9 @@ from typing import Dict, Optional
 
 import spacy
 import typer
+from datasets import load_dataset
 from spacy.tokens import Doc, DocBin
 from wasabi import msg
-
-from datasets import load_dataset
 
 from .utils import setup_gpu
 

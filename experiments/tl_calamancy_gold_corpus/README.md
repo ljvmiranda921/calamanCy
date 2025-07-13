@@ -15,7 +15,7 @@ samples with Person (PER), Organization (ORG), and Location (LOC) entities:
 
 Then, I benchmarked word vector and transformer-based spaCy pipelines in
 different settings (e.g., with or without pretraining, fastText/floret static
-vectors, etc.). 
+vectors, etc.).
 
 Finally, I came up with a (1) word vector-based pipeline that consists of
 [floret vectors](https://github.com/explosion/floret) and [tok2vec weight
@@ -42,7 +42,7 @@ command-line tool to run a benchmark. Under the hood, it calls the `ner` (or
 `ner-trf`) workflow to preprocess data, train a model, and evaluate results.
 
 ```sh
-python3 -m scripts.benchmark experiment_id [OPTIONS] 
+python3 -m scripts.benchmark experiment_id [OPTIONS]
 ```
 
 For example, if we want to conduct a pipeline that uses fastText vectors for
