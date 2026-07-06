@@ -109,8 +109,7 @@ doc = nlp("Ako si Juan de la Cruz")
 Passing an unversioned name loads the latest version of that model. You can
 also pin a specific version (e.g., `tl_calamancy_md-0.1.0`). Models are
 downloaded from Hugging Face and stored in your local [Hugging Face cache
-directory](https://huggingface.co/docs/huggingface_hub/guides/manage-cache),
-not installed as Python packages.
+directory](https://huggingface.co/docs/huggingface_hub/guides/manage-cache).
 
 The `nlp` object is an instance of spaCy's [`Language`
 class](https://spacy.io/api/language) and you can use it as any other spaCy
