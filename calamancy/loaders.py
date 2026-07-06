@@ -11,18 +11,17 @@ def _get_models() -> Dict[str, Tuple[str, str]]:
     """Get a mapping of each calamanCy pipeline (versioned) to its Hugging Face
     repository and git revision.
 
-    Starting v0.2.0, all versions of a pipeline live in a single repository
-    (e.g., ljvmiranda921/tl_calamancy_md) where each release is a git tag and
-    'main' points to the latest version. Older versions live in their original
-    repositories.
+    All versions of a pipeline live in a single repository (e.g.,
+    ljvmiranda921/tl_calamancy_md) where each release is a git tag and
+    'main' points to the latest version.
     """
     return {
         "tl_calamancy_md-0.2.0": ("ljvmiranda921/tl_calamancy_md", "0.2.0"),
         "tl_calamancy_lg-0.2.0": ("ljvmiranda921/tl_calamancy_lg", "0.2.0"),
         "tl_calamancy_trf-0.2.0": ("ljvmiranda921/tl_calamancy_trf", "0.2.0"),
-        "tl_calamancy_md-0.1.0": ("ljvmiranda921/tl_calamancy_md-0.1.0", "main"),
-        "tl_calamancy_lg-0.1.0": ("ljvmiranda921/tl_calamancy_lg-0.1.0", "main"),
-        "tl_calamancy_trf-0.1.0": ("ljvmiranda921/tl_calamancy_trf-0.1.0", "main"),
+        "tl_calamancy_md-0.1.0": ("ljvmiranda921/tl_calamancy_md", "0.1.0"),
+        "tl_calamancy_lg-0.1.0": ("ljvmiranda921/tl_calamancy_lg", "0.1.0"),
+        "tl_calamancy_trf-0.1.0": ("ljvmiranda921/tl_calamancy_trf", "0.1.0"),
     }
 
 
@@ -40,7 +39,9 @@ def get_latest_version(model: str) -> str:
     model (str): string indicating the model.
     RETURNS (str): latest version of the model.
     """
-    compat = [model_name for model_name in _get_models() if model_name.startswith(model)]
+    compat = [
+        model_name for model_name in _get_models() if model_name.startswith(model)
+    ]
     versions = sorted(
         [_get_version(model) for model in compat],
         key=lambda s: [int(u) for u in s.split(".")],
