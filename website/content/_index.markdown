@@ -14,15 +14,17 @@ The name is based on _calamansi_, a citrus fruit native to the Philippines and u
 
 ## Running your first pipeline
 
-First install calamanCy, then download either the medium, large, or transformer model.
-The command below automatically downloads and load the model you pass:
+First install calamanCy (with `pip install calamancy` or `uv add calamancy`), then load either the medium, large, or transformer model.
+The command below automatically downloads the model you pass from Hugging Face and caches it locally:
 
 ```python
-!pip install calamanCy
+import calamancy
 
-nlp = calamancy.load("tl_calamancy_md-0.1.0")
+nlp = calamancy.load("tl_calamancy_md")  # loads the latest version
 doc = nlp("Ako si Juan de la Cruz")
 ```
+
+You can also pin a specific model version, e.g., `calamancy.load("tl_calamancy_md-0.2.0")`.
 
 You can see all available calamanCy models in this [🤗 HuggingFace collection](https://huggingface.co/collections/ljvmiranda921/calamancy-models-for-tagalog-nlp-65629cc46ef2a1d0f9605c87).
 Alternatively, you can use all the calamanCy models within the spaCy library:
