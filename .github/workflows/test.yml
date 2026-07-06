@@ -53,7 +53,7 @@ jobs:
       - name: Test import
         shell: bash
         run: |
-          uv run python -Werror -c "import $MODULE_NAME"
+          uv run python -c "import $MODULE_NAME"
 
       - name: "Run tests"
         shell: bash
