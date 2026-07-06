@@ -37,6 +37,12 @@ following line in your terminal:
 pip install calamanCy
 ```
 
+If you are using [`uv`](https://docs.astral.sh/uv/), run:
+
+```sh
+uv add calamancy
+```
+
 ### Development
 
 If you are developing calamanCy, first clone the repository:
@@ -45,29 +51,28 @@ If you are developing calamanCy, first clone the repository:
 git clone git@github.com:ljvmiranda921/calamanCy.git
 ```
 
-Then, create a virtual environment and install the dependencies:
-
-```sh
-python -m venv .venv
-.venv/bin/pip install -e .  # requires pip>=23.0
-.venv/bin/pip install .[dev]
-# Activate the virtual environment
-source venv/bin/activate
-```
-
-**[Experimental]** If you want to use [`uv`](https://docs.astral.sh/uv/), then install via the following commands:
+Then use [`uv`](https://docs.astral.sh/uv/) to set up the development environment:
 
 ```sh
 uv sync --dev
-# Activate the virtual environment
-source .venv/bin/activate
 ```
 
-We also require using pre-commit hooks to standardize formatting.
-The pre-commit dependency should be in your virtual environment if the installation steps above were successful:
+This creates a virtual environment in `.venv` and installs all dependencies
+from the lockfile. You can run any command inside it with `uv run`, or activate
+it with `source .venv/bin/activate`.
+
+Alternatively, if you prefer plain `pip`:
 
 ```sh
-pre-commit install
+python -m venv .venv
+source .venv/bin/activate
+pip install -e . --group dev  # requires pip>=25.1 for --group
+```
+
+We also require using pre-commit hooks to standardize formatting:
+
+```sh
+uv run pre-commit install
 ```
 
 ### Running the tests
@@ -75,7 +80,7 @@ pre-commit install
 We use [pytest](https://docs.pytest.org/en/7.4.x/) as our test runner:
 
 ```sh
-python -m pytest --pyargs calamancy
+uv run pytest --pyargs calamancy
 ```
 
 ## 👩‍💻 Usage
@@ -89,17 +94,23 @@ for model in calamancy.models():
     print(model)
 
 # ..
-# tl_calamancy_md-0.1.0
-# tl_calamancy_lg-0.1.0
-# tl_calamancy_trf-0.1.0
+# tl_calamancy_md-0.2.0
+# tl_calamancy_lg-0.2.0
+# tl_calamancy_trf-0.2.0
 ```
 
 To download and load a model, run:
 
 ```python
-nlp = calamancy.load("tl_calamancy_md-0.1.0")
+nlp = calamancy.load("tl_calamancy_md")
 doc = nlp("Ako si Juan de la Cruz")
 ```
+
+Passing an unversioned name loads the latest version of that model. You can
+also pin a specific version (e.g., `tl_calamancy_md-0.1.0`). Models are
+downloaded from Hugging Face and stored in your local [Hugging Face cache
+directory](https://huggingface.co/docs/huggingface_hub/guides/manage-cache),
+not installed as Python packages.
 
 The `nlp` object is an instance of spaCy's [`Language`
 class](https://spacy.io/api/language) and you can use it as any other spaCy
@@ -157,8 +168,8 @@ Load a calamanCy model as a [spaCy language pipeline](https://spacy.io/usage/pro
 
 | Argument    | Type                                        | Description                                                                                  |
 | ----------- | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `model`     | `str`                                       | The model to download. See the available models at [`calamancy.models()`](#function-models). |
-| `force`     | `bool`                                      | Force download the model. Defaults to `False`.                                               |
+| `model`     | `str`                                       | The model to download. See the available models at [`calamancy.models()`](#function-models). Pass an unversioned name (e.g., `tl_calamancy_md`) to get the latest version. |
+| `force`     | `bool`                                      | Force re-downloading a cached model. Defaults to `False`.                                    |
 | `**kwargs`  | `dict`                                      | Additional arguments to `spacy.load()`.                                                      |
 | **RETURNS** | [`Language`](https://spacy.io/api/language) | A spaCy language pipeline.                                                                   |
 
