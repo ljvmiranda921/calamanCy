@@ -1,6 +1,6 @@
-title: "Release v0.2.0"
+title: "Release v0.3.0"
 description: |
-  This is a spaCy project that trains the v0.2.0 models for calamanCy.
+  This is a spaCy project that trains the v0.3.0 models for calamanCy.
   Here are some of the major changes in this release:
 
   - **Included trainable lemmatizer in the pipeline**: instead of a rules-based
@@ -58,12 +58,13 @@ description: |
 
 vars:
   # Versioning
-  version: 0.2.0
+  version: 0.3.0
   # Training
   lang: "tl"
   gpu_id: 0
   vectors: ""
   size: ""
+  trf_model: "microsoft/mdeberta-v3-base"
   # Evaluation
   eval_model: ""
 
@@ -270,7 +271,7 @@ commands:
         configs/parser_trf.cfg
         --output training/parser_trf/
         --nlp.lang ${vars.lang}
-        --components.transformer.model.name microsoft/mdeberta-v3-base
+        --components.transformer.model.name ${vars.trf_model}
         --paths.train corpus/treebank/tl_newscrawl-ud-train.spacy
         --paths.dev corpus/treebank/tl_newscrawl-ud-dev.spacy
         --gpu-id ${vars.gpu_id}
@@ -307,7 +308,7 @@ commands:
         configs/ner_trf.cfg
         --nlp.lang tl
         --output training/ner_trf/
-        --components.transformer.model.name microsoft/mdeberta-v3-base
+        --components.transformer.model.name ${vars.trf_model}
         --paths.train corpus/ner/train.spacy
         --paths.dev corpus/ner/dev.spacy
         --gpu-id ${vars.gpu_id}
@@ -412,7 +413,7 @@ commands:
       - >-
         python -m spacy evaluate
         ${vars.eval_model} corpus/ner/tfnerd-test.spacy
-        --output evals/${vars.eval_model}/ner-tfnerd.json
+        --output evals/${vars.eval_model}/ner_tfnerd.json
         --gpu-id ${vars.gpu_id}
         --per-component
     deps:
