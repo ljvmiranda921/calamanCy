@@ -1,0 +1,13 @@
+build
+huggingface-hub>=0.30.0,<1.0
+pandas
+protobuf
+sentencepiece
+spacy-huggingface-hub
+spacy-transformers==1.4.0
+spacy[cuda12x]; sys_platform == "linux"
+spacy; sys_platform != "linux"
+tabulate
+torch==2.7.1
+transformers==4.53.2
+typer
