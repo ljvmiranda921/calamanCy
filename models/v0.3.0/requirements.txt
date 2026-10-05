@@ -1,7 +1,10 @@
 build
+click<8.2.0
+datasets
 huggingface-hub>=0.30.0,<1.0
 pandas
 protobuf
+pyarrow
 sentencepiece
 spacy-huggingface-hub
 spacy-transformers==1.4.0

@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+import pandas as pd
 import spacy
 import typer
 from spacy.tokens import Doc, DocBin, Span
@@ -59,6 +60,13 @@ def convert(
                     labels.append(current_labels)
                     current_text = []
                     current_labels = []
+
+    elif source == "tlunified":
+        # Label names from the `ner_tags` ClassLabel of ljvmiranda921/tlunified-ner
+        id2label = ["O", "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC"]
+        df = pd.read_parquet(infile)
+        texts = [list(tokens) for tokens in df["tokens"]]
+        labels = [[id2label[tag] for tag in tags] for tags in df["ner_tags"]]
 
     else:
         msg.fail(f"Unknown source: {source}", exits=1)

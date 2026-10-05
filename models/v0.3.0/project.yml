@@ -80,12 +80,15 @@ directories:
   - "vectors"
 
 assets:
-  - dest: "assets/tlunified_raw_text.txt"
-    description: "Pre-converted raw text from TLUnified in JSONL format (1.1 GB)."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tlunified_raw_text.txt"
-  - dest: assets/corpus.tar.gz
-    description: "Annotated TLUnified corpora in spaCy format with train, dev, and test splits."
-    url: "https://storage.googleapis.com/ljvmiranda/calamanCy/tl_tlunified_gold/v1.0/corpus.tar.gz"
+  - dest: assets/tlunified-ner-train.parquet
+    description: "Train dataset for TLUnified-NER"
+    url: https://huggingface.co/datasets/ljvmiranda921/tlunified-ner/resolve/main/data/train-00000-of-00001.parquet
+  - dest: assets/tlunified-ner-dev.parquet
+    description: "Dev dataset for TLUnified-NER"
+    url: https://huggingface.co/datasets/ljvmiranda921/tlunified-ner/resolve/main/data/validation-00000-of-00001.parquet
+  - dest: assets/tlunified-ner-test.parquet
+    description: "Test dataset for TLUnified-NER"
+    url: https://huggingface.co/datasets/ljvmiranda921/tlunified-ner/resolve/main/data/test-00000-of-00001.parquet
   - dest: assets/tl_newscrawl-ud-train.conllu
     description: "Train dataset for NewsCrawl"
     url: https://raw.githubusercontent.com/UniversalDependencies/UD_Tagalog-NewsCrawl/refs/heads/dev/tl_newscrawl-ud-train.conllu
@@ -111,9 +114,11 @@ assets:
     description: "Test dataset for TF-NERD"
     url: https://huggingface.co/datasets/rkramos/tfnerd/raw/main/txt/test.txt
   - dest: "assets/fasttext.tl.gz"
+    extra: true
     description: "Tagalog fastText vectors provided from the fastText website (trained from CommonCrawl and Wikipedia)."
     url: "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.tl.300.vec.gz"
   - dest: "assets/floret"
+    extra: true
     description: "Floret repository for training floret and fastText models."
     git:
       repo: "https://github.com/explosion/floret"
@@ -123,6 +128,9 @@ assets:
 workflows:
   setup:
     - "setup-finetuning-data"
+    - "setup-eval-data"
+  vectors:
+    - "setup-pretraining-data"
     - "setup-fasttext-vectors"
     - "build-floret"
     - "train-vectors-md"
@@ -142,9 +150,11 @@ commands:
   - name: "setup-finetuning-data"
     help: "Prepare the Tagalog corpora used for training various spaCy components"
     script:
-      # ner: Extract Tagalog corpora
+      # ner: Convert TLUnified-NER into spaCy format
       - mkdir -p corpus/ner
-      - "tar -xzvf assets/corpus.tar.gz -C corpus/ner"
+      - python -m scripts.convert assets/tlunified-ner-train.parquet corpus/ner/train.spacy --source tlunified
+      - python -m scripts.convert assets/tlunified-ner-dev.parquet corpus/ner/dev.spacy --source tlunified
+      - python -m scripts.convert assets/tlunified-ner-test.parquet corpus/ner/test.spacy --source tlunified
       # parser, tagger, morph: Convert treebank into spaCy format
       - mkdir -p corpus/treebank
       - >-
@@ -181,7 +191,9 @@ commands:
         --morphology
         --merge-subtokens
     deps:
-      - assets/corpus.tar.gz
+      - assets/tlunified-ner-train.parquet
+      - assets/tlunified-ner-dev.parquet
+      - assets/tlunified-ner-test.parquet
       - assets/tl_newscrawl-ud-train.conllu
       - assets/tl_newscrawl-ud-dev.conllu
       - assets/tl_newscrawl-ud-test.conllu
@@ -196,6 +208,17 @@ commands:
       - corpus/treebank/tl_newscrawl-ud-test.spacy
       - corpus/treebank/tl_ugnayan-ud-test.spacy
       - corpus/treebank/tl_trg-ud-test.spacy
+
+  - name: "setup-pretraining-data"
+    help: "Download pretraining text from FineWeb-2 (languages in the Philippines) and halohalo"
+    script:
+      - >-
+        python -m scripts.download_pretraining_data
+        assets/pretraining
+        --text-output assets/pretraining/pretraining.txt
+    outputs:
+      - assets/pretraining
+      - assets/pretraining/pretraining.txt
 
   - name: "setup-fasttext-vectors"
     help: "Make fastText vectors spaCy compatible"
@@ -226,7 +249,7 @@ commands:
       - mkdir -p assets/vectors/floret-tl-md/
       - >-
         assets/floret/floret skipgram
-        -input assets/tlunified_raw_text.txt
+        -input assets/pretraining/pretraining.txt
         -output assets/vectors/floret-tl-md/vectors
         -dim 200
         -minn 3
@@ -241,6 +264,7 @@ commands:
         --mode floret
     deps:
       - assets/floret/floret
+      - assets/pretraining/pretraining.txt
     outputs:
       - vectors/floret-tl-md
 
