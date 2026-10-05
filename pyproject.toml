@@ -28,8 +28,8 @@ dependencies = [
     "spacy>=3.5.0",
     "wasabi>=0.9.1",
     "typer>=0.4.2",
-    "spacy-transformers>=1.2.5,<=1.3.5",
-    "huggingface-hub>=0.20.0"
+    "spacy-transformers>=1.2.5,<1.5.0",
+    "huggingface-hub>=0.20.0",
 ]
 
 [project.urls]

@@ -1,0 +1,47 @@
+{
+    "name": "tl_calamancy",
+    "lang": "tl",
+    "version": "0.1.0",
+    "spacy_version": ">=3.8.3",
+    "parent_package": "spacy",
+    "requirements": [
+        "spacy-transformers==1.3.5"
+    ],
+    "description": "calamanCy: Tagalog NLP pipelines in spaCy",
+    "author": "Lester James V. Miranda",
+    "email": "ljvmiranda@gmail.com",
+    "url": "https://github.com/ljvmiranda921/calamanCy",
+    "license": "MIT",
+    "sources": [
+        {
+            "name": "TLUnified NER Dataset",
+            "license": "GNU GPL 3.0",
+            "author": "Lester James V. Miranda",
+            "url": "https://aclanthology.org/2023.sealp-1.2/"
+        },
+        {
+            "name": "UD NewsCrawl",
+            "license": "CC BY-SA 3.0",
+            "author": "Angelina Aquino and Lester James V. Miranda and Elsie Or",
+            "url": "https://huggingface.co/datasets/UD-Filipino/UD_Tagalog-NewsCrawl"
+        },
+        {
+            "name": "TLUnified dataset",
+            "license": "GNU GPL 3.0",
+            "author": "Jan Christian Blaise Cruz and Charibeth Cheng",
+            "url": "https://aclanthology.org/2022.lrec-1.703/"
+        },
+        {
+            "name": "UD_Tagalog-TRG",
+            "license": "CC BY-SA 3.0",
+            "author": "Stephanie Samson, Daniel Zeman, and Mary Ann C. Tan",
+            "url": "https://universaldependencies.org/treebanks/tl_trg/index.html"
+        },
+        {
+            "name": "UD_Tagalog-Ugnayan",
+            "license": "CC BY-NC-SA 4.0",
+            "author": "Angelina Aquino",
+            "url": "https://universaldependencies.org/treebanks/tl_ugnayan/index.html"
+        }
+    ]
+}
