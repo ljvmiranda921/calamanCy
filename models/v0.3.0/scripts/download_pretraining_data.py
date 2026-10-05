@@ -6,20 +6,20 @@ import typer
 from datasets import load_dataset
 from wasabi import msg
 
-# FineWeb-2 configs for languages in the Philippines with at least ~1k documents
+# FineWeb-2 configs for languages in the Philippines
 FINEWEB2_PH_LANGUAGES = [
-    "fil_Latn",  # Filipino (2,349,050 docs)
-    "ceb_Latn",  # Cebuano (204,636 docs)
-    "hil_Latn",  # Hiligaynon (43,810 docs)
-    "ilo_Latn",  # Ilocano (21,304 docs)
-    "bcl_Latn",  # Central Bikol (8,822 docs)
-    "pag_Latn",  # Pangasinan (2,712 docs)
-    "war_Latn",  # Waray (2,223 docs)
-    "pam_Latn",  # Kapampangan (2,005 docs)
-    "cbk_Latn",  # Chavacano (1,872 docs)
-    "ify_Latn",  # Keley-I Kallahan (1,364 docs)
-    "mbb_Latn",  # Western Bukidnon Manobo (1,207 docs)
-    "krj_Latn",  # Kinaray-a (1,098 docs)
+    "fil_Latn",  # Filipino
+    "ceb_Latn",  # Cebuano
+    "hil_Latn",  # Hiligaynon
+    "ilo_Latn",  # Ilocano
+    "bcl_Latn",  # Central Bikol
+    "pag_Latn",  # Pangasinan
+    "war_Latn",  # Waray
+    "pam_Latn",  # Kapampangan
+    "cbk_Latn",  # Chavacano
+    "ify_Latn",  # Keley-I Kallahan
+    "mbb_Latn",  # Western Bukidnon Manobo
+    "krj_Latn",  # Kinaray-a
 ]
 
 
